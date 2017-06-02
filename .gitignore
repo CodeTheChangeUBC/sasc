@@ -1,0 +1,6 @@
+node_modules/*
+npm-debug.log
+app/*
+build/*
+.babelrc
+webpack.config.js
