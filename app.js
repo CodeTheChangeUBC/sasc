@@ -4,32 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-// React
-var React = require('react');
-var ReactDOM = require('react-dom');
-
-
-// db
 var mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'gleneagle',
-  database : 'test'
-});
- 
-connection.connect();
- 
-connection.query('SELECT * FROM user;', function (error, results, fields) {
-  if (error) throw error;
-  //console.log(results);
-});
- 
-connection.end();
-
-
 
 var index = require('./routes/index');
 var users = require('./routes/users');
