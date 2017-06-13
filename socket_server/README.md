@@ -4,10 +4,10 @@ Documentation for the socket server.
 
 ### Token Auth and Protocol
 
-For token authentication the secret key is located in the JS Object in secrets.js.
+For token authentication the secret key is located in the JS Object in `secrets.js`.
 **DON'T FORGET TO CHANGE THIS IN PRODUCTION.**
 
-When establishing a WebSocket connection, one must put the token as a token query param. e.g.e
+When establishing a WebSocket connection, one must put the token as a token query param. e.g.
 ```
 wss://sasc-help.com/socket?token=<TOKEN_VALUE>
 ```
