@@ -9,9 +9,20 @@
 var Counselor = require('./acc/counselor')
 var Student = require('./acc/student')
 
+var util = require('./secrets')
+var jwt = require('jsonwebtoken')
 
-function Handler (socket) {
-  
+function Handler (io) {
+  // Middleware to verify the token.
+  io.use((socket, next) => {
+    jwt.verify(socket.request.query.t, util.secret, (err, data) => {
+      if (err) {
+        next(new Error('Auth Error: Invalid Token'))
+        return
+      }
+      next(data)
+    })
+  })
 }
 
 
