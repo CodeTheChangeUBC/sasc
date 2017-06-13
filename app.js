@@ -6,6 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 
+import config from './webpack.config.dev';
+import webpack from 'webpack';
+import serveStatic from 'serve-static';
+
+const compiler = webpack(config);
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -17,12 +23,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
 
-app.use(express.static(path.resolve(__dirname, 'client', 'build')));
+app.use(require('webpack-hot-middleware')(compiler));
 
-app.use('*', function(req, res) {  
- res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); 
+const staticPath = path.join(__dirname, '/client');
+
+app.use(serveStatic(staticPath));
+
+app.get('*', function(req, res) {  
+ console.log('get route caught this');
+ res.sendFile(path.join(__dirname, 'client', 'index.html')); 
 });
 
 app.use('/', index);

@@ -1,5 +1,18 @@
-.App {
-  background-color: red;
-  height: 100vh;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
 }
 
+h1,h2 {
+  margin: 0;
+}
+
+a {
+  color: orange;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+}
