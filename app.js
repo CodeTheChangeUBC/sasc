@@ -29,7 +29,6 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));
-
 const staticPath = path.join(__dirname, '/client');
 
 app.use(serveStatic(staticPath));
