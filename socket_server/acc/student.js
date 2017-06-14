@@ -13,11 +13,15 @@ class Student extends User {
   }
 
   onMessage (data) {
-    this.conversation
+    if (!this.convo) {
+      return
+    }
+
+    this.convo.counselor.emit('msg', data)
   }
 
   connect () {
-    this.convo = super.find(this)
+    var counselor = super.find(this)
   }
 
   listen () {
