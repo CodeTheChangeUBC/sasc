@@ -2,12 +2,14 @@ var express = require('express');
 var router = express.Router();
 const counsellorsController = require('../server/controllers').counsellors;
 
-/* GET counsellors listing. */
-router.get('/', function(req, res, next) {
-  res.send('Welcome to the Counsellors index!');
-});
-
+/* Requests for /counsellors */
+router.get('/', counsellorsController.list);
 router.post('/', counsellorsController.create);
-
+/* Get Counsellor with id counsellorId */
+router.get('/:counsellorId', counsellorsController.retrieve);
+// Update counsellor with specified id
+router.put('/:counsellorId', counsellorsController.update);
+// Delete counsellor with specified id
+router.delete('/:counsellorId', counsellorsController.destroy);
 
 module.exports = router;
