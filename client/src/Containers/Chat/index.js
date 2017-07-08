@@ -52,9 +52,7 @@ class Chat extends Component {
   }
 
   render() {
-
     console.log('messages is...', this.props.messages)
-
     return (
       <div className="Chat">
         <form onSubmit={this.handleOnSubmit}>
