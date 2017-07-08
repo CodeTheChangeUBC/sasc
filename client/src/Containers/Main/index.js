@@ -4,6 +4,7 @@ import Home from './../Home';
 import Chat from './../Chat';
 import Login from './../Login';
 import Register from './../Register';
+import SMS from './../SMS';
 import './styles.css';
 
 class Main extends Component {
@@ -15,6 +16,7 @@ class Main extends Component {
           <Route path='/chat' component={Chat}/>
           <Route path='/login' component={Login}/>
           <Route path='/register' component={Register}/>
+          <Route path='/sms' component={SMS}/>
         </Switch>
       </div>
     );
