@@ -4,7 +4,7 @@ Development repo for the SASC project.
 How to get the project running:
 
 To install dependencies, inside the sasc folder run
-```    
+``` 
 npm install
 ```
 
@@ -31,3 +31,27 @@ git push origin your-branch-name
 ```
 
 When you are ready to merge your branch with master, please create a pull request so someone can review your code before it gets merged with master.
+
+#### (Local) DB Setup ####
+
+Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into msql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
+```
+create database sasc_dev_db;
+```
+From here, create a user sasc which will have access to this db:
+```
+CREATE USER 'sasc'@'localhost';
+```
+And then give it the desired privileges: 
+```
+GRANT ALL PRIVILEGES
+	-> ON sasc_dev_db.*
+	-> TO 'sasc'@'localhost';
+``` 
+
+Make sure you've run an `npm install` so that sequelize is installed, and then run a migration:
+```
+sequelize db:migrate
+```
+You should be good to go!
+
