@@ -1,10 +1,18 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mysql = require('mysql');
+// var express = require('express');
+// var path = require('path');
+// var favicon = require('serve-favicon');
+// var logger = require('morgan');
+// var cookieParser = require('cookie-parser');
+// var bodyParser = require('body-parser');
+// var mysql = require('mysql');
+
+import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon'
+import logger from 'morgan'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import mysql from 'mysql'
 
 import config from './webpack.config.dev';
 import webpack from 'webpack';
@@ -12,9 +20,10 @@ import serveStatic from 'serve-static';
 
 const compiler = webpack(config);
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var counsellors = require('./routes/counsellors');
+import index from './routes/index';
+import users from './routes/users';
+import counsellors from './routes/counsellors';
+
 
 var app = express();
 

@@ -34,20 +34,20 @@ When you are ready to merge your branch with master, please create a pull reques
 
 #### (Local) DB Setup ####
 
-Ensure you have postgres installed locally. (`brew install postgresql` with homebrew). Create the development table sasc_dev_db with 
+Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into msql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
 ```
-createdb sasc_dev_db
+create database sasc_dev_db;
 ```
-_Note_: Postgres should be running for this to work. 
-
-Now create a user sasc which will be in control of this table. Enter the postgres CLI with `psql postgres` (you may need `sudo psql postgres`). From here, run
+From here, create a user sasc which will have access to this db:
 ```
-CREATE ROLE sasc WITH LOGIN;
+CREATE USER 'sasc'@'localhost';
 ```
+And then give it the desired privileges: 
 ```
-ALTER ROLE sasc CREATEDB;
+GRANT ALL PRIVILEGES
+	-> ON sasc_dev_db.*
+	-> TO 'sasc'@'localhost';
 ``` 
-Type `\du` to see a list of users if you'd like, then quit with `\q`. You can try skipping the whole process of interfacing with postgres by running `createuser sasc --createdb`. I haven't tried this. 
 
 Make sure you've run an `npm install` so that sequelize is installed, and then run a migration:
 ```

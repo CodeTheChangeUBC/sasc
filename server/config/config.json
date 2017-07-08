@@ -4,14 +4,14 @@
     "password": null,
     "database": "sasc_dev_db",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "test": {
     "username": "sasc",
     "password": null,
     "database": "sasc_test_db",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "production": {
     "username": "sasc",
