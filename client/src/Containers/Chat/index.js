@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as messageActions from '../../Redux/Actions/messageActions';
 import { bindActionCreators } from 'redux';
+import uuid from 'uuid';
 import './styles.css';
 
 class Chat extends Component {
@@ -55,6 +56,7 @@ class Chat extends Component {
     console.log('messages is...', this.props.messages)
     return (
       <div className="Chat">
+        <MessageBox msgs={this.props.messages} />
         <form onSubmit={this.handleOnSubmit}>
           <input type="text" onChange={this.handleOnChange} value={this.state.input} />
           <input type="submit" value="Submit" />
@@ -63,6 +65,39 @@ class Chat extends Component {
     );
   }
 }
+
+/*
+
+TODO:
+move this to a separate comp
+
+*/
+class MessageBox extends Component {
+  render() {
+    return(
+      <div className='messageBox'>
+        {this.props.msgs.map(({message,user}) => 
+          <div key={uuid.v4()}>
+            <MessageInstance
+              user={user}
+              message={message}
+            />
+          </div>
+        )}
+      </div>
+    )}
+}
+
+class MessageInstance extends Component {
+  render() {
+    return(
+        <div className='messageInstance'>
+          {this.props.user} {this.props.message}
+        </div>
+      )
+  }
+}
+
 
 function mapStateToProps(state, ownProps) {
   return { messages: state.activeRoom.messages, room: state.activeRoom };
