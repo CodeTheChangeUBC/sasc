@@ -42,7 +42,7 @@ CREATE TABLE message (
 	sessionID int, 
 	messageTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, 
 	counsellorID int, userID int, 
-	messageContent VARCHAR(256) NOT NULL, 
+	messageContent TEXT NOT NULL, 
 	PRIMARY KEY (sessionID), 
 	PRIMARY KEY (messageTime), 
 	FOREIGN KEY (counsellorID) REFERENCES counsellor(ID), 
