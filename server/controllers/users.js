@@ -1,6 +1,7 @@
 const User = require('../models').User;
 
 module.exports = {
+	// Create user with params specified in request
 	create(req,res) {
 		return User
 		.create({
@@ -12,12 +13,16 @@ module.exports = {
 		.then(user => res.status(201).send(user))
 		.catch(error => res.status(400).send(error));
 	},
+
+	// List all Users
 	list(req,res) {
 		return User
 		.all()
 		.then(users => res.status(200).send(users))
 		.catch(error => res.status(400).send(error));
 	},
+
+	// Retrieve User with id specified in request
 	retrieve(req,res) {
 		return User
 		.findById(req.params.userId)
@@ -31,6 +36,8 @@ module.exports = {
 		})
 		.catch(error => res.status(404).send(error));
 	},
+
+	// Update User with id specified in request
 	update(req, res) {
 		return User
 		.findById(req.params.userId)
@@ -53,6 +60,8 @@ module.exports = {
 		})
 		.catch((error) => res.status(400).send(error));
 	},
+
+	// Destroy user with id specified in request
 	destroy(req, res) {
 		return User
 		.findById(req.params.userId)
