@@ -29,7 +29,7 @@ module.exports = {
 			}
 			return res.status(200).send(user);
 		})
-		.catch(error => res.status(404).send(error));
+		.catch(error => res.status(400).send(error));
 	},
 	update(req, res) {
 		return User
