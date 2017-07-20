@@ -2,3 +2,5 @@ node_modules/*
 client/node_modules/*
 client/build/*
 npm-debug.log
+commons/twilioInstances.sql
+package-lock.json

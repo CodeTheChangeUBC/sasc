@@ -20,11 +20,10 @@ import serveStatic from 'serve-static';
 
 const compiler = webpack(config);
 
-// var index = require('./routes/index');
-// var users = require('./routes/users');
-
 import index from './routes/index';
 import users from './routes/users';
+import counsellors from './routes/counsellors';
+
 
 var app = express();
 
@@ -47,6 +46,10 @@ app.use(require('webpack-hot-middleware')(compiler));
 const staticPath = path.join(__dirname, '/client');
 
 app.use(serveStatic(staticPath));
+app.use('/', index);
+app.use('/users', users);
+app.use('/counsellors', counsellors);
+
 
 app.get('*', function(req, res) {  
  console.log('get route caught this');
@@ -55,8 +58,6 @@ app.get('*', function(req, res) {
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 
-app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
