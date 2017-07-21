@@ -34,7 +34,7 @@ module.exports = {
 			}
 			return res.status(200).send(user);
 		})
-		.catch(error => res.status(404).send(error));
+		.catch(error => res.status(400).send(error));
 	},
 
 	// Update User with id specified in request
