@@ -25,16 +25,8 @@ module.exports = {
 	// Retrieve User with id specified in request
 	retrieve(req,res) {
 		return User
-		.findById(req.params.userId)
-		.then(user => {
-			if (!user) {
-				return res.status(404).send({
-					message: 'User Not Found',
-				});
-			}
-			return res.status(200).send(user);
-		})
-		.catch(error => res.status(404).send(error));
+		.findById(req.params.id)
+		// The promise here will be handled by the login request.
 	},
 
 	// Update User with id specified in request

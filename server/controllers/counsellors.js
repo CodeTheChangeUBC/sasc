@@ -25,17 +25,8 @@ module.exports = {
 	// Retrieve Counsellor with id specified in request
 	retrieve(req,res) {
 		return Counsellor
-		.findById(req.params.counsellorId)
-		.then(counsellor => {
-			if (!counsellor) {
-				// Counsellor doesn't exist
-				return res.status(404).send({
-					message: 'Counsellor Not Found',
-				});
-			}
-			return res.status(200).send(counsellor);
-		})
-		.catch(error => res.status(404).send(error));
+		.findById(req.params.id)
+		// The promise here will be handled by the login function.
 	},
 
 	// Update Counsellor with id specified in request
