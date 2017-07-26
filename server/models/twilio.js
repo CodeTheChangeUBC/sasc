@@ -6,16 +6,16 @@ module.exports =(sequelize, DataTypes) => {
       unique: true,
     },
     phoneNumber: {
-      DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
     },
     accountSid: {
-      DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     authToken: {
-      DataTypes.STRING
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true
     },

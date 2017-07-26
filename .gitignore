@@ -4,3 +4,7 @@ client/build/*
 npm-debug.log
 commons/twilioInstances.sql
 package-lock.json
+client/src/Redux/Actions/smsActions.js
+client/src/Redux/Reducers/smsReducer.js
+twilio/twilioCredentials.js
+twilio/twiliodbaccessor.js
