@@ -15,9 +15,16 @@ module.exports {
 	},
 
 	// Update Twilio from form input
-	update(req,res) => {
+	update(email, number, sid, authToken) => {
 		return Twilio
-		.findById(req.params.twilioId)
+		.findAll({
+			where: {
+				email = email;
+				phoneNumber = number;
+				accountSid = sid;
+				authToken = authToken;
+			}
+		})[0]
 		.then (twilio {
 			if (!twilio) {
 				return res.status(404).send({
