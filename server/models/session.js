@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TIME,
       allowNull: false,
     },
+    textMessage: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
   }, {
     classMethods: {
       associate: (models) => {
