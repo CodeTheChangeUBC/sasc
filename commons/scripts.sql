@@ -39,13 +39,15 @@ CREATE TABLE session (
 );
 
 CREATE TABLE message (
+	ID int NOT NULL AUTO_INCREMENT,
 	sessionID int,
 	messageTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	counsellorID int,
 	userID int,
 	messageContent TEXT NOT NULL,
 	fromCounsellor TINYINT(1) NOT NULL,
-	PRIMARY KEY (sessionID),
+	PRIMARY KEY (ID),
+	FOREIGN KEY (sessionID) REFERENCES session(ID),
 	FOREIGN KEY (counsellorID) REFERENCES counsellor(ID),
 	FOREIGN KEY (userID) REFERENCES user(ID)
 );
