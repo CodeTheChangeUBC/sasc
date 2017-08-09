@@ -46,6 +46,7 @@ CREATE TABLE message (
 	userID int,
 	messageContent TEXT NOT NULL,
 	fromCounsellor TINYINT(1) NOT NULL,
+	fromTwilio TINYINT(1) NOT NULL,
 	PRIMARY KEY (ID),
 	FOREIGN KEY (sessionID) REFERENCES session(ID),
 	FOREIGN KEY (counsellorID) REFERENCES counsellor(ID),
