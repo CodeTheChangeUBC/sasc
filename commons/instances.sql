@@ -35,4 +35,4 @@ INSERT INTO message(sessionID, messageTime, counsellorID, userID, messageContent
 VALUES (1, "1970-01-01 00:00:01", 1, 1, "haii", 0);
 
 INSERT INTO message(sessionID, messageTime, counsellorID, userID, messageContent, fromCounsellor)
-VALUES (2, "1979-01-01 00:00:01", 1, 1, "sup", 1);
+VALUES (1, "1979-01-01 00:00:01", 1, 1, "sup", 1);
