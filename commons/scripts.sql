@@ -41,8 +41,10 @@ CREATE TABLE session (
 CREATE TABLE message (
 	sessionID int,
 	messageTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	counsellorID int, userID int,
+	counsellorID int,
+	userID int,
 	messageContent TEXT NOT NULL,
+	fromCounsellor TINYINT(1) NOT NULL,
 	PRIMARY KEY (sessionID),
 	FOREIGN KEY (counsellorID) REFERENCES counsellor(ID),
 	FOREIGN KEY (userID) REFERENCES user(ID)
