@@ -43,4 +43,25 @@ module.exports {
 		})
 		.catch(error => res.status(400).send(error))
 	},
+
+	// Get Twilio information
+	getTwilioInfo() {
+		return Twilio
+		.all()[0]
+		.then(twilio => res.status(200).send(twilio))
+		.catch(error => res.status(400).send(error));
+	},
+
+
+	// Remove Twilio account from web app by email
+	deleteTwilio(email) => {
+		return Twilio
+		.destroy({
+			where: {
+				email: email
+			}
+		})
+		.then(twilio => res.status(200).send(twilio))
+		.catch(error => res.status(400).send(error));
+	},
 };
