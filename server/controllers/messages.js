@@ -38,7 +38,7 @@ module.exports = {
 		.then(message => {
 			if (!message) {
 				// message not found
-				return res.status(404).send){
+				return res.status(404).send({
 					message: 'Message not Found'
 				});
 			}
