@@ -32,7 +32,7 @@ git push origin your-branch-name
 
 When you are ready to merge your branch with master, please create a pull request so someone can review your code before it gets merged with master.
 
-#### (Local) DB Setup ####
+### (Local) DB Setup 
 
 Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into msql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
 ```
@@ -54,4 +54,22 @@ Make sure you've run an `npm install` so that sequelize is installed, and then r
 sequelize db:migrate
 ```
 You should be good to go!
+
+### Testing 
+
+To run all tests: 
+```
+npm test
+```
+
+To test a specific feature (where tests for this feature are under ./test/<feature-name>/*):
+```
+npm run-script test-<feature-name>
+```
+To run the specific test file `./test/<feature-name>/<test-name>.js`: 
+``` 
+mocha ./test/<feature-name>/<test-name>.js
+```
+
+
 
