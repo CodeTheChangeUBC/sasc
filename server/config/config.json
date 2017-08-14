@@ -11,7 +11,8 @@
     "password": null,
     "database": "sasc_test_db",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   },
   "production": {
     "username": "sasc",
