@@ -25,8 +25,15 @@ module.exports = {
 	// Retrieve User with id specified in request
 	retrieve(req,res) {
 		return User
-		.findById(req.params.id)
-		// The promise here will be handled by the login request.
+		.findById(req.params.userId)
+		.then(user => {
+			if (!user) {
+				return res.status(404).send({
+					message: "User Not Found"
+				});
+			}
+			return res.status(200).send({ 'user': user });
+		});
 	},
 
 	// Update User with id specified in request
@@ -47,7 +54,7 @@ module.exports = {
 				password: req.body.password || user.password,
 			})
 			// Send updated user
-			.then(() => res.status(200).send(user))
+			.then(() => res.status(200).send({'user': user}))
 			.catch((error) => res.status(400).send(error));
 		})
 		.catch((error) => res.status(400).send(error));
