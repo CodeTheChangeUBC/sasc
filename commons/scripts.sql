@@ -10,11 +10,19 @@ CREATE TABLE twilio (
 	PRIMARY KEY (ID)
 );
 
+CREATE TABLE database_admin (
+	host VARCHAR(256) NOT NULL,
+	user VARCHAR(32) NOT NULL,
+	password TEXT NOT NULL,
+	dbName VARCHAR(64) NOT NULL,
+	PRIMARY KEY (dbName)
+);
+
 CREATE TABLE user (
 	ID int NOT NULL AUTO_INCREMENT,
 	age int,
 	gender VARCHAR(24),
-	phoneNumber VARCHAR(15) NOT NULL ,
+	phoneNumber VARCHAR(15) NOT NULL,
 	password VARCHAR(30) NOT NULL,
 	PRIMARY KEY (ID)
 );
@@ -34,6 +42,7 @@ CREATE TABLE session (
 	endTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	counsellorID INT NOT NULL,
 	userID INT,
+	twilioMode TINYINT(1) NOT NULL,
 	PRIMARY KEY (ID),
 	FOREIGN KEY (userID) REFERENCES user(ID)
 );
