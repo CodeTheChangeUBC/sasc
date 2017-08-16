@@ -36,8 +36,6 @@ class Login extends Component {
       <div className="Login">
         <h2>Login</h2>
         <Form
-          age
-          gender
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />
