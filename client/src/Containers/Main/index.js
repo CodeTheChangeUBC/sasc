@@ -4,8 +4,7 @@ import Home from './../Home';
 import Chat from './../Chat';
 import Login from './../Login';
 import Register from './../Register';
-import SMSSettings from './../SMS/Settings';
-import SMSConvos from './../SMS';
+import SMSSettings from './../SMSSettings';
 import './styles.css';
 
 class Main extends Component {
@@ -17,8 +16,7 @@ class Main extends Component {
           <Route path="/chat" component={Chat}/>
           <Route path="/login" component={Login}/>
           <Route path="/register" component={Register}/>
-          <Route path="/sms/settings" component={SMSSettings}/>
-          <Route path="/sms" component={SMSConvos}/>
+          <Route path="/smssettings" component={SMSSettings}/>
         </Switch>
       </div>
     );

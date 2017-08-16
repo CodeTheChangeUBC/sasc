@@ -13,7 +13,7 @@ class Header extends Component {
             <li><Link to="/chat">Chat</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/register">Register</Link></li>
-            <li><Link to="/sms">SMS</Link></li>
+            <li><Link to="/smssettings">SMS Settings</Link></li>
           </ul>
         </nav>        
       </div>
