@@ -7,8 +7,6 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      age: null,
-      gender: null,
       phoneNumber: null,
       password: null
     };
