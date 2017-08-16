@@ -1,10 +1,8 @@
 node_modules/*
 client/node_modules/*
 client/build/*
-npm-debug.log
-commons/twilioInstances.sql
+npm-debug.log*
 package-lock.json
 client/src/Redux/Actions/smsActions.js
 client/src/Redux/Reducers/smsReducer.js
-twilio/twilioCredentials.js
-twilio/twiliodbaccessor.js
+twilio/mysqlCredentials.js
