@@ -7,28 +7,18 @@ module.exports = {
 	create(time, content, userid, sessionid, counsellorid) {
 		return Message
 		.create({
-			message_time = time;
-			content = content;
-			user_id = userid;
-			session_id = sessionid;
-			counsellor_id = counsellorid;
+			message_time: time,
+			content: content,
+			user_id: userid,
+			session_id: sessionid,
+			counsellor_id: counsellorid,
 		})
-		//success
-		.then(message => res.send(201).send(message))
-		//error
-		.catch(error => res.status(400).send(error))
+		.catch(error => {})
 	},
 
 	// List all messages based on users id
-	list(user_id) {
-		return Message
-		.all()
-		// filter all messages based on user_id
-		.filter(message => {
-			return message.user_id === user_id;
-		})
-		.then(messages => send.status(200).send(messages))
-		.catch(error => send.status(400).send(error));
+	list(u_id) {
+		return Message.findAll({ where: { user_id : [1,2,3,u_id] } })
 	},
 
 	// Destroy message with specified id
@@ -38,7 +28,7 @@ module.exports = {
 		.then(message => {
 			if (!message) {
 				// message not found
-				return res.status(404).send){
+				return res.status(404).send({
 					message: 'Message not Found'
 				});
 			}

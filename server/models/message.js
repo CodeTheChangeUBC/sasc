@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        Session.hasOne(models.Session, {
+        Message.hasOne(models.Session, {
           foreignKey: 'session_id',
         });
-        Session.hasOne(models.Counsellor, {
+        Message.hasOne(models.Counsellor, {
           foreignKey: 'counsellor_id',
         });
-        Session.hasOne(models.User, {
+        Message.hasOne(models.User, {
           foreignKey: 'user_id',
         });
       },
