@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import {bindActionCreators} from 'redux';
 
 import { connect } from 'react-redux';
-
 
 // import login actions
 import * as loginActions from '../../Redux/Actions/loginActions';
@@ -51,6 +52,8 @@ class Login extends Component {
             <input type="tel" pattern="[0-9]{10}" ref={(input) => this.phoneNumber = input} placeholder="Phone Number" />
             <input type="text" ref={(input) => this.password = input} placeholder="Password" />
             <button type="submit" >Login</button>
+            <Link to='/register'>Need to register?</Link>
+            <Link to='/'>Forgot password?</Link>
           </form>
         </div>
       </div>
