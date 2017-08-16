@@ -18,7 +18,7 @@ describe('connection', n => {
 
     // Check that a basic echo works on this connection.
     it('should send echo fine.', done => {
-        const orig = 'JOE THOMAS IS AMAZING!!! 420 YOLO... SWAG SWAG'
+        const orig = 'JOE THOMAS IS AMAZING (meh)!!! 420 YOLO... SWAG SWAG'
 
         socket.once('echo', msg => {
             assert(msg).equal(orig)

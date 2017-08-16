@@ -10,10 +10,8 @@ module.export = {
 		.create({
 			user_id: UserId,
 			counsellor_id: counsellorId,
-			begin_time: beginTime
-		})
-		.then(session => res.send(200).send(session))
-		.catch(error => res.send(400).send(error));
+			begin_time: beginTime,
+		});
 	},
 
 	// List all sessions involving counsellor
