@@ -64,7 +64,7 @@ class Register extends Component {
         <div className="register-shell">
           <h2>Register</h2>
           <form ref={input => this.registerForm = input} onSubmit={(e) => this.registerMe(e)}>
-            <input type="text" ref={(input) => this.age = input} placeholder="Age" />
+            <input type="number" ref={(input) => this.age = input} placeholder="Age" />
             <select type="select" name="gender" ref={(input) => this.gender = input} onChange={(e) => this.handleChange(e)}>
               <option value="">Gender</option> 
               <option value="male">Male</option>            
