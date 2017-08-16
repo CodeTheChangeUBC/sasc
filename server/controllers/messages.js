@@ -7,11 +7,11 @@ module.exports = {
 	create(time, content, userid, sessionid, counsellorid) {
 		return Message
 		.create({
-			message_time = time;
-			content = content;
-			user_id = userid;
-			session_id = sessionid;
-			counsellor_id = counsellorid;
+			message_time: time,
+			content: content,
+			user_id: userid,
+			session_id: sessionid,
+			counsellor_id: counsellorid
 		})
 		//success
 		.then(message => res.send(201).send(message))
@@ -38,7 +38,7 @@ module.exports = {
 		.then(message => {
 			if (!message) {
 				// message not found
-				return res.status(404).send){
+				return res.status(404).send({
 					message: 'Message not Found'
 				});
 			}

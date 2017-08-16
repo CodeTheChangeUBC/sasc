@@ -8,9 +8,9 @@ module.export = {
 	create(userId, counsellorId, beginTime) {
 		return Session
 		.create({
-			user_id = UserId;
-			counsellor_id = counsellorId;
-			begin_time = beginTime;
+			user_id: UserId,
+			counsellor_id: counsellorId,
+			begin_time: beginTime
 		})
 		.then(session => res.send(200).send(session))
 		.catch(error => res.send(400).send(error));
@@ -55,7 +55,7 @@ module.export = {
 		.then(session => {
 			if (!session) {
 				// session not found
-				return res.status(404).send){
+				return res.status(404).send({
 					session: 'Message not Found'
 				});
 			}
