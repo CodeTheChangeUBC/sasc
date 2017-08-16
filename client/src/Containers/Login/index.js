@@ -16,6 +16,8 @@ class Login extends Component {
   constructor() {
     super();
 
+
+
     this.logMeIn = this.logMeIn.bind(this);
   }
 
@@ -27,12 +29,13 @@ class Login extends Component {
       password: this.password.value
     }
 
+    console.log(user);
     // connect to database and if login is successful, reroute to the chatbox as user
     console.log("logMeIn called: now executing login and rerouting... (TODO)")
 
     // TODO: complete method logMeIn
 
-    this.state.user = user;
+    //this.state.user = user;
     this.loginForm.reset();
 
   }
