@@ -40,13 +40,13 @@ class Register extends Component {
       password: this.password.value
     }
 
-    console.table(user);
+    console.log(user);
     // connect to database and if registration is successful, reroute to the chatbox as user
     console.log("registerMe called: now executing registration, auto-login and rerouting... (TODO)");
 
     // TODO: complete method registerMe
 
-    this.state.user = user;
+    //this.state.user = user;
     this.registerForm.reset();
   }
 
@@ -76,7 +76,7 @@ class Register extends Component {
             </select>
             <input type="tel" pattern="[0-9]{10}" ref={(input) => this.phoneNumber = input} placeholder="Phone Number" />
             <input type="text" ref={(input) => this.password = input} placeholder="Password" />
-            <button type="submit" >Register</button>
+            <button type="submit">Register</button>
           </form>
         </div>
       </div>
