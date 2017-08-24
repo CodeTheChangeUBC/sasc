@@ -1,18 +1,31 @@
+"use strict";
 var SMSSettings = (function () {
-    
-    function SMSSettings() {
-        var twilios = require("./index").twilio;
-    }
+    var twilios = require("./index").twilio;
+    var Dbaccessor = require("./mysqldbaccessor");
+    function SMSSettings() {}
 
-    SMSSettings.prototype.updateFields = function (jsonObj) {
-        SMSSettings.twilios.update(obj.email, obj.twilioNumber, obj.accSid, obj.authToken);
-    }
+    SMSSettings.prototype.createTwilio = function (email, twilioPhoneNumber, accountSid, authToken) {
+        var db = new Dbaccessor();
+        db.createTwilio(email, twilioPhoneNumber, accountSid, authToken);
+    };
+
+    /**
+        Returns Twilio fields in an object.
+    **/
+    SMSSettings.prototype.getFields = function () {
+        var db = new Dbaccessor();
+        return db.getTwilioFields();
+    };
+
+    SMSSettings.prototype.updateFields = function (email, twilioPhoneNumber, accountSid, authToken) {
+        twilios.update(email, twilioPhoneNumber, accountSid, authToken);
+    };
 
     SMSSettings.prototype.removeTwilio = function (email) {
-        SMSSettings.twilios.deleteTwilio(email);
-    }
+        twilios.deleteTwilio(email);
+    };
 
     return SMSSettings;
-})();
+}());
 
 module.exports = SMSSettings;
