@@ -1,13 +1,11 @@
 var SMSServer = (function () {
 
     function SMSServer() {
-        var twilioSettings = require("./index").twilio;
-        var twilioUsers = require("../server/controllers/index").users;
-        var twilioCounsellors = require("../server/controllers/index").counsellors;
-        var twilioSessions = require("../server/controllers/index").sessions;
-        var twilioMessages = require("../server/controllers/index").messages;
-        var sqldbaccessor = require("./sqldbaccessor");
+        
     }
+
+    var twilioSettings = require("./index").twilio;
+    var sqldbaccessor = require("./sqldbaccessor");
 
     /**
         Sends message from Twilio number to SMS number.

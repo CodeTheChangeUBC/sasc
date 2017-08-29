@@ -1,7 +1,7 @@
 "use strict";
 var SMSSettings = (function () {
     var twilios = require("./index").twilio;
-    var Dbaccessor = require("./mysqldbaccessor");
+    var Dbaccessor = require("./sqldbaccessor");
     function SMSSettings() {}
 
     SMSSettings.prototype.createTwilio = function (email, twilioPhoneNumber, accountSid, authToken) {

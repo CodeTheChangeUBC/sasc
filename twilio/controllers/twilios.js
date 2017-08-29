@@ -1,4 +1,4 @@
-const Twilio = require('../../server/models').Twilio;
+const Twilio = require('../models/twilio').Twilio;
 
 module.exports {
 	// Create Twilio from form input
