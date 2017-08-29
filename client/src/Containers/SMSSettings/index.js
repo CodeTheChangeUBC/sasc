@@ -1,13 +1,34 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-//import { addTwilioEntry, removeTwilioEntry } from '../../Redux/Actions/smsActions';
-import './styles.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import "./styles.css";
+
+import { fetchSMSSettings } from "../../Redux/Actions/smsActions";
 
 class SMSSettings extends Component {
+
+  constructor() {
+    super();
+
+    this.updateSMSSettings.bind(this);
+  }
+
+  updateSMSSettings() {
+    const { email, twilioPhoneNumber, accountSid, authToken } = this.props;
+    const smsSettingsObj = {
+        template_id: this.props.smssettings.id,
+        email,
+        twilioPhoneNumber,
+        accountSid,
+        authToken
+    };
+    //this.props.postSMSSettings(smsSettingsObj);
+  }
+
   render() {
     return (
-      <div className="SMSSettings">
+      <div className="SMSSettings" onLoad={() => this.props.fetchSMSSettings()}>
         <div className="container">
           <div className="row">
             <div className="col-md-6">
@@ -39,22 +60,26 @@ class SMSSettings extends Component {
               <ul className="list-group">
                 <li className="list-group-item">
                   <div className="list-item">
-                    Email: test@example.com
+                    <p>Email: </p>
+                    {this.props.email}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
-                    Twilio Phone Number: +1-888-888-8888
+                    <p>Twilio Phone Number: </p>
+                    {this.props.twilioPhoneNumber}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
-                    Twilio Account Sid:
+                    <p>Twilio Account Sid: </p>
+                    {this.props.accountSid}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
-                    Twilio Auth Token:
+                    <p>Twilio Auth Token: </p>
+                    {this.props.authToken}
                   </div>
                 </li>
               </ul>
@@ -66,11 +91,25 @@ class SMSSettings extends Component {
   }
 }
 
-//function mapStateToProps(state) {
-//  console.log('state', state);
-//  return {
-//    item: state.item
-//  };
-//}
+SMSSettings.propTypes = {
+    updateSMSSettings: PropTypes.func,
+    getSMSSettings: PropTypes.func,
+    email: PropTypes.string,
+    twilioPhoneNumber: PropTypes.string,
+    accountSid: PropTypes.string,
+    authToken: PropTypes.string,
+    fetchSMSSettings: PropTypes.func,
+    "smssettings.email": PropTypes.string,
+    "smssettings.twilioPhoneNumber": PropTypes.string,
+    "smssettings.accountSid": PropTypes.string,
+    "smssettings.authToken": PropTypes.string,
+    "smssettings": PropTypes.object
+};
 
-export default SMSSettings;
+function mapStateToProps(state) {
+  return { 
+    smssettings: state.smssettings
+  };
+}
+
+export default connect(mapStateToProps, null)(SMSSettings);
