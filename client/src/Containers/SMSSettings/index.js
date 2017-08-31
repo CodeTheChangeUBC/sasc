@@ -12,7 +12,12 @@ class SMSSettings extends Component {
     super();
 
     this.updateSMSSettings.bind(this);
-    this.getSMSSettings.bind(this);
+    //this.getSMSSettings.bind(this);
+  }
+
+  componentWillMount() {
+    console.log("inside getSMSSettings");
+    //this.props.fetchSMSSettings();
   }
 
   updateSMSSettings() {
@@ -27,14 +32,9 @@ class SMSSettings extends Component {
     //this.props.postSMSSettings(smsSettingsObj);
   }
 
-  getSMSSettings() {
-    console.log("inside getSMSSettings");
-    this.props.fetchSMSSettings();
-  }
-
   render() {
     return (
-      <div className="SMSSettings" onLoad={this.getSMSSettings}>
+      <div className="SMSSettings">
         <div className="container">
           <div className="row">
             <div className="col-md-6">
