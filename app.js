@@ -1,11 +1,3 @@
-// const express = require('express');
-// var path = require('path');
-// var favicon = require('serve-favicon');
-// var logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
-// var mysql = require('mysql');
-
 import express from 'express';
 import path from 'path';
 import favicon from 'serve-favicon'
@@ -24,6 +16,7 @@ import index from './routes/index';
 import users from './routes/users';
 import counsellors from './routes/counsellors';
 
+import apiRouter from './api/index';
 
 var app = express();
 
@@ -50,14 +43,14 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/counsellors', counsellors);
 
+// adding apiRouter for login and registration
+app.use('/api', apiRouter);
 
 app.get('*', function(req, res) {  
  //console.log('get route caught this');
  res.sendFile(path.join(__dirname, 'client', 'index.html')); 
 });
 app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

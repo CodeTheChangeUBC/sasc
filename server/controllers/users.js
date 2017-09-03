@@ -3,6 +3,11 @@ const User = require('../models').User;
 module.exports = {
 	// Create user with params specified in request
 	create(req,res) {
+
+		// testing, remove when done ----------
+		console.log('registering', req.body);
+		// ------------------------------------
+
 		return User
 		.create({
 			age: req.body.age,
@@ -24,6 +29,11 @@ module.exports = {
 
 	// Retrieve User with id specified in request
 	retrieve(req,res) {
+
+		// testing, remove when done ----------
+		console.log('retrieving', req.body);
+		// ------------------------------------
+
 		return User
 		.findById(req.params.userId)
 		.then(user => {

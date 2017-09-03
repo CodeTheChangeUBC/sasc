@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import axios from 'axios';
+
 import Form from './../../Components/Form/';
 import './styles.css';
 import { signIn } from './../../Redux//Actions/signInActions';
@@ -30,7 +33,17 @@ class Register extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    console.log(this.state);
+
+    axios.post('/api/register', this.state)
+      .then((resp) => {
+        console.log('registering...');
+
+        // TODO: if successful registration of user, update view layer
+        // TODO: if unsuccessful, show flash message
+
+      })
+      .catch(console.error);
+
     this.props.dispatch(signIn(this.state));
   }
 

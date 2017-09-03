@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import axios from 'axios';
+
 import Form from './../../Components/Form/';
 import './styles.css';
 
@@ -27,6 +30,17 @@ class Login extends Component {
   handleOnSubmit(ev) {
     ev.preventDefault();
     console.log(this.state);
+
+    axios.post('/api/login', this.state)
+      .then((resp) => {
+        console.log('logging in...');
+
+        // TODO: if successful login of user, update view layer
+        // TODO: if unsuccessful, show flash message
+
+      })
+      .catch(console.error);
+
   }
 
   render() {
