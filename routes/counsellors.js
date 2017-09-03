@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const counsellorsController = require('../server/controllers').counsellors;
+const counsellorsController = require('../controllers').counsellors;
 
 /* Requests for /counsellors */
 router.get('/', counsellorsController.list);

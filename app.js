@@ -24,8 +24,15 @@ import index from './routes/index';
 import users from './routes/users';
 import counsellors from './routes/counsellors';
 
-
 var app = express();
+
+// DB setup
+const db = require('./db');
+db.connect(db.MODE_DEVELOPMENT, function(err) {
+  if (err) {
+    console.log('Unable to connect to MySQL.')
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,7 +41,7 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json());nh
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('webpack-dev-middleware')(compiler, {

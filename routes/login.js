@@ -1,5 +1,5 @@
-var student = require('../server/controllers/users')
-var counsellor = require('../server/controllers/counsellors')
+var student = require('../controllers/users')
+var counsellor = require('../controllers/counsellors')
 
 var secrets = require('../socket_server/secrets')
 var jwt = require('jsonwebtoken')
