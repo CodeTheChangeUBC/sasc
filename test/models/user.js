@@ -15,6 +15,11 @@ const app = chai.request(server);
 
 describe("USERS", function() {
 
+	// Remove all users from Database 
+	beforeEach(function(done) {
+		User.destroyAll().then(() => done());
+	});
+
 	// Test creating a user 
 	describe("User Create and destroy", function() {
 		// Test creating a user
@@ -22,19 +27,21 @@ describe("USERS", function() {
 			var user = {
 				age: 25,
 				gender: 'male',
-				number: 40334,
+				phoneNumber: '7779999999',
 				password: 'password',
 			}
-			var count = User.count();
-			app
-			.post('/users')
-			.send(user)
-			.end(function(err, res) {
-				res.should.have.status(201);
-				var newCount = User.count();
-				expect(newCount).to.equal(count+1);
-				done();
-			});
+			User.count().then(function(count) {
+				app
+				.post('/users')
+				.send(user)
+				.end(function(err, res) {
+					res.should.have.status(201);
+					User.count().then(newCount => {
+						expect(newCount).to.equal(count+1);
+						done();	
+					}).catch(error => console.log(error));
+				});
+			}).catch(error => console.log(error));
 		});
 	});
 

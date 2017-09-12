@@ -3,20 +3,22 @@ const db = require('../db.js');
 // Create user from post request
 // TODO: Encrypt password
 exports.create = function(req, res) {
-	console.log('IN CREATE')
-	var lastID = parseInt(exports.count());
-	var values = [
-		lastID,
-		parseInt(req.body.age), 
-		req.body.gender,
-		req.body.phoneNumber,
-		req.body.password,
-	]
-	db.get().query('INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);', 
-		values, 
-		function(err, user) {
-			response(err, 400, user, 201, res);
-		});
+	exports.count()
+	.then(function(lastID) {
+		var values = [
+			lastID+1,
+			parseInt(req.body.age), 
+			req.body.gender,
+			req.body.phoneNumber,
+			req.body.password,
+		]
+		db.get().query("INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);", 
+			values, 
+			function(err, user) {
+				response(err, 400, user, 201, res);
+			});
+	})
+	.catch(error => response(error, 400, null, null, res));
 }
 
 // Destroy user
@@ -31,6 +33,19 @@ exports.destroy = function(req,res) {
 		function(err, result) {
 			response(err, 400, { message: 'User deleted successfully' }, 200, res);
 		});
+}
+
+// Destroy all users
+// Returns a promise that ensures the all users are removed when fulfilled
+// THIS IS FOR TESTING PURPOSES
+// ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
+exports.destroyAll = function() {
+	return new Promise(function(fulfill, reject) {
+		db.get().query('DELETE FROM user', function(err,result) {
+			if (err) reject(err);
+			fulfill();
+		});
+	});
 }
 
 // Update user 
@@ -74,17 +89,19 @@ exports.list = function(req, res) {
 }
 
 // Counts the number of users
-exports.count = function() {
-	console.log('CounT GOT CaLleD!!!')
-	return db.get().query('SELECT COUNT(ID) FROM user;', [], function(err,count) {
-		if (err) throw err;
-		return count;
+exports.count = function() {	
+	return new Promise(function(fulfill, reject) {
+		db.get().query("SELECT COUNT(ID) AS count FROM user;", function(err,results,fields) {			
+			if (err) reject(err);
+			fulfill(results[0].count);
+		});	
 	});
 }
 
 // Function to call when returning data or error
 function response(err, errCode, data, dataCode, res) {
 	if (err) {
+		console.log('DB ERROR:: ' + err);
 		res.status(errCode).send(err);
 		return;
 	}
