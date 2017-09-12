@@ -12,24 +12,38 @@ class SMSSettings extends Component {
     super();
 
     this.updateSMSSettings.bind(this);
-    //this.getSMSSettings.bind(this);
+    this.getSMSSettings.bind(this);
   }
 
-  componentWillMount() {
-    console.log("inside getSMSSettings");
-    //this.props.fetchSMSSettings();
+  componentDidMount() {
+    var settingsObj = this.props.fetchSMSSettings();
+    this.setState(JSON.parse(settingsObj));
+  }
+
+  componentDidUpdate() {
+    console.log("state", this.state);
   }
 
   updateSMSSettings() {
     const { email, twilioPhoneNumber, accountSid, authToken } = this.props;
     const smsSettingsObj = {
-        template_id: this.props.smssettings.id,
         email,
         twilioPhoneNumber,
         accountSid,
         authToken
     };
     //this.props.postSMSSettings(smsSettingsObj);
+  }
+
+  getSMSSettings() {
+    console.log("inside getSMSSettings");
+    return {
+      "email": "bean@example.com",
+      "twilioPhoneNumber": "123456",
+      "accountSid": "aaa",
+      "authToken": "bbb"
+    };
+    //this.props.fetchSMSSettings();
   }
 
   render() {
@@ -67,25 +81,25 @@ class SMSSettings extends Component {
                 <li className="list-group-item">
                   <div className="list-item">
                     <p>Email: </p>
-                    {this.props.email}
+                    {this.state.email}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
                     <p>Twilio Phone Number: </p>
-                    {this.props.twilioPhoneNumber}
+                    {this.state.twilioPhoneNumber}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
                     <p>Twilio Account Sid: </p>
-                    {this.props.accountSid}
+                    {this.state.accountSid}
                   </div>
                 </li>
                 <li className="list-group-item">
                   <div className="list-item">
                     <p>Twilio Auth Token: </p>
-                    {this.props.authToken}
+                    {this.state.authToken}
                   </div>
                 </li>
               </ul>
@@ -118,4 +132,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(SMSSettings);
+export default connect(mapStateToProps, { fetchSMSSettings })(SMSSettings);

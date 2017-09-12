@@ -2,7 +2,7 @@
 
 var SMSSettingsRouter = (function () {
     var SQLDbAccessor = require("../twilio/sqldbaccessor");
-    var twilios = require("../twilio/models/twilios").twilio;
+    var twilios = require("../twilio/models/twilio").twilio;
 
     function SMSSettingsRouter() {}
     SMSSettingsRouter.prototype.start = function () {
@@ -10,14 +10,14 @@ var SMSSettingsRouter = (function () {
         var router = express.Router();
 
         /* Add Twilio Account Info */
-        router.post("/smssettings", twilios.create);
+        //router.post("/smssettings", twilios.create);
 
         /* Get Twilio Account Info */
-        router.get("/smssettings", function (req, res) {
+        router.get("/smssettings/:id", function (req, res) {
             var db = new SQLDbAccessor();
             db.getTwilio(function (rows) {
                 if (rows !== null && rows !== undefined) {
-                    res.render("smssettings", {
+                    res.json("smssettings", {
                         "email": rows[0].email,
                         "twilioPhoneNumber": rows[0].twilioPhoneNumber,
                         "accountSid": rows[0].accountSid,
@@ -30,7 +30,7 @@ var SMSSettingsRouter = (function () {
         });
 
         /* Update Twilio Account Info */
-        router.post("/smssettings/:email", twilios.update);
+        //router.post("/smssettings/:email", twilios.update);
 
         /* Delete Twilio Account Info */
         router.post("/smssettings/:email", function (req, res) {

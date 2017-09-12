@@ -1,11 +1,3 @@
-// var express = require('express');
-// var path = require('path');
-// var favicon = require('serve-favicon');
-// var logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
-// var mysql = require('mysql');
-
 import express from 'express';
 import path from 'path';
 import favicon from 'serve-favicon'
@@ -23,13 +15,15 @@ const compiler = webpack(config);
 import index from './routes/index';
 import users from './routes/users';
 import counsellors from './routes/counsellors';
-
+import smsRoutes from './twilio/routes';
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -49,7 +43,7 @@ app.use(serveStatic(staticPath));
 app.use('/', index);
 app.use('/users', users);
 app.use('/counsellors', counsellors);
-
+app.use('/smssettings', smsRoutes);
 
 app.get('*', function(req, res) {  
  console.log('get route caught this');
