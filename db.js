@@ -19,7 +19,7 @@ exports.connect = function(mode, done) {
 	state.pool = mysql.createPool({
 		// Local DB details
 		host: '127.0.0.1',
-		username: 'sasc',
+		user: 'sasc',
 		password: null,
 		database: mode === exports.MODE_DEVELOPMENT ? DEV_DB : TEST_DB
 	});

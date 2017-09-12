@@ -1,5 +1,5 @@
 var student = require('../controllers/users')
-var counsellor = require('../controllers/counsellors')
+// var counsellor = require('../controllers/counsellors')
 
 var secrets = require('../socket_server/secrets')
 var jwt = require('jsonwebtoken')
@@ -57,6 +57,7 @@ router.get('/counsellour', (req, res) => {
     })
 })
 
+module.exports = router;
 
 
 

@@ -30,7 +30,10 @@ var app = express();
 const db = require('./db');
 db.connect(db.MODE_DEVELOPMENT, function(err) {
   if (err) {
-    console.log('Unable to connect to MySQL.')
+    console.log('Unable to connect to MySQL.');
+  }
+  else {
+    console.log('WE ARE CONNECTED BABY');
   }
 });
 
@@ -41,7 +44,7 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));
-app.use(bodyParser.json());nh
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('webpack-dev-middleware')(compiler, {
