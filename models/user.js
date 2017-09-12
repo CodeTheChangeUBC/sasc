@@ -3,15 +3,16 @@ const db = require('../db.js');
 // Create user from post request
 // TODO: Encrypt password
 exports.create = function(req, res) {
-	var lastID = this.count();
+	console.log('IN CREATE')
+	var lastID = parseInt(exports.count());
 	var values = [
 		lastID,
-		req.body.age, 
+		parseInt(req.body.age), 
 		req.body.gender,
 		req.body.phoneNumber,
 		req.body.password,
 	]
-	db.get().query('INSERT INTO user (age,gender,phoneNumber,password) VALUES (?,?,?,?)', 
+	db.get().query('INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);', 
 		values, 
 		function(err, user) {
 			response(err, 400, user, 201, res);
@@ -74,10 +75,11 @@ exports.list = function(req, res) {
 
 // Counts the number of users
 exports.count = function() {
-	return db.get().query('SELECT COUNT(userID) FROM user'), function(err,count) {
+	console.log('CounT GOT CaLleD!!!')
+	return db.get().query('SELECT COUNT(ID) FROM user;', [], function(err,count) {
 		if (err) throw err;
 		return count;
-	}
+	});
 }
 
 // Function to call when returning data or error
