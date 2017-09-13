@@ -15,7 +15,9 @@ exports.create = function(req, res) {
 		db.get().query("INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);", 
 			values, 
 			function(err, user) {
+				console.log('Inserted ID' + user.insertId);
 				response(err, 400, user, 201, res);
+
 			});
 	})
 	.catch(error => response(error, 400, null, null, res));
@@ -23,15 +25,10 @@ exports.create = function(req, res) {
 
 // Destroy user
 exports.destroy = function(req,res) {
-	var values = [
-		req.body.age, 
-		req.body.gender,
-		req.body.phoneNumber,
-	]
-	db.get().query('DELETE FROM user WHERE user_id=? AND gender=? AND phoneNumber=?', 
-		values, 
+	db.get().query('DELETE FROM user WHERE ID=?;', 
+		[req.user.ID], 
 		function(err, result) {
-			response(err, 400, { message: 'User deleted successfully' }, 200, res);
+			response(err, 400, { message: 'User deleted successfully' }, 204, res);
 		});
 }
 
@@ -50,31 +47,39 @@ exports.destroyAll = function() {
 
 // Update user 
 exports.update = function(req, res) {
-	// First get user 
-	db.get().query('SELECT * FROM user WHERE ID=?', 
-		[req.params.userID], 
+	// Get user from request
+	var user = req.user;
+	// Assign params 
+	var age = req.body.age ? req.body.age : user.age;
+	var gender = req.body.gender ? req.body.gender : user.gender;
+	var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
+	var password = req.body.password ? req.body.password : user.password;
+	var values = [age, gender, phoneNumber, password];
+	// then update user
+	db.get().query('UPDATE user SET age=?, gender=?, phoneNumber=?, password=?', 
+		values, 
 		function(err, user) {
+			response(err, 400, user, 200, res);
+	});
+}
+
+// Lookup user to pass to other functions
+exports.lookup = function(req, res, next) {
+	db.get().query("SELECT * FROM user WHERE ID=?;", [req.params.userId],
+		function(err, results, fields) {
 			if (err) {
-				res.status(400).send(err);
+				res.status(404).send(err);
+				next();
 			}
-			var age = req.body.age ? req.body.age : user.age;
-			var gender = req.body.gender ? req.body.gender : user.gender;
-			var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
-			var password = req.body.password ? req.body.password : user.password;
-			var values = [age, gender, phoneNumber, password];
-			// then update user
-			db.get().query('UPDATE user SET age=?, gender=?, phoneNumber=?, password=?', 
-				values, 
-				function(err, user) {
-					response(err, 400, user, 200, res);
-			});
+			req.user = results[0];
+			next();
 		});
 }
 
 // Retrieve user specified by userID in params
 exports.retrieve = function(req, res) {
-	db.get().query('SELECT * FROM user WHERE userID = ?', 
-		[req.params.userID],
+	db.get().query("SELECT * FROM user WHERE ID = ?;", 
+		[req.params.Id],
 		function(err, user) {
 			response(err, 400, user, 200, res);
 		});

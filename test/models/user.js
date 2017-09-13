@@ -16,20 +16,31 @@ const app = chai.request(server);
 describe("USERS", function() {
 
 	// Remove all users from Database 
-	beforeEach(function(done) {
+	before(function(done) {
 		User.destroyAll().then(() => done());
 	});
 
+	var user = {
+		age: 25,
+		gender: 'male',
+		phoneNumber: '7779999999',
+		password: 'password',
+	}
+
+	describe("DB should be clean", function() {
+		// There should be no users in DB
+		it('should return zero', function(done) {
+			User.count().then(count => {
+				expect(count).to.equal(0);
+				done()
+			});
+		});
+	});
+
 	// Test creating a user 
-	describe("User Create and destroy", function() {
+	describe("User Create", function() {
 		// Test creating a user
-		it('should create another user', function(done) {
-			var user = {
-				age: 25,
-				gender: 'male',
-				phoneNumber: '7779999999',
-				password: 'password',
-			}
+		it('should create a user', function(done) {
 			User.count().then(function(count) {
 				app
 				.post('/users')
@@ -39,44 +50,52 @@ describe("USERS", function() {
 					User.count().then(newCount => {
 						expect(newCount).to.equal(count+1);
 						done();	
-					}).catch(error => console.log(error));
+					}).catch(error => done(error));
 				});
-			}).catch(error => console.log(error));
+			}).catch(error => done(error));
 		});
 	});
 
 
 	// Test getting user page 
-	describe("User index", function() {
+	describe("User retrieval", function() {
 		it('should get user index', function(done) {
 			app
 			.get('/users')
 			.end(function(err, res) {
 				res.should.have.status(200);
-				User.count().then(function(count) {
-					// Ensure there are two users in db
-					expect(count).to.equal(2);
-					done();
-				});
+				for (var key in user) {
+					expect(res.text).to.include(user[key]);	
+				}
+				done()
 			});
 		});
 
+		// Get a single user
+		it('should get a single user', function(done) {
+			done();
+		});
+	});
+
+	// Test destroying users
+	describe("User destroy", function() {
 		// Test destroying a user
 		it('should destroy user', function(done) {
-			const user = User.findOne({ where: { age: 25 }})
-			.then(function(user) {
+			User.count().then(count => {
 				app
-				.del('/users/'+user.id)
+				.del('/users/'+1) // Delete the first user
+				.send({ userId: 1 })
 				.end(function(err, res) {
 					res.should.have.status(204);
-					User.count().then(function(count) {
-						expect(count).to.equal(2);
+					User.count().then(function(newCount) {
+						expect(newCount).to.equal(count-1);
 						done();
-					});
-				});
-			});
+					}).catch(error => done(error));
+				});	
+			}).catch(error => done(error));
 		});		
 	});
+
 
 	// Test User updates
 	describe("User Updates", function() {
@@ -87,7 +106,7 @@ describe("USERS", function() {
 			User.findOne({ where: { age: 20 }})
 			.then(user => {
 				app
-				.put('/users/'+user.id)
+				.put('/users/'+1) 
 				.send({ age: 29 })
 				.end(function(err, res) {
 					res.should.have.status(200);
