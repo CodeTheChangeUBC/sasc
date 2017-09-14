@@ -15,12 +15,9 @@ exports.create = function(req, res) {
 		db.get().query("INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);", 
 			values, 
 			function(err, user) {
-				console.log('Inserted ID' + user.insertId);
 				response(err, 400, user, 201, res);
-
 			});
-	})
-	.catch(error => response(error, 400, null, null, res));
+	}).catch(error => response(error, 400, null, null, res));
 }
 
 // Destroy user
@@ -49,17 +46,17 @@ exports.destroyAll = function() {
 exports.update = function(req, res) {
 	// Get user from request
 	var user = req.user;
-	// Assign params 
+	// Assign params. If updated params not in request, use older params
 	var age = req.body.age ? req.body.age : user.age;
 	var gender = req.body.gender ? req.body.gender : user.gender;
 	var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
 	var password = req.body.password ? req.body.password : user.password;
-	var values = [age, gender, phoneNumber, password];
+	var values = [age, gender, phoneNumber, password, user.ID];
 	// then update user
-	db.get().query('UPDATE user SET age=?, gender=?, phoneNumber=?, password=?', 
+	db.get().query('UPDATE user SET age=?, gender=?, phoneNumber=?, password=? WHERE ID=?', 
 		values, 
-		function(err, user) {
-			response(err, 400, user, 200, res);
+		function(err, results) {
+			response(err, 400, results[0], 200, res);
 	});
 }
 
@@ -79,16 +76,15 @@ exports.lookup = function(req, res, next) {
 // Retrieve user specified by userID in params
 exports.retrieve = function(req, res) {
 	db.get().query("SELECT * FROM user WHERE ID = ?;", 
-		[req.params.Id],
+		[req.params.userId],
 		function(err, user) {
-			response(err, 400, user, 200, res);
+			response(err, 400, user[0], 200, res);
 		});
 }
 
 // List all users
 exports.list = function(req, res) {
-	console.log('GOING TO LIST CLIENTS');
-	db.get().query('SELECT * FROM user', function(err,users) {
+	db.get().query('SELECT * FROM user;', function(err,users) {
 		response(err, 400, users, 200, res);
 	});
 }

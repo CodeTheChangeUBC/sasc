@@ -8,7 +8,7 @@ router.post('/', User.create);
 // Get User with id userId 
 router.get('/:userId', User.retrieve);
 // Update user with specified id
-router.put('/:userId', User.update);
+router.put('/:userId', User.lookup, User.update);
 // Delete user with specified id
 router.delete('/:userId', User.lookup, User.destroy);
 
