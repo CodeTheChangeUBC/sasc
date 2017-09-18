@@ -7,8 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('sasc:server');
 var http = require('http');
-var socket = require('socket.io');
-var room;
+var socket = require('../socket_server/socket')
+
 
 /**
  * Get port from environment and store in Express.
@@ -19,38 +19,13 @@ app.set('port', port);
 
 /**
  * Create HTTP server.
+ * Create Socket server.
  */
 
-var server = http.createServer(app);
-var io = require('socket.io')(server);
+var server = http.createServer(app)
+var io = require('socket.io')(server)
+socket(io)
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('subscribe', (data) => {
-    room = data.room;
-    socket.join(room);
-    console.log('joined room', room); 
-  });
-
-  socket.on('chat message', function(msg) {
-    console.log('sending message to', msg.room)
-    console.log('this message', msg)
-    io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
-  })
-
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-console.log("Server on localhost:"+port+"\n");
 
 /**
  * Normalize a port into a number, string, or false.
