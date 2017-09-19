@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 const app = chai.request(server);
 
 
-describe("USERS", function() {
+describe("USER TESTS", function() {
 
 	var user1 = {
 		age: 30,
@@ -61,7 +61,8 @@ describe("USERS", function() {
 	describe("DB should be clean", function() {
 		// There should be no users in DB
 		it('should return zero', function(done) {
-			User.count().then(count => {
+			User.count((count,err) => {
+				if (err) done(err);
 				expect(count).to.equal(2);
 				done()
 			});
@@ -72,18 +73,19 @@ describe("USERS", function() {
 	describe("User Create", function() {
 		// Test creating a user
 		it('should create a user', function(done) {
-			User.count().then(function(count) {
+			User.count(count => {
 				app
 				.post('/users')
 				.send(user)
 				.end(function(err, res) {
 					res.should.have.status(201);
-					User.count().then(newCount => {
+					User.count((newCount,err) => {
+						if (err) done(err);
 						expect(newCount).to.equal(count+1);
 						done();	
-					}).catch(error => done(error));
+					});
 				});
-			}).catch(error => done(error));
+			});
 		});
 	});
 
@@ -121,18 +123,20 @@ describe("USERS", function() {
 	describe("User destroy", function() {
 		// Test destroying a user
 		it('should destroy user', function(done) {
-			User.count().then(count => {
+			User.count((count,err) => {
+				if (err) done(err);
 				app
 				.del('/users/'+1) 
 				.send({ userId: 1 }) // Delete the first user
 				.end(function(err, res) {
 					res.should.have.status(204);
-					User.count().then(function(newCount) {
+					User.count((newCount,err) => {
+						if (err) done(err);
 						expect(newCount).to.equal(count-1);
 						done();
-					}).catch(error => done(error));
+					});
 				});	
-			}).catch(error => done(error));
+			});
 		});		
 	});
 

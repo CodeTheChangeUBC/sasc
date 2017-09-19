@@ -1,39 +1,29 @@
 const db = require('../db.js');
+const abstract = require('./abstract.js');
 
 // Create user from post request
 // TODO: Encrypt password
 exports.create = function(req, res) {
-	exports.count()
-	.then(function(lastID) {
-		var values = [
-			lastID+1,
-			parseInt(req.body.age), 
-			req.body.gender,
-			req.body.phoneNumber,
-			req.body.password,
-		]
-		db.get().query("INSERT INTO user (ID,age,gender,phoneNumber,password) VALUES (?,?,?,?,?);", 
-			values, 
-			function(err, user) {
-				response(err, 400, user, 201, res);
-			});
-	}).catch(error => response(error, 400, null, null, res));
+	var values = [
+		parseInt(req.body.age), 
+		req.body.gender,
+		req.body.phoneNumber,
+		req.body.password,
+	]
+	var valueNames = '(ID,age,gender,phoneNumber,password)';
+	abstract.create('user', values, valueNames, res);
 }
 
 // Destroy user
 exports.destroy = function(req,res) {
-	db.get().query('DELETE FROM user WHERE ID=?;', 
-		[req.user.ID], 
-		function(err, result) {
-			response(err, 400, { message: 'User deleted successfully' }, 204, res);
-		});
+	abstract.destroy('user', req.model.ID, res)
 }
 
 // Destroy all users
 // Returns a promise that ensures the all users are removed when fulfilled
 // THIS IS FOR TESTING PURPOSES
 // ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
-exports.destroyAll = function() {
+exports.destroyAll = function() {	
 	return new Promise(function(fulfill, reject) {
 		db.get().query('DELETE FROM user', function(err,result) {
 			if (err) reject(err);
@@ -45,41 +35,26 @@ exports.destroyAll = function() {
 // Update user 
 exports.update = function(req, res) {
 	// Get user from request
-	var user = req.user;
+	var user = req.model;
 	// Assign params. If updated params not in request, use older params
 	var age = req.body.age ? req.body.age : user.age;
 	var gender = req.body.gender ? req.body.gender : user.gender;
 	var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
 	var password = req.body.password ? req.body.password : user.password;
 	var values = [age, gender, phoneNumber, password, user.ID];
+	var valueNames = ['age', 'gender', 'phoneNumber', 'password'];
 	// then update user
-	db.get().query('UPDATE user SET age=?, gender=?, phoneNumber=?, password=? WHERE ID=?', 
-		values, 
-		function(err, results) {
-			response(err, 400, results[0], 200, res);
-	});
+	abstract.update('user', values, valueNames, res);	
 }
 
 // Lookup user to pass to other functions
 exports.lookup = function(req, res, next) {
-	db.get().query("SELECT * FROM user WHERE ID=?;", [req.params.userId],
-		function(err, results, fields) {
-			if (err) {
-				res.status(404).send(err);
-				next();
-			}
-			req.user = results[0];
-			next();
-		});
+	abstract.lookup('user', req.params.userId, req, res, next);
 }
 
 // Retrieve user specified by userID in params
 exports.retrieve = function(req, res) {
-	db.get().query("SELECT * FROM user WHERE ID = ?;", 
-		[req.params.userId],
-		function(err, user) {
-			response(err, 400, user[0], 200, res);
-		});
+	abstract.retrieve('user', req.params.userId, res);
 }
 
 // List all users
@@ -90,13 +65,8 @@ exports.list = function(req, res) {
 }
 
 // Counts the number of users
-exports.count = function() {	
-	return new Promise(function(fulfill, reject) {
-		db.get().query("SELECT COUNT(ID) AS count FROM user;", function(err,results,fields) {			
-			if (err) reject(err);
-			fulfill(results[0].count);
-		});	
-	});
+exports.count = function(callback) {	
+	abstract.count('user').then(count => callback(count)).catch(err => callback('',err));
 }
 
 // Function to call when returning data or error
