@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-// const counsellorsController = require('../controllers').counsellors;
+const Counsellor = require('../models').counsellor;
 
-// /* Requests for /counsellors */
-// router.get('/', counsellorsController.list);
-// router.post('/', counsellorsController.create);
-// /* Get Counsellor with id counsellorId */
-// router.get('/:counsellorId', counsellorsController.retrieve);
-// // Update counsellor with specified id
-// router.put('/:counsellorId', counsellorsController.update);
-// // Delete counsellor with specified id
-// router.delete('/:counsellorId', counsellorsController.destroy);
+/* Requests for /counsellors */
+router.get('/', Counsellor.list);
+router.post('/', Counsellor.create);
+/* Get Counsellor with id counsellorId */
+router.get('/:counsellorId', Counsellor.retrieve);
+// Update counsellor with specified id
+router.put('/:counsellorId', Counsellor.lookup, Counsellor.update);
+// Delete counsellor with specified id
+router.delete('/:counsellorId', Counsellor.lookup, Counsellor.destroy);
 
 module.exports = router;

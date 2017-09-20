@@ -49,7 +49,6 @@ exports.update = function(model, values, valueNames, res) {
 		if (j!=valueNames.length-1) query += ','
 	}
 	query += ' WHERE ID=?;';
-	console.log('query:' + query);
 	db.get().query(query, values, function(err, results) {
 			response(err, 400, results[0], 200, res);
 	});
@@ -95,6 +94,20 @@ exports.count = function(model) {
 			if (err) reject(err);
 			fulfill(results[0].count);
 		});	
+	});
+}
+
+// Destroy all models
+// Returns a promise that ensures the all models are removed when fulfilled
+// THIS IS FOR TESTING PURPOSES
+// ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
+// - model is name of model (string)
+exports.destroyAll = function(model) {
+	return new Promise(function(fulfill, reject) {
+		db.get().query('DELETE FROM '+model, function(err,result) {
+			if (err) reject(err);
+			fulfill();
+		});
 	});
 }
 

@@ -23,13 +23,8 @@ exports.destroy = function(req,res) {
 // Returns a promise that ensures the all users are removed when fulfilled
 // THIS IS FOR TESTING PURPOSES
 // ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
-exports.destroyAll = function() {	
-	return new Promise(function(fulfill, reject) {
-		db.get().query('DELETE FROM user', function(err,result) {
-			if (err) reject(err);
-			fulfill();
-		});
-	});
+exports.destroyAll = function(callback) {	
+	abstract.destroyAll('user').then(() => callback()).catch(err => callback(err));
 }
 
 // Update user 
@@ -59,9 +54,7 @@ exports.retrieve = function(req, res) {
 
 // List all users
 exports.list = function(req, res) {
-	db.get().query('SELECT * FROM user;', function(err,users) {
-		response(err, 400, users, 200, res);
-	});
+	abstract.list('user', res);
 }
 
 // Counts the number of users

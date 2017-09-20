@@ -53,14 +53,17 @@ describe("USER TESTS", function() {
 
 	// Destroy all users in DB after tests
 	after(function(done) {
-		User.destroyAll().then(() => done());
+		User.destroyAll((err) => {
+			if (err) done(err);
+			done();
+		});
 	});
 
 
 	// Ensure that two users are in DB 
-	describe("DB should be clean", function() {
+	describe("DB setup", function() {
 		// There should be no users in DB
-		it('should return zero', function(done) {
+		it('should return two', function(done) {
 			User.count((count,err) => {
 				if (err) done(err);
 				expect(count).to.equal(2);
