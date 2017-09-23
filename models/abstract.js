@@ -8,7 +8,8 @@ const db = require('../db.js');
 // - model is name of model (string)
 // - valueNames is string containing all values needed for creation
 // - should have form: (ID, val1, val2, ...., valn)
-exports.create = function(model, values, valueNames, res) {
+// - if callback is specified, call callback instead of res
+exports.create = function(model, values, valueNames, res, callback) {
 	exports.count(model)
 	.then(function(lastID) {
 		var newVals = [lastID+1].concat(values);
@@ -18,12 +19,18 @@ exports.create = function(model, values, valueNames, res) {
 			if (j!=newVals.length-1) unknowns += ', ';
 		}
 		unknowns += ')';
+		console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
+		console.log('values' + newVals)
 		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
 			newVals, 
-			function(err, model) {
-				response(err, 400, model, 201, res);
+			function(err, results) {
+				if (res) httpResponse(err, 400, results, 201, res);
+				else noHttpResponse(err, results, callback);
 			});
-	}).catch(error => response(error, 400, null, null, res));
+	}).catch(error => {
+		if (callback) callback(error);
+		else httpResponse(error, 400, null, null, res)
+	});
 }
 
 // Destroy model
@@ -33,7 +40,7 @@ exports.destroy = function(model, id, res) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
 		function(err, result) {
-			response(err, 400, { message: model+' deleted successfully' }, 204, res);
+			httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res);
 		});
 }
 
@@ -50,7 +57,7 @@ exports.update = function(model, values, valueNames, res) {
 	}
 	query += ' WHERE ID=?;';
 	db.get().query(query, values, function(err, results) {
-			response(err, 400, results[0], 200, res);
+			httpResponse(err, 400, results[0], 200, res);
 	});
 }
 
@@ -74,7 +81,7 @@ exports.retrieve = function(model, id, res) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			response(err, 400, result[0], 200, res);
+			httpResponse(err, 400, result[0], 200, res);
 		});
 }
 
@@ -82,7 +89,7 @@ exports.retrieve = function(model, id, res) {
 // - model is name of model (string)
 exports.list = function(model, res) {
 	db.get().query('SELECT * FROM '+model+';', function(err,models) {
-		response(err, 400, models, 200, res);
+		httpResponse(err, 400, models, 200, res);
 	});
 }
 
@@ -111,8 +118,17 @@ exports.destroyAll = function(model) {
 	});
 }
 
-// Function to call when returning data or error
-function response(err, errCode, data, dataCode, res) {
+// Function to call when returning data or error in NON Http response
+// - err is error (if any) 
+// - data is data to return
+// - toCall is function to call
+function noHttpResponse(err,data,toCall) {
+	if (err) toCall(err);
+	else toCall(null,data);
+}
+
+// Function to call when returning data or error in Http response
+function httpResponse(err, errCode, data, dataCode, res) {
 	if (err) {
 		console.log('DB ERROR:: ' + err);
 		res.status(errCode).send(err);
@@ -121,7 +137,8 @@ function response(err, errCode, data, dataCode, res) {
 	res.status(dataCode).send(data);
 }
 
-exports.response = response;
+exports.noHttpResponse = noHttpResponse;
+exports.httpResponse = httpResponse;
 
 
 

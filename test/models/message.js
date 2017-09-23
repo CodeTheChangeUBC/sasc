@@ -1,87 +1,66 @@
-// const messageController = require('../../server/controllers').messages;
-// const Message = require('../../server/models').Message;
-// const assert = require('assert');
-// const chai = require('chai');
-// const chaiHttp = require('chai-http');
-// const should = chai.should();
-// const expect = chai.expect;
-// //const server = require('../../app');
+const Message = require('../../models').message;
+const assert = require('assert');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const should = chai.should();
+const expect = chai.expect;
+const server = require('../../app_test');
 
-// chai.use(chaiHttp);
+chai.use(chaiHttp);
 
-// describe('MESSAGE TESTS', function() {
+// Request server
+const app = chai.request(server);
 
-// 	// Clear and reset db before running tests
-// 	before(function(done) {
-// 		// Destroy all messages
-// 		Message.destroy({ where: {} })
-// 		.then(function() {
-// 			done();
-// 		});
-// 	});
+describe('MESSAGE TESTS', function() {
 
-// 	describe('Create Message', function() {
+	var m1 = {
+		sessionID: 1,
+		messageTime: '1970-03-01 00:00:00',
+		counsellorID: 2,
+		userID: 3,
+		messageContent: "The first message",
+		fromCounsellor: 1,
+		fromTwilio: 0
+	}
 
-// 		// Function to test creation of new message
-// 		// - m is message to create 
-// 		// - offset is expected offset in the count of number of messages
-// 		function createMessage(m, offset, done) {
-// 			Message.count().then(function(count) {
-// 				messageController
-// 				.create(m.time, m.content, m.u_id, m.s_id, m.c_id)
-// 				.then(function() {
-// 					Message.count().then(function(newCount) {
-// 						expect(newCount).to.equal(count+offset);
-// 						done();
-// 					});
-// 				});
-// 			});
-// 		};
+	var m2 = {
+		sessionID: 2,
+		messageTime: '1979-03-01 00:00:00',
+		counsellorID: 5,
+		userID: 1,
+		messageContent: "The second message",
+		fromCounsellor: 0,
+		fromTwilio: 1
+	}
 
-		
-// 		var m;
-// 		// Reset message before each test
-// 		beforeEach(function() {
-// 			m = {
-// 				time: Date(),
-// 				content: 'message content',
-// 				u_id: 1,
-// 				s_id: 2,
-// 				c_id: 3,
-// 			}
-// 		});
-		
-// 		// Should create valid message 
-// 		it('should create new message', function(done) {
-// 			createMessage(m,1,done);
-// 		});
+	before(function(done) {
+		Message.create(m1, (model) => {
+			console.log('model: ' + model);
+			done();
+		});
+	});
 
-// 		it('should create new message with no content', function(done) {
-// 			m.content = null;
-// 			createMessage(m,1,done);
-// 		});
+	// Ensure test setup was correct
+	describe('Setup', function() {
+		it ('should be 1', function(done) {
+			Message.count(count => {
+				expect(count).to.equal(1);
+				done();
+			});
+		});		
+	});	
 
-// 		// Should not create messages with any key aspects missing
-// 		it('should not create new message with no time', function(done) {
-// 			m.time = null;
-// 			createMessage(m,0,done);
-// 		});
-// 	});
 
-// 	describe('Listing Messages', function() {
-// 		// List messages of user
-// 		it('should list all messages of given user', function(done){
+	// describe('Create Message', function() {
 
-// 			messageController
-// 			.create(Date(), null, 100,1,1)
-// 			.then(function(message) {
-// 				messageController.list(message.user_id)
-// 				.then(function(messages) {
-// 					console.log(messages);
-// 					expect(messages.length).to.equal(1);
-// 					done();
-// 				});
-// 			});
-// 		});
-// 	});
-// });
+	// 	it('should create new message', function(done) {
+	// 		Message.create(m2,(model) => {
+	// 			Message.count(count => {
+	// 				expect(count).to.equal(2);
+	// 				done();
+	// 			});					
+	// 		});
+	// 	});
+	// });
+
+});
