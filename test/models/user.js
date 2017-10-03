@@ -5,6 +5,8 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
 const server = require('../../app_test');
+const setup = require('./setup');
+const db = require('../../db.js');
 
 chai.use(chaiHttp);
 
@@ -15,19 +17,19 @@ const app = chai.request(server);
 
 describe("USER TESTS", function() {
 
-	var user1 = {
-		age: 30,
-		gender: 'female',
-		phoneNumber: '(604) 111-1111',
-		password: 'user1pass'
-	}
+	// var user1 = {
+	// 	age: 30,
+	// 	gender: 'female',
+	// 	phoneNumber: '(604) 111-1111',
+	// 	password: 'user1pass'
+	// }
 
-	var user2 = {
-		age: 25,
-		gender: 'other',
-		phoneNumber: '6049999999',
-		password: 'user2pass'
-	}
+	// var user2 = {
+	// 	age: 25,
+	// 	gender: 'other',
+	// 	phoneNumber: '6049999999',
+	// 	password: 'user2pass'
+	// }
 
 	var user = {
 		age: 25,
@@ -38,17 +40,18 @@ describe("USER TESTS", function() {
 
 	// Add two test users to DB
 	before(function(done) {
-		app
-		.post('/users')
-		.send(user1)
-		.end(function(err, res) {
-			app
-			.post('/users')
-			.send(user2)
-			.end(function(err, res) {
-				done()
-			});
-		});
+		setup.setup(db,app,done);
+		// app
+		// .post('/users')
+		// .send(user1)
+		// .end(function(err, res) {
+		// 	app
+		// 	.post('/users')
+		// 	.send(user2)
+		// 	.end(function(err, res) {
+		// 		done()
+		// 	});
+		// });
 	});
 
 	// Destroy all users in DB after tests
@@ -115,7 +118,7 @@ describe("USER TESTS", function() {
 			.end(function(err, res) {
 				res.should.have.status(200);				
 				for (var key in user) {
-					expect(res.text).to.include(user1[key]);	
+					expect(res.text).to.include(setup.user1[key]);	
 				}
 				done();
 			});

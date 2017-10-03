@@ -36,11 +36,12 @@ exports.create = function(model, values, valueNames, res, callback) {
 // Destroy model
 // - model is name of model (string)
 // - id is the id of the model to be destroyed
-exports.destroy = function(model, id, res) {
+exports.destroy = function(model, id, res, callback) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
 		function(err, result) {
-			httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res);
+			if (res) httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res);
+			else noHttpResponse(err, result, callback)
 		});
 }
 
