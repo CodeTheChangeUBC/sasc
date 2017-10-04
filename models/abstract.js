@@ -14,8 +14,6 @@ exports.create = function(model, values, valueNames, res, callback) {
 	.then(function(lastID) {
 		var newVals = [lastID+1].concat(values);
 		var unknowns = computeUnknowns(newVals.length);
-		// console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
-		// console.log('values: ' + newVals)
 		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
 			newVals, 
 			function(err, results) {
@@ -45,13 +43,13 @@ exports.destroy = function(model, id, res, callback) {
 // - values is ordered set of values to update (should include model id last)
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
-exports.update = function(model, values, valueNames, res) {
+exports.update = function(model, values, valueNames, res, callback) {
 	var query = 'UPDATE '+model+' SET';
 	var fieldQuery = fieldQueries(valueNames);
 	query += fieldQuery + ' WHERE ID=?;';
-	console.log('Query: ' + query)
-	db.get().query(query, values, function(err, results) {
-			httpResponse(err, 400, results[0], 200, res);
+	db.get().query(query, values, function(err, results, fields) {
+			if (res) httpResponse(err, 400, results, 200, res);
+			else noHttpResponse(err, results, callback)
 	});
 }
 
@@ -74,11 +72,8 @@ exports.lookup = function(model, id, req, res, callback) {
 exports.retrieveByValues = function(model, values, valueNames, callback) {
 	var query = 'SELECT * FROM '+model+' WHERE';
 	query += fieldQueries(valueNames,1);
-	console.log('query: ' + query);
 	db.get().query(query, values, function(err,results,fields) {
-			if (err) console.log('error: ' + err);
 			if (err) callback(err);
-			console.log('results: ' + JSON.stringify(results))
 			callback(null, results);
 		});
 }

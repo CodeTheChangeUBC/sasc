@@ -96,12 +96,41 @@ describe('SESSION TESTS', function() {
 
 	describe('Updating', function() {
 		it('should change endTime of session', function(done) {
-			var et = "2015-00-00 10:10:10"
-			Session.update({endTime: et}, function(sesh) {
-				expect(sesh.endTime).to.have(et);
-				done();
+			var et = "2015-01-03 10:10:10"
+			var et_string = 'Sat Jan 03 2015 10:10:10 GMT-0800 (PST)' // how times are stored
+			Session.update(setup.sessionCount+1, {'endTime': et}, function(err, sesh) {
+				if (err) done(err);
+				Session.retrieveByID(setup.sessionCount+1, (err,sesh) => {
+					expect(String(sesh.endTime)).to.equal(et_string);
+					done();
+				});
 			});
 		});
 	});
 
+	describe('Deleting', function() {
+		it('should destroy session', function(done) {
+			Session.count(count => {
+				Session.destroy(setup.sessionCount+1, (err, res) => {
+					if (err) done(err);
+					Session.count(newCount => {
+						expect(newCount).to.equal(count-1);
+						done();
+					});
+				});
+			});
+		});
+
+		it('should not destroy not existent session', function(done) {
+			Session.count(count => {
+				Session.destroy(setup.sessionCount+2, (err, res) => {
+					if (err) done(err);
+					Session.count(newCount => {
+						expect(newCount).to.equal(count);
+						done();
+					});
+				});
+			});
+		})
+	});
 });

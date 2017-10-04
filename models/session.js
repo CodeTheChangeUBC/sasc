@@ -39,9 +39,18 @@ exports.retrieveByID = function(id, callback) {
 // Update session
 // - id is ID of session to be updated
 // - vals is a dictionary of new values
-exports.update = function(id, vals) {
-	var session;
-	session.beginTime = vals
+exports.update = function(id, vals, callback) {
+	exports.retrieveByID(id, (err, session) => {
+		var values = [
+			vals.beginTime || session.beginTime,
+			vals.endTime || session.endTime,
+			vals.counsellorID || session.counsellorID,
+			vals.userID || session.userID,
+			session.ID
+		]
+		var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
+		abstract.update('session', values, valueNames, null, callback)
+	});
 }
 
 // Destroy session
