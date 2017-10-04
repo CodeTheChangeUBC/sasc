@@ -104,8 +104,8 @@ describe("USER TESTS", function() {
 			User.count((count,err) => {
 				if (err) done(err);
 				app
-				.del('/users/'+1) 
-				.send({ userId: 1 }) // Delete the first user
+				.del('/users/'+3) 
+				.send({ userId: 3 }) // Delete the third user
 				.end(function(err, res) {
 					res.should.have.status(204);
 					User.count((newCount,err) => {

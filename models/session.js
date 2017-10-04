@@ -18,22 +18,28 @@ exports.count = function(callback) {
 // List all the sessions of a given counsellor 
 exports.listByCounsellor = function(counsellorID, callback) {
 	abstract.listByForeignKey('session', 'counsellorID', counsellorID, callback);
-	// db.get().query('SELECT * FROM session WHERE counsellorID=?', [counsellorID], 
-	// 	function(err, results, fields) {
-	// 		if (err) callback(err);
-	// 		callback(results);
-	// 	});
 }
 
 // List all sessions of a given user
 exports.listByUser = function(userID, callback) {
 	abstract.listByForeignKey('session', 'userID', userID, callback);
-	// db.get().query('SELECT * FROM session WHERE userID=?', [counsellorID], 
-	// 	function(err, results, fields) {
-	// 		if (err) callback(err);
-	// 		console.log('list results:' + JSON.stringify(results));
-	// 		callback(results);
-	// 	});
+}
+
+exports.retrieveByValues = function(session, callback) {
+	abstract.retrieveByValues('session', session, callback);
+}
+
+// Retrieve session 
+exports.retrieve = function(session) {
+
+}
+
+// Update session
+// - id is ID of session to be updated
+// - vals is a dictionary of new values
+exports.update = function(id, vals) {
+	var session;
+	session.beginTime = vals
 }
 
 // Destroy session

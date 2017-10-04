@@ -56,7 +56,8 @@ describe('SESSION TESTS', function() {
 
 	describe('Retrieval', function() {
 		it('should retrieve single session by counsellor', function(done) {
-			Session.listByCounsellor(1, (list) => {
+			Session.listByCounsellor(1, (err,list) => {
+				if (err) done(err);
 				expect(list.length).to.equal(1);
 				expect(list).to.be.an('array');
 				expect(list[0]).to.include({'counsellorID':1})
@@ -65,7 +66,8 @@ describe('SESSION TESTS', function() {
 		});
 
 		it('should retrive single session by user', function(done) {
-			Session.listByUser(2, (list) => {
+			Session.listByUser(2, (err,list) => {
+				if (err) done(err);
 				expect(list.length).to.equal(2);
 				expect(list).to.be.an('array');
 				expect(list[0]).to.include({'userID':2})
@@ -73,6 +75,23 @@ describe('SESSION TESTS', function() {
 				done();
 			});
 		})
+
+		it('should retrive by values', function(done) {
+			Session.retrieveByValues(session, (err,result) => {
+				expect(result).to.be.an('array');
+				expect(result[0]).to.include({'ID':setup.sessionCount+1});
+			});
+		})
+	});
+
+	describe('Updating', function() {
+		it('should change endTime of session', function(done) {
+			var et = "2015-00-00 10:10:10"
+			Session.update({endTime: et}, function(sesh) {
+				expect(sesh.endTime).to.have(et);
+				done();
+			});
+		});
 	});
 
 });

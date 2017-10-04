@@ -13,12 +13,13 @@ exports.create = function(model, values, valueNames, res, callback) {
 	exports.count(model)
 	.then(function(lastID) {
 		var newVals = [lastID+1].concat(values);
-		var unknowns = '(';
-		for (var j=0; j<newVals.length; j++) {
-			unknowns += '?'
-			if (j!=newVals.length-1) unknowns += ', ';
-		}
-		unknowns += ')';
+		var unknowns = computeUnknowns(newVals.length);
+		// var unknowns = '(';
+		// for (var j=0; j<newVals.length; j++) {
+		// 	unknowns += '?'
+		// 	if (j!=newVals.length-1) unknowns += ', ';
+		// }
+		// unknowns += ')';
 		// console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
 		// console.log('values: ' + newVals)
 		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
@@ -52,11 +53,13 @@ exports.destroy = function(model, id, res, callback) {
 // (not including id)
 exports.update = function(model, values, valueNames, res) {
 	var query = 'UPDATE '+model+' SET';
-	for (var j=0; j<valueNames.length; j++) {
-		query += ' '+valueNames[j]+'=?';
-		if (j!=valueNames.length-1) query += ','
-	}
-	query += ' WHERE ID=?;';
+	var fieldQuery = fieldQueries(valueNames);
+	// for (var j=0; j<valueNames.length; j++) {
+	// 	query += ' '+valueNames[j]+'=?';
+	// 	if (j!=valueNames.length-1) query += ','
+	// }
+	query += fieldQuery + ' WHERE ID=?;';
+	console.log('Query: ' + query)
 	db.get().query(query, values, function(err, results) {
 			httpResponse(err, 400, results[0], 200, res);
 	});
@@ -74,6 +77,18 @@ exports.lookup = function(model, id, req, res, callback) {
 			}
 			req.model = results[0];
 			callback();
+		});
+}
+
+// Retrieve model by values instead of ID
+exports.retrieveByValues = function(model, values, valueNames, callback) {
+	var query = 'SELECT * FROM '+model+' WHERE'
+	query += fieldQueries(valueNames);
+	db.get().query('SELECT * FROM '+model+' WHERE '+valueNames+'='+unknowns, 
+		values,
+		function(err,result,fields) {
+			if (err) callback(err);
+			callback(null, results);
 		});
 }
 
@@ -127,7 +142,7 @@ exports.listByForeignKey = function(model, fk, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
 		function(err, results, fields) {
 			if (err) callback(err);
-			callback(results);
+			callback(null,results);
 		});
 }
 
@@ -148,6 +163,28 @@ function httpResponse(err, errCode, data, dataCode, res) {
 		return;
 	}
 	res.status(dataCode).send(data);
+}
+
+// Compute string of (?,...,?) of length len
+function computeUnknowns(len) {
+	var unknowns = '(';
+	for (var j=0; j<len; j++) {
+		unknowns += '?'
+		if (j!=len-1) unknowns += ', ';
+	}
+	unknowns += ')';	
+	return unknowns;
+}
+
+// Compute string of ' field1=?, ... , fieldn=?'
+// Returned string starts with a space!
+function fieldQueries(fields) {
+	var query = '';
+	for (var j=0; j<fields.length; j++) {
+		query += ' '+fields[j]+'=?';
+		if (j!=fields.length-1) query += ','
+	}
+	return query;
 }
 
 exports.noHttpResponse = noHttpResponse;
