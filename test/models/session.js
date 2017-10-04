@@ -76,11 +76,21 @@ describe('SESSION TESTS', function() {
 			});
 		})
 
-		it('should retrive by values', function(done) {
+		it('should retrieve by values', function(done) {
 			Session.retrieveByValues(session, (err,result) => {
 				expect(result).to.be.an('array');
 				expect(result[0]).to.include({'ID':setup.sessionCount+1});
+				done();
 			});
+		})
+
+		it('should retrieve by id', function(done) {
+			Session.retrieveByID(setup.sessionCount+1, (err,sesh) => {
+				expect(sesh).to.include({'ID': setup.sessionCount+1});
+				expect(sesh).to.include({'counsellorID': 2});
+				expect(sesh).to.include({'userID': 2});
+				done();
+			})
 		})
 	});
 

@@ -26,12 +26,14 @@ exports.listByUser = function(userID, callback) {
 }
 
 exports.retrieveByValues = function(session, callback) {
-	abstract.retrieveByValues('session', session, callback);
+	var values = [session.beginTime, session.endTime, session.counsellorID, session.userID];
+	var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
+	abstract.retrieveByValues('session', values, valueNames, callback);
 }
 
-// Retrieve session 
-exports.retrieve = function(session) {
-
+// Retrieve session by id
+exports.retrieveByID = function(id, callback) {
+	abstract.retrieve('session', id, null, callback);
 }
 
 // Update session

@@ -14,12 +14,6 @@ exports.create = function(model, values, valueNames, res, callback) {
 	.then(function(lastID) {
 		var newVals = [lastID+1].concat(values);
 		var unknowns = computeUnknowns(newVals.length);
-		// var unknowns = '(';
-		// for (var j=0; j<newVals.length; j++) {
-		// 	unknowns += '?'
-		// 	if (j!=newVals.length-1) unknowns += ', ';
-		// }
-		// unknowns += ')';
 		// console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
 		// console.log('values: ' + newVals)
 		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
@@ -54,10 +48,6 @@ exports.destroy = function(model, id, res, callback) {
 exports.update = function(model, values, valueNames, res) {
 	var query = 'UPDATE '+model+' SET';
 	var fieldQuery = fieldQueries(valueNames);
-	// for (var j=0; j<valueNames.length; j++) {
-	// 	query += ' '+valueNames[j]+'=?';
-	// 	if (j!=valueNames.length-1) query += ','
-	// }
 	query += fieldQuery + ' WHERE ID=?;';
 	console.log('Query: ' + query)
 	db.get().query(query, values, function(err, results) {
@@ -82,22 +72,25 @@ exports.lookup = function(model, id, req, res, callback) {
 
 // Retrieve model by values instead of ID
 exports.retrieveByValues = function(model, values, valueNames, callback) {
-	var query = 'SELECT * FROM '+model+' WHERE'
-	query += fieldQueries(valueNames);
-	db.get().query('SELECT * FROM '+model+' WHERE '+valueNames+'='+unknowns, 
-		values,
-		function(err,result,fields) {
+	var query = 'SELECT * FROM '+model+' WHERE';
+	query += fieldQueries(valueNames,1);
+	console.log('query: ' + query);
+	db.get().query(query, values, function(err,results,fields) {
+			if (err) console.log('error: ' + err);
 			if (err) callback(err);
+			console.log('results: ' + JSON.stringify(results))
 			callback(null, results);
 		});
 }
 
 // Retrieve user specified by userID in params
-exports.retrieve = function(model, id, res) {
+// - if res is null, call callback upon completion
+exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			httpResponse(err, 400, result[0], 200, res);
+			if (res) httpResponse(err, 400, result[0], 200, res);
+			else noHttpResponse(err, result[0], callback)
 		});
 }
 
@@ -178,11 +171,15 @@ function computeUnknowns(len) {
 
 // Compute string of ' field1=?, ... , fieldn=?'
 // Returned string starts with a space!
-function fieldQueries(fields) {
+// - if and === 1 use AND instead of commas
+function fieldQueries(fields, and) {
 	var query = '';
 	for (var j=0; j<fields.length; j++) {
 		query += ' '+fields[j]+'=?';
-		if (j!=fields.length-1) query += ','
+		if (j!=fields.length-1) {
+			if (and) query += ' AND'
+			else query += ',' 
+		}
 	}
 	return query;
 }
