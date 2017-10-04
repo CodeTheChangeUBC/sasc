@@ -5,6 +5,8 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
 const server = require('../../app_test');
+const setup = require('./setup');
+const db = require('../../db');
 
 chai.use(chaiHttp);
 
@@ -13,20 +15,6 @@ chai.use(chaiHttp);
 const app = chai.request(server);
 
 describe('COUNSELLOR TESTS', function() {
-
-	var couns1 = {
-		firstName: 'counsellor',
-		lastName: 'one',
-		email: 'email@email.ca',
-		password: 'password'
-	}
-
-	var couns2 = {
-		firstName: 'counsellor',
-		lastName: 'two',
-		email: 'email@email.ca',
-		password: 'password2'
-	}
 
 	var couns = {
 		firstName: 'counsellor',
@@ -37,25 +25,12 @@ describe('COUNSELLOR TESTS', function() {
 
 	// Add two test users to DB
 	before(function(done) {
-		app
-		.post('/counsellors')
-		.send(couns1)
-		.end(function(err, res) {
-			app
-			.post('/counsellors')
-			.send(couns2)
-			.end(function(err, res) {
-				done()
-			});
-		});
+		setup.setup(db,app,done);
 	});
 
 	// Destroy all counsellors in DB after tests
 	after(function(done) {
-		Counsellor.destroyAll((err) => {
-			if (err) done(err);
-			done();
-		})
+		setup.resetDb(db,app,done);
 	});
 
 
@@ -65,7 +40,7 @@ describe('COUNSELLOR TESTS', function() {
 		it('should return two', function(done) {
 			Counsellor.count((count,err) => {
 				if (err) done(err);
-				expect(count).to.equal(2);
+				expect(count).to.equal(setup.counsellorCount);
 				done()
 			});
 		});
@@ -113,8 +88,8 @@ describe('COUNSELLOR TESTS', function() {
 			.send({ counsellorId: 1 })
 			.end(function(err, res) {
 				res.should.have.status(200);				
-				for (var key in couns1) {
-					expect(res.text).to.include(couns1[key]);	
+				for (var key in setup.couns1) {
+					expect(res.text).to.include(setup.couns1[key]);	
 				}
 				done();
 			});

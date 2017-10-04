@@ -19,8 +19,8 @@ exports.create = function(model, values, valueNames, res, callback) {
 			if (j!=newVals.length-1) unknowns += ', ';
 		}
 		unknowns += ')';
-		console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
-		console.log('values' + newVals)
+		// console.log('query:' + 'INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';')
+		// console.log('values: ' + newVals)
 		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
 			newVals, 
 			function(err, results) {
@@ -117,6 +117,18 @@ exports.destroyAll = function(model) {
 			fulfill();
 		});
 	});
+}
+
+// List all models corresponding to foreign key
+// - model is name of model (string)
+// - foreign key is name of foreign key (string)
+// - id is id of foreign key
+exports.listByForeignKey = function(model, fk, id, callback) {
+	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
+		function(err, results, fields) {
+			if (err) callback(err);
+			callback(results);
+		});
 }
 
 // Function to call when returning data or error in NON Http response

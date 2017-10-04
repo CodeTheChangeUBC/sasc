@@ -16,3 +16,11 @@ exports.create = function(m, callback) {
 exports.count = function(callback) {
 	abstract.count('message').then(count => callback(count)).catch(err => callback('',err));
 }
+
+// Destroy all sessions
+// Returns a callback that ensures the all sessions are removed when called
+// THIS IS FOR TESTING PURPOSES
+// ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
+exports.destroyAll = function(callback) {	
+	abstract.destroyAll('message').then(() => callback()).catch(err => callback(err));
+}

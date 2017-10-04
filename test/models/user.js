@@ -17,20 +17,6 @@ const app = chai.request(server);
 
 describe("USER TESTS", function() {
 
-	// var user1 = {
-	// 	age: 30,
-	// 	gender: 'female',
-	// 	phoneNumber: '(604) 111-1111',
-	// 	password: 'user1pass'
-	// }
-
-	// var user2 = {
-	// 	age: 25,
-	// 	gender: 'other',
-	// 	phoneNumber: '6049999999',
-	// 	password: 'user2pass'
-	// }
-
 	var user = {
 		age: 25,
 		gender: 'male',
@@ -41,25 +27,11 @@ describe("USER TESTS", function() {
 	// Add two test users to DB
 	before(function(done) {
 		setup.setup(db,app,done);
-		// app
-		// .post('/users')
-		// .send(user1)
-		// .end(function(err, res) {
-		// 	app
-		// 	.post('/users')
-		// 	.send(user2)
-		// 	.end(function(err, res) {
-		// 		done()
-		// 	});
-		// });
 	});
 
 	// Destroy all users in DB after tests
 	after(function(done) {
-		User.destroyAll((err) => {
-			if (err) done(err);
-			done();
-		});
+		setup.resetDb(db,app,done);
 	});
 
 
@@ -69,8 +41,8 @@ describe("USER TESTS", function() {
 		it('should return two', function(done) {
 			User.count((count,err) => {
 				if (err) done(err);
-				expect(count).to.equal(2);
-				done()
+				expect(count).to.equal(setup.userCount);
+				done();
 			});
 		});
 	});
@@ -117,7 +89,7 @@ describe("USER TESTS", function() {
 			.send({ userId: 1 })
 			.end(function(err, res) {
 				res.should.have.status(200);				
-				for (var key in user) {
+				for (var key in setup.user1) {
 					expect(res.text).to.include(setup.user1[key]);	
 				}
 				done();

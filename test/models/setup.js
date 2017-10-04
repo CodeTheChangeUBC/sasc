@@ -1,3 +1,5 @@
+const Counsellor = require('../../models').counsellor
+const User = require('../../models').user
 const Session = require('../../models').session
 const Message = require('../../models').message
 
@@ -33,15 +35,17 @@ exports.couns2 = {
 
 // Sessions
 exports.session1 = {
-	beginTime: "00:01:03",
+	beginTime: "1970-01-01 00:01:03",
+	endTime: "1970-01-01 02:07:20",
 	counsellorID: 1,
 	userID: 2,
 }
 
 exports.session2 = {
-	beginTime: "00:00:00",
+	beginTime: "2017-03-04 00:00:00",
+	endTime: "2017-03-05 12:03:22",
 	counsellorID: 2,
-	userID: 2,
+	userID: 1,
 }
 
 
@@ -57,14 +61,14 @@ exports.setup = function(db,app,done) {
 		.end(function(err, res) {
 			app
 			.post('/counsellors')
-			.send(couns1)
+			.send(exports.couns1)
 			.end(function(err, res) {
 				app
 				.post('/counsellors')
 				.send(exports.couns2)
 				.end(function(err, res) {
-					Session.create(session1, () => {
-						Session.create(session2, () => {
+					Session.create(exports.session1, function() {
+						Session.create(exports.session2, function() {
 							done();
 						});
 					});
@@ -78,3 +82,24 @@ exports.setup = function(db,app,done) {
 exports.userCount = 2;
 exports.counsellorCount = 2;
 exports.sessionCount = 2;
+
+// Wipe test db of all models
+exports.resetDb = function(db,app,done) {
+	// Wipe messages
+	Message.destroyAll((err) => {
+		if (err) done(err);
+		// Wipe Sessions
+		Session.destroyAll((err) => {
+			if (err) done(err);
+			// Wipe users
+			User.destroyAll((err) => {
+				if (err) done(err);
+				// Wipe counsellors 
+				Counsellor.destroyAll((err) => {
+					if (err) done(err);
+					done()
+				});
+			});
+		});
+	});
+}
