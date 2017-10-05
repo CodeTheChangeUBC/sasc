@@ -48,6 +48,27 @@ exports.session2 = {
 	userID: 1,
 }
 
+// Messages
+exports.message1 = {
+	sessionID: 1,
+	counsellorID: 1,
+	userID: 1,
+	messageTime: "2014-03-04 00:00:50",
+	messageContent: "Content 1",
+	fromCounsellor: 0,
+	fromTwilio: 0,
+}
+
+exports.message2 = {
+	sessionID: 2,
+	counsellorID: 2,
+	userID: 2,
+	messageTime: "2015-01-04 00:10:40",
+	messageContent: "Content 2",
+	fromCounsellor: 0,
+	fromTwilio: 1,
+}
+
 
 // Initialize db by inputting initial data
 exports.setup = function(db,app,done) {
@@ -69,7 +90,11 @@ exports.setup = function(db,app,done) {
 				.end(function(err, res) {
 					Session.create(exports.session1, function() {
 						Session.create(exports.session2, function() {
-							done();
+							Message.create(exports.message1, function() {
+								Message.create(exports.message2, function() {
+									done();		
+								});
+							});
 						});
 					});
 				});
@@ -82,6 +107,7 @@ exports.setup = function(db,app,done) {
 exports.userCount = 2;
 exports.counsellorCount = 2;
 exports.sessionCount = 2;
+exports.messageCount = 2;
 
 // Wipe test db of all models
 exports.resetDb = function(db,app,done) {

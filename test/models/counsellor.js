@@ -97,14 +97,14 @@ describe('COUNSELLOR TESTS', function() {
 	});
 
 	// Test destroying counsellors
-	describe("User destroy", function() {
+	describe("Destroy", function() {
 		// destroy single counsellor
 		it('should destroy counsellor', function(done) {
 			Counsellor.count((count,err) => {
 				if (err) done(err);
 				app
-				.del('/counsellors/'+1) 
-				.send({ counsellorId: 1 }) // Delete the first counsellor
+				.del('/counsellors/'+3) 
+				.send({ counsellorId: 3 }) // Delete the third counsellor
 				.end(function(err, res) {
 					res.should.have.status(204);
 					Counsellor.count((newCount,err) => {
@@ -119,7 +119,7 @@ describe('COUNSELLOR TESTS', function() {
 
 
 	// Test Counsellor updates
-	describe("Counsellor Updates", function() {
+	describe("Updates", function() {
 		// Update counsellor2
 		it('should update counsellor', function(done) {
 			var newemail = 'newemail@email.com'
