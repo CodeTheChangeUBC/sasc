@@ -1,147 +1,143 @@
-const userController = require('../../server/controllers').users;
-const User = require('../../server/models').User
+const User = require('../../models').user
 const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
-const server = require('../../app')
+const server = require('../../app_test');
+const setup = require('./setup');
+const db = require('../../db.js');
 
 chai.use(chaiHttp);
 
-describe("USERS", function() {
 
-	// Request server
-	const app = chai.request(server)
+// Request server
+const app = chai.request(server);
 
-	// Create seed users for testing 
+
+describe("USER TESTS", function() {
+
+	var user = {
+		age: 25,
+		gender: 'male',
+		phoneNumber: '7779999999',
+		password: 'password',
+	}
+
+	// Add two test users to DB
 	before(function(done) {
-		this.timeout(10000);
-		// Destroy all users - clean test db
-		User.destroy({
-			where: {}
-		})
-		// Create new users
-		.then(function() {
-			var user1 = {
-				age: 20,
-				gender: 'female',
-				number: 604,
-				password: 'password'
-			}
-			var user2 = {
-				age: 30,
-				gender: 'male',
-				number: 5403,
-				password: 'password',
-			}
-			app
-			.post('/users')
-			.send(user1)
-			.end(function() {
-				app.post('/users').send(user2)
-				.end(function() {
-					done();
-				});
-			});
+		setup.setup(db,app,done);
+	});
 
+	// Destroy all users in DB after tests
+	after(function(done) {
+		setup.resetDb(db,app,done);
+	});
+
+
+	// Ensure that two users are in DB 
+	describe("DB setup", function() {
+		// There should be no users in DB
+		it('should return two', function(done) {
+			User.count((count,err) => {
+				if (err) done(err);
+				expect(count).to.equal(setup.userCount);
+				done();
+			});
 		});
 	});
 
-	// Test getting user page 
-	describe("User index", function() {
-		it('should get user index', function(done) {
-			app
-			.get('/users')
-			.end(function(err, res) {
-				res.should.have.status(200);
-				User.count().then(function(count) {
-					// Ensure there are two users in db
-					expect(count).to.equal(2);
-					done();
-				});
-			});
-		});
-	})
-
 	// Test creating a user 
-	describe("User Create and destroy", function() {
+	describe("User Create", function() {
 		// Test creating a user
-		it('should create another user', function(done) {
-			var user = {
-				age: 25,
-				gender: 'male',
-				number: 40334,
-				password: 'password',
-			}
-			User.count().then(function(c1) {
+		it('should create a user', function(done) {
+			User.count(count => {
 				app
 				.post('/users')
 				.send(user)
 				.end(function(err, res) {
 					res.should.have.status(201);
-					User.count().then(function(c) {
-						expect(c).to.equal(c1+1)
+					User.count((newCount,err) => {
+						if (err) done(err);
+						expect(newCount).to.equal(count+1);
+						done();	
 					});
-					done();
 				});
 			});
 		});
+	});
 
+
+	// Test getting user page 
+	describe("User retrieval", function() {
+		it('should get user index', function(done) {
+			app
+			.get('/users')
+			.end(function(err, res) {
+				res.should.have.status(200);				
+				for (var key in user) {
+					expect(res.text).to.include(user[key]);	
+				}
+				done();
+			});
+		});
+
+		// Get a single user
+		it('should get a single user', function(done) {
+			app
+			.get('/users/'+1)
+			.send({ userId: 1 })
+			.end(function(err, res) {
+				res.should.have.status(200);				
+				for (var key in setup.user1) {
+					expect(res.text).to.include(setup.user1[key]);	
+				}
+				done();
+			});
+		});
+	});
+
+	// Test destroying users
+	describe("User destroy", function() {
 		// Test destroying a user
 		it('should destroy user', function(done) {
-			const user = User.findOne({ where: { age: 25 }})
-			.then(function(user) {
+			User.count((count,err) => {
+				if (err) done(err);
 				app
-				.del('/users/'+user.id)
+				.del('/users/'+3) 
+				.send({ userId: 3 }) // Delete the third user
 				.end(function(err, res) {
 					res.should.have.status(204);
-					User.count().then(function(count) {
-						expect(count).to.equal(2);
+					User.count((newCount,err) => {
+						if (err) done(err);
+						expect(newCount).to.equal(count-1);
 						done();
 					});
-				});
+				});	
 			});
 		});		
 	});
+
 
 	// Test User updates
 	describe("User Updates", function() {
 		// Update user 1
 		it('should update user', function(done) {
-			//User.create({ age: 19, gender: 'm', number: 343, password: 'pass' })
-			// .then
-			User.findOne({ where: { age: 20 }})
-			.then(user => {
+			app
+			.put('/users/'+2) 
+			.send({ userId: 2, age: 29 })
+			.end(function(err, res) {
+				res.should.have.status(200);
+				// Ensure user has updated values
 				app
-				.put('/users/'+user.id)
-				.send({ age: 29 })
+				.get('/users/'+2)
 				.end(function(err, res) {
 					res.should.have.status(200);
-					res.body.should.be.a('object');
-					expect(res.body.user.age).to.equal(29);
+					expect(res.text).to.include(29)
 					done();
 				});
 			});
 		});
 		
 	});
-
-	// User retrieval test
-	describe("User Retrieval", function() {
-		it('should retrieve user', function(done) {
-			User.findOne({ where: { age: 30 }})
-			.then(function(user) {
-				app
-				.get('/users/'+user.id)
-				.end(function(err, res) {
-					res.should.have.status(200);
-					expect(res.body.user.id).to.equal(user.id);
-					res.body.should.be.a('object');
-					done();
-				});
-			});
-		});
-	});
-
 });
