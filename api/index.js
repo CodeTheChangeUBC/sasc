@@ -2,8 +2,8 @@ import express from 'express';
 
 const apiRouter = express.Router();
 
-//const usersController = require('../server/controllers').users;
-import usersController from '../server/controllers/users';
+//const usersController = require('../routes').users;
+import usersController from '../models/user';
 
 // testing, remove when done ---------------------------
 // dummy post method works!
