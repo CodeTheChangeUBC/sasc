@@ -2,12 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Form = ({ 
+  username,
   age, 
   gender,
   onSubmit,
   onChange
 }) => (
   <form onSubmit={onSubmit}>
+    {username &&
+	    <label>Username:
+		  <input type="text" name="username" onChange={onChange}/>
+		</label>
+	}
     {age &&
         <label>Age:
           <input type="number" name="age" onChange={onChange}/>
@@ -16,12 +22,14 @@ const Form = ({
     {gender &&
         <label>Gender:
         <select onChange={onChange} name="gender">
-          <option value="male">male</option>
-          <option value="female">female</option>
-          <option value="non-binary">non-binary</option>
-          <option value="transgender male">transgender male</option>
-          <option value="transgender female">transgender female</option>
-          <option value="other">other</option>
+		  <option value="no-select">Please select</option>
+          <option value="cis-woman">Cis woman</option>
+		  <option value="cis-man">Cis man</option>
+          <option value="non-binary">Non-binary</option>
+          <option value="trans-woman">Trans woman</option>
+          <option value="trans-man">Trans man</option>
+		  <option value="two-spirit">Two Spirit</option>
+          <option value="other">Other</option>
         </select>
         </label>
     }

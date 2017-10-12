@@ -12,6 +12,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { 
+	  username: null,
       age: null,
       gender: null,
       phoneNumber: null,
@@ -52,6 +53,7 @@ class Register extends Component {
       <div className="Register">
         <h2>Register</h2>
         <Form
+		  username
           age
           gender
           onSubmit={this.handleOnSubmit}

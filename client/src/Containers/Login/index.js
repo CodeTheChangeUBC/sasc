@@ -10,7 +10,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      phoneNumber: null,
+      username: null,
       password: null
     };
      this.handleOnChange = this.handleOnChange.bind(this);

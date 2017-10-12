@@ -12,10 +12,12 @@ CREATE TABLE twilio (
 
 CREATE TABLE user (
 	ID int NOT NULL AUTO_INCREMENT,
+	username VARCHAR(14),
 	age int,
-	gender VARCHAR(24),
+	gender VARCHAR(24) NOT NULL,
 	phoneNumber VARCHAR(15) NOT NULL ,
 	password VARCHAR(30) NOT NULL,
+	UNIQUE(username),
 	PRIMARY KEY (ID)
 );
 
