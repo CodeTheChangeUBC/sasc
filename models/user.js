@@ -5,12 +5,13 @@ const abstract = require('./abstract.js');
 // TODO: Encrypt password
 exports.create = function(req, res) {
 	var values = [
+	    req.body.username,
 		parseInt(req.body.age), 
 		req.body.gender,
 		req.body.phoneNumber,
 		req.body.password,
 	]
-	var valueNames = '(ID,age,gender,phoneNumber,password)';
+	var valueNames = '(ID,username,age,gender,phoneNumber,password)';
 	abstract.create('user', values, valueNames, res);
 }
 
@@ -32,6 +33,7 @@ exports.update = function(req, res) {
 	// Get user from request
 	var user = req.model;
 	// Assign params. If updated params not in request, use older params
+	var username = req.body.username ? req.body.username : user.username;
 	var age = req.body.age ? req.body.age : user.age;
 	var gender = req.body.gender ? req.body.gender : user.gender;
 	var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
