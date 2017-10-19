@@ -39,6 +39,11 @@ exports.retrieve = function(req, res) {
 	abstract.retrieve('counsellor', req.params.counsellorId, res);
 }
 
+// Retrieve email and password specified by email in params
+exports.getCounsellorCredentialsByEmail = function(req, res) {
+	abstract.getCounsellorCredentialsByEmail(req.body.email, res);
+}
+
 // destroy given counsellor
 exports.destroy = function(req, res) {
 	abstract.destroy('counsellor', req.model.ID, res);

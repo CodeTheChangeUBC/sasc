@@ -1,5 +1,6 @@
 var student = require('../controllers/users')
 // var counsellor = require('../controllers/counsellors')
+var auth = require("../authenticator");
 
 var secrets = require('../socket_server/secrets')
 var jwt = require('jsonwebtoken')
@@ -34,8 +35,8 @@ router.get('/student', (req, res) => {
     })
 })
 
-router.get('/counsellour', (req, res) => {
-    counsellour
+router.get('/counsellor', (req, res) => {
+    counsellor
     .retrieve(req,res)
     .then(user => {
         // Since this is good make a token, and send it back.
@@ -56,6 +57,12 @@ router.get('/counsellour', (req, res) => {
         res.status(400).send(error);
     })
 })
+
+router.post("/login", auth.issueTokenToUser);
+
+router.post("/logincounsellor", auth.issueTokenToCounsellor);
+
+router.use(auth.validateToken);
 
 module.exports = router;
 
