@@ -32,16 +32,18 @@ class Register extends Component {
     }); 
   }
 
+  /**
+   * once form is submitted, add the user to the database and switch to chat view
+   *
+   * TODO: if successful registration of user, update view layer
+   * TODO: if unsuccessful, show flash message
+   */
   handleOnSubmit(ev) {
     ev.preventDefault();
 
     axios.post('/api/register', this.state)
       .then((resp) => {
         console.log('registering...');
-
-        // TODO: if successful registration of user, update view layer
-        // TODO: if unsuccessful, show flash message
-
       })
       .catch(console.error);
 

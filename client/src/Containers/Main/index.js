@@ -6,6 +6,7 @@ import Login from './../Login';
 import Register from './../Register';
 import SMS from './../SMS';
 import './styles.css';
+import CounsellorBar from "../../Components/Counsellor/CounsellorBar";
 
 class Main extends Component {
   render() {

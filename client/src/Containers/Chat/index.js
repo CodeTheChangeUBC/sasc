@@ -34,7 +34,7 @@ class Chat extends Component {
   }
 
    _handleMessageEvent(){
-    console.log('Wait for it...')
+    console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
       console.log('received message', inboundMessage);

@@ -2,7 +2,6 @@ import express from 'express';
 
 const apiRouter = express.Router();
 
-//const usersController = require('../routes').users;
 import usersController from '../models/user';
 
 // testing, remove when done ---------------------------
