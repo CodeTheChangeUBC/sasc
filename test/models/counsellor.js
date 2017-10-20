@@ -16,11 +16,37 @@ const app = chai.request(server);
 
 describe('COUNSELLOR TESTS', function() {
 
+	// Function to create counsellor
+	// - expDiff is expected difference in count after creation
+	// - expStatus is expected status after sending post request
+	function createCounsellor(cslr, expDiff, expStatus, done) {
+		Counsellor.count(count => {
+			app
+			.post('/counsellors')
+			.send(cslr)
+			.end(function(err, res) {
+				res.should.have.status(expStatus);
+				Counsellor.count((newCount,err) => {
+					expect(newCount).to.equal(count+expDiff);
+					if (err) done(err);
+					done();	
+				});
+			});	
+		});
+	};
+
+	var firstName = 'counsellor';
+	var lastName = 'two';
+	var email = 'email@email.ca';
+	var password =  'password2';
+
+
+
 	var couns = {
-		firstName: 'counsellor',
-		lastName: 'two',
-		email: 'email@email.ca',
-		password: 'password2'
+		firstName: firstName,
+		lastName: lastName,
+		email: email,
+		password: password
 	}
 
 	// Add two test users to DB
@@ -50,18 +76,43 @@ describe('COUNSELLOR TESTS', function() {
 	describe("Counsellor Create", function() {
 		// Test creating a user
 		it('should create a counsellor', function(done) {
-			Counsellor.count(count => {
-				app
-				.post('/counsellors')
-				.send(couns)
-				.end(function(err, res) {
-					res.should.have.status(201);
-					Counsellor.count((newCount,err) => {
-						if (err) done(err);
-						expect(newCount).to.equal(count+1);
-						done();	
-					});
-				});
+			createCounsellor(couns, 1, 201, done);
+		});
+
+		// Should not create counsellors if missing required fields
+		it('should not create counsellor without first name', function(done) {
+			couns.firstName = null;
+			createCounsellor(couns, 0, 400, (err) => {
+				if (err) done(err);
+				couns.firstName = firstName;
+				done();
+			});
+		});
+
+		it('should not create counsellor without last name', function(done) {
+			couns.lastName = null;
+			createCounsellor(couns, 0, 400, (err) => {
+				if (err) done(err);
+				couns.lastName = lastName;
+				done();
+			});
+		});
+
+		it('should not create counsellor without email', function(done) {
+			couns.email = null;
+			createCounsellor(couns, 0, 400, (err) => {
+				if (err) done(err);
+				couns.email = email;
+				done();
+			});
+		});
+
+		it('should not create counsellor without password', function(done) {
+			couns.password = null;
+			createCounsellor(couns, 0, 400, (err) => {
+				if (err) done(err);
+				couns.password = password;
+				done();
 			});
 		});
 	});
