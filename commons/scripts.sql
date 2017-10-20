@@ -12,7 +12,7 @@ CREATE TABLE twilio (
 
 CREATE TABLE user (
 	ID int NOT NULL AUTO_INCREMENT,
-	username VARCHAR(14),
+	username VARCHAR(14) NOT NULL,
 	age int,
 	gender VARCHAR(24) NOT NULL,
 	phoneNumber VARCHAR(15) NOT NULL ,

@@ -15,11 +15,31 @@ const app = chai.request(server);
 
 describe('SESSION TESTS', function() {
 
+	// Function to create session
+	// - expDiff is expected difference in count after creation
+	// - expStatus is expected status after sending post request
+	function createSession(session, expDiff, done) {
+		Session.count(count => {
+			Session.create(session,(err,model) => {
+				Session.count(newCount => {
+					expect(newCount).to.equal(count+expDiff);
+					if (err) done(err);
+					else done();
+				});					
+			});
+		});
+	};
+
+	var beginTime = "2017-01-01 00:00:03";
+	var endTime = "2018-09-03 00:00:00";
+	var userID = 2;
+	var counsellorID = 2;
+
 	var session = {
-		beginTime: "2017-01-01 00:00:03",
-		endTime: "2018-09-03 00:00:00",
-		userID: 2,
-		counsellorID: 2
+		beginTime: beginTime,
+		endTime: endTime,
+		userID: userID,
+		counsellorID: counsellorID
 	}
 
 	before(function(done) {
@@ -50,6 +70,15 @@ describe('SESSION TESTS', function() {
 					expect(count).to.equal(setup.sessionCount+1);
 					done();
 				});					
+			});
+		});
+
+		// Ensure it doesn't create session when missing required params
+		it('should not create session without counsellor ID', function(done) {
+			session.counsellorID = null;
+			createSession(session, 0, () => {
+				session.counsellorID = counsellorID;
+				done();
 			});
 		});
 	});

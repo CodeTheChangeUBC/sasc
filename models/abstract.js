@@ -146,7 +146,6 @@ function noHttpResponse(err,data,toCall) {
 // Function to call when returning data or error in Http response
 function httpResponse(err, errCode, data, dataCode, res) {
 	if (err) {
-		console.log('DB ERROR:: ' + err);
 		res.status(errCode).send(err);
 		return;
 	}

@@ -17,11 +17,37 @@ const app = chai.request(server);
 
 describe("USER TESTS", function() {
 
+	// Function used to create users
+	// - expDiff is expected difference in counts (newCount - oldCount)
+	// - expStatus is expected status upon sending post request
+	function createUser(user, expDiff, expStatus, done) {
+		User.count(count => {
+			app
+			.post('/users')
+			.send(user)
+			.end(function(err, res) {
+				res.should.have.status(expStatus);
+				User.count((newCount,err) => {
+					expect(newCount).to.equal(count+expDiff);
+					if (err) done(err);
+					done();	
+				});
+			});
+		})
+	}
+
+	var username = 'username'
+	var age = 25
+	var gender = 'male'
+	var phoneNumber = '7779999999'
+	var password = 'password'
+
 	var user = {
-		age: 25,
-		gender: 'male',
-		phoneNumber: '7779999999',
-		password: 'password',
+		username: username,
+		age: age,
+		gender: gender,
+		phoneNumber: phoneNumber,
+		password: password
 	}
 
 	// Add two test users to DB
@@ -51,18 +77,34 @@ describe("USER TESTS", function() {
 	describe("User Create", function() {
 		// Test creating a user
 		it('should create a user', function(done) {
-			User.count(count => {
-				app
-				.post('/users')
-				.send(user)
-				.end(function(err, res) {
-					res.should.have.status(201);
-					User.count((newCount,err) => {
-						if (err) done(err);
-						expect(newCount).to.equal(count+1);
-						done();	
-					});
-				});
+			createUser(user, 1, 201, done);
+		});
+
+		// Should not create a user with missing credentials
+		it('should not create a new user without username', function(done) {
+			user.username = null;
+			createUser(user, 0, 400, (err) => {
+				if (err) done(err);
+				user.username = username,
+				done();
+			});
+		});
+
+		it('should not create a user without password', function(done) {
+			user.password = null;
+			createUser(user, 0, 400, (err) => {
+				if (err) done(err);
+				user.password = password;
+				done();
+			});
+		});
+
+		it('should not create a user without a phone Number', function(done) {
+			user.phoneNumber = null;
+			createUser(user, 0, 400, (err) => {
+				if (err) done(err);
+				user.phoneNumber = phoneNumber;
+				done();
 			});
 		});
 	});
