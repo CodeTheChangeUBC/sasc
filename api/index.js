@@ -30,4 +30,6 @@ apiRouter.post("/loginuser", auth.issueTokenToUser);
 
 apiRouter.post("/logincounsellor", auth.issueTokenToCounsellor);
 
+apiRouter.use(auth.validateToken);
+
 export default apiRouter;
