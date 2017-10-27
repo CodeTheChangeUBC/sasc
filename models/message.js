@@ -4,11 +4,18 @@ const abstract = require('./abstract.js')
 // - m is a dictionary containing message values
 // - 	valueNames, but without ID
 exports.create = function(m, callback) {
-	var values = [m.sessionID, m.messageTime, m.counsellorID,m.userID,
-					m.messageContent,m.fromCounsellor,m.fromTwilio]
-	var valueNames = '(ID,sessionID,messageTime,counsellorID,userID,' + 
-					'messageContent,fromCounsellor,fromTwilio)';	
-	abstract.create('message', values, valueNames, null, callback)
+	var values = {
+		sessionID: m.sessionID,
+		messageTime: m.messageTime, 
+		counsellorID: m.counsellorID,
+		userID: m.userID,
+		messageContent: m.messageContent,
+		fromCounsellor: m.fromCounsellor,
+		fromTwilio: m.fromTwilio
+	}
+	// var valueNames = '(ID,sessionID,messageTime,counsellorID,userID,' + 
+	// 				'messageContent,fromCounsellor,fromTwilio)';	
+	abstract.create('message', values, null, callback)
 }
 
 // counts number of message

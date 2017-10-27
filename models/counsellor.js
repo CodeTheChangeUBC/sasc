@@ -3,14 +3,14 @@ const abstract = require('./abstract.js')
 
 // Create counsellor from post request
 exports.create = function(req, res) {
-	var values = [
-		req.body.firstName, 
-		req.body.lastName,
-		req.body.email,
-		req.body.password,
-	]
-	var valueNames = '(ID,firstName,lastName,email,password)';
-	abstract.create('counsellor', values, valueNames, res);
+	var values = {
+		firstName: req.body.firstName, 
+		lastName: req.body.lastName,
+		email: req.body.email,
+		password: req.body.password,
+	}
+	//var valueNames = '(ID,firstName,lastName,email,password)';
+	abstract.create('counsellor', values, res);
 }
 
 // Update counsellor

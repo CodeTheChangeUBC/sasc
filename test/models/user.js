@@ -116,7 +116,7 @@ describe("USER TESTS", function() {
 			app
 			.get('/users')
 			.end(function(err, res) {
-				res.should.have.status(200);				
+				res.should.have.status(200);								
 				for (var key in user) {
 					expect(res.text).to.include(user[key]);	
 				}
@@ -132,7 +132,10 @@ describe("USER TESTS", function() {
 			.end(function(err, res) {
 				res.should.have.status(200);				
 				for (var key in setup.user1) {
-					expect(res.text).to.include(setup.user1[key]);	
+					if (key!=password) {
+						// Can't check password, it's hashed!
+						expect(res.text).to.include(setup.user1[key]);	
+					}
 				}
 				done();
 			});
