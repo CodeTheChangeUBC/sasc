@@ -46,15 +46,14 @@ exports.retrieveByID = function(id, callback) {
 // - vals is a dictionary of new values
 exports.update = function(id, vals, callback) {
 	exports.retrieveByID(id, (err, session) => {
-		var values = [
-			vals.beginTime || session.beginTime,
-			vals.endTime || session.endTime,
-			vals.counsellorID || session.counsellorID,
-			vals.userID || session.userID,
-			session.ID
-		]
-		var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
-		abstract.update('session', values, valueNames, null, callback)
+		var values = {
+			beginTime: vals.beginTime || session.beginTime,
+			endTime: vals.endTime || session.endTime,
+			counsellorID: vals.counsellorID || session.counsellorID,
+			userID: vals.userID || session.userID,
+		}
+		//var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
+		abstract.update('session', values, id, null, callback)
 	});
 }
 

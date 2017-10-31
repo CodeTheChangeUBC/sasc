@@ -43,15 +43,6 @@ exports.update = function(req, res) {
 	if (req.body.password) {
 		values['password'] = req.body.password;
 	}
-	//values['ID'] = user.ID;
-	// var values = [age, gender, phoneNumber, password, user.ID];
-	// var valueNames = ['age', 'gender', 'phoneNumber', 'password'];
-	// then update user
-	// abstract.hashPassword(req.body.password, (pass) => {
-	// 	var valueNames = '(ID,username,age,gender,phoneNumber,password)';
-	// 	abstract.update('user', values.concat([pass]), valueNames, res);
-	// });
-	console.log('calling update')
 	abstract.update('user', values, user.ID, res);	
 }
 

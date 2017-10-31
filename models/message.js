@@ -66,19 +66,18 @@ exports.retrieveById = function(id, callback) {
 exports.update = function(id, vals, callback) {
 	// First get relevant message
 	exports.retrieveById(id, (err, message) => {
-		var values = [
-			vals.sessionID || message.sessionID,
-			vals.userID || message.userID,
-			vals.counsellorID || message.counsellorID,
-			vals.messageTime || message.messageTime,
-			vals.messageContent || message.messageContent,
-			vals.fromCounsellor || message.fromCounsellor,
-			vals.fromTwilio || message.fromTwilio,
-			message.ID
-		]
+		var values = {
+			sessionID: vals.sessionID || message.sessionID,
+			userID: vals.userID || message.userID,
+			counsellorID: vals.counsellorID || message.counsellorID,
+			messageTime: vals.messageTime || message.messageTime,
+			messageContent: vals.messageContent || message.messageContent,
+			fromCounsellor: vals.fromCounsellor || message.fromCounsellor,
+			fromTwilio: vals.fromTwilio || message.fromTwilio,
+		}
 		var valueNames = ['sessionID', 'userID', 'counsellorID', 'messageTime', 
 				'messageContent', 'fromCounsellor', 'fromTwilio'];
-		abstract.update('message', values, valueNames, null, callback);
+		abstract.update('message', values, id, null, callback);
 	});
 } 
 

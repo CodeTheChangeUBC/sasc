@@ -126,7 +126,9 @@ describe('COUNSELLOR TESTS', function() {
 			.end(function(err, res) {
 				res.should.have.status(200);				
 				for (var key in couns) {
-					expect(res.text).to.include(couns[key]);	
+					if (key!='password') {
+						expect(res.text).to.include(couns[key]);	
+					}
 				}
 				done();
 			});

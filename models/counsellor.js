@@ -18,14 +18,18 @@ exports.update = function(req, res) {
 	// Get counsellor
 	var counsellor = req.model;
 	// Assign params. If updated params not in request, use older params
-	var firstName = req.body.firstName ? req.body.firstName : counsellor.firstName;
-	var lastName = req.body.lastName ? req.body.lastName : counsellor.lastName;
-	var email = req.body.email ? req.body.email : counsellor.email;
-	var password = req.body.password ? req.body.password : counsellor.password;
-	var values = [firstName, lastName, email, password, counsellor.ID];
-	var valueNames = ['firstName', 'lastName', 'email', 'password'];
+	var values = {
+		firstName: req.body.firstName ? req.body.firstName : counsellor.firstName,
+		lastName: req.body.lastName ? req.body.lastName : counsellor.lastName,
+		email: req.body.email ? req.body.email : counsellor.email,
+		
+	}
+	// Add password if there
+	if (req.body.password) {
+		values['password'] = req.body.password;
+	}
 	// then update counsellor
-	abstract.update('counsellor', values, valueNames, res);	
+	abstract.update('counsellor', values, counsellor.ID, res);	
 }
 
 

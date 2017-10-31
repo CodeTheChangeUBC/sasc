@@ -66,13 +66,7 @@ exports.destroy = function(model, id, res, callback) {
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
 exports.update = function(model, values, id, res, callback) {
-	console.log('in update');
-	// var query = 'UPDATE '+model+' SET';
-	// var fieldQuery = fieldQueries(valueNames);
-	// query += fieldQuery + ' WHERE ID=?;';
-	console.log('values: ' + JSON.stringify(values));
 	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			console.log('query: ' + query.sql);
 			if (res) httpResponse(err, 400, results, 200, res);
 			else noHttpResponse(err, results, callback)
 	});
@@ -109,8 +103,6 @@ exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			console.log('error: ' + err)
-			console.log('RESULT: ' + JSON.stringify(result));
 			if (res) httpResponse(err, 400, result[0], 200, res);
 			else noHttpResponse(err, result[0], callback)
 		});
