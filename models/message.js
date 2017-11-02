@@ -4,11 +4,18 @@ const abstract = require('./abstract.js')
 // - m is a dictionary containing message values
 // - 	valueNames, but without ID
 exports.create = function(m, callback) {
-	var values = [m.sessionID, m.messageTime, m.counsellorID,m.userID,
-					m.messageContent,m.fromCounsellor,m.fromTwilio]
-	var valueNames = '(ID,sessionID,messageTime,counsellorID,userID,' + 
-					'messageContent,fromCounsellor,fromTwilio)';	
-	abstract.create('message', values, valueNames, null, callback)
+	var values = {
+		sessionID: m.sessionID,
+		messageTime: m.messageTime, 
+		counsellorID: m.counsellorID,
+		userID: m.userID,
+		messageContent: m.messageContent,
+		fromCounsellor: m.fromCounsellor,
+		fromTwilio: m.fromTwilio
+	}
+	// var valueNames = '(ID,sessionID,messageTime,counsellorID,userID,' + 
+	// 				'messageContent,fromCounsellor,fromTwilio)';	
+	abstract.create('message', values, null, callback)
 }
 
 // counts number of message
@@ -59,19 +66,18 @@ exports.retrieveById = function(id, callback) {
 exports.update = function(id, vals, callback) {
 	// First get relevant message
 	exports.retrieveById(id, (err, message) => {
-		var values = [
-			vals.sessionID || message.sessionID,
-			vals.userID || message.userID,
-			vals.counsellorID || message.counsellorID,
-			vals.messageTime || message.messageTime,
-			vals.messageContent || message.messageContent,
-			vals.fromCounsellor || message.fromCounsellor,
-			vals.fromTwilio || message.fromTwilio,
-			message.ID
-		]
+		var values = {
+			sessionID: vals.sessionID || message.sessionID,
+			userID: vals.userID || message.userID,
+			counsellorID: vals.counsellorID || message.counsellorID,
+			messageTime: vals.messageTime || message.messageTime,
+			messageContent: vals.messageContent || message.messageContent,
+			fromCounsellor: vals.fromCounsellor || message.fromCounsellor,
+			fromTwilio: vals.fromTwilio || message.fromTwilio,
+		}
 		var valueNames = ['sessionID', 'userID', 'counsellorID', 'messageTime', 
 				'messageContent', 'fromCounsellor', 'fromTwilio'];
-		abstract.update('message', values, valueNames, null, callback);
+		abstract.update('message', values, id, null, callback);
 	});
 } 
 

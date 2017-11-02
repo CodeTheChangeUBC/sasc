@@ -16,7 +16,7 @@ CREATE TABLE user (
 	age int,
 	gender VARCHAR(24) NOT NULL,
 	phoneNumber VARCHAR(15) NOT NULL ,
-	password VARCHAR(30) NOT NULL,
+	password VARCHAR(72) NOT NULL,
 	UNIQUE(username),
 	PRIMARY KEY (ID)
 );
@@ -26,7 +26,7 @@ CREATE TABLE counsellor (
 	firstName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
 	email VARCHAR(256) NOT NULL,
-	password VARCHAR(30) NOT NULL,
+	password VARCHAR(72) NOT NULL,
 	PRIMARY KEY (ID)
 );
 

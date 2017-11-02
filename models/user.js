@@ -4,20 +4,19 @@ const abstract = require('./abstract.js');
 // Create user from post request
 // TODO: Encrypt password
 exports.create = function(req, res) {
-	var values = [
-	    req.body.username,
-		parseInt(req.body.age), 
-		req.body.gender,
-		req.body.phoneNumber,
-		req.body.password,
-	]
-	var valueNames = '(ID,username,age,gender,phoneNumber,password)';
-	abstract.create('user', values, valueNames, res);
+	var values = {
+	    username: req.body.username,
+		age: parseInt(req.body.age), 
+		gender: req.body.gender,
+		phoneNumber: req.body.phoneNumber,
+		password: req.body.password,
+	}
+	abstract.create('user', values, res);
 }
 
 // Destroy user
 exports.destroy = function(req,res) {
-	abstract.destroy('user', req.model.ID, res)
+	abstract.destroy('user', req.model.ID, res);
 }
 
 // Destroy all users
@@ -33,15 +32,18 @@ exports.update = function(req, res) {
 	// Get user from request
 	var user = req.model;
 	// Assign params. If updated params not in request, use older params
-	var username = req.body.username ? req.body.username : user.username;
-	var age = req.body.age ? req.body.age : user.age;
-	var gender = req.body.gender ? req.body.gender : user.gender;
-	var phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber;
-	var password = req.body.password ? req.body.password : user.password;
-	var values = [age, gender, phoneNumber, password, user.ID];
-	var valueNames = ['age', 'gender', 'phoneNumber', 'password'];
-	// then update user
-	abstract.update('user', values, valueNames, res);	
+	var values = {
+		username: req.body.username ? req.body.username : user.username,
+		age: req.body.age ? req.body.age : user.age,
+		gender: req.body.gender ? req.body.gender : user.gender,
+		phoneNumber: req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber,
+		//password: req.body.password ? req.body.password : user.password,
+	}
+	// Is password being updated?
+	if (req.body.password) {
+		values['password'] = req.body.password;
+	}
+	abstract.update('user', values, user.ID, res);	
 }
 
 // Lookup user to pass to other functions
