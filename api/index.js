@@ -26,10 +26,10 @@ apiRouter.post('/register', usersController.create);
 
 //apiRouter.post('/login', usersController.retrieve);
 
-apiRouter.post("/loginuser", auth.issueTokenToUser);
+apiRouter.post("/login", auth.issueTokenToUser);
 
 apiRouter.post("/logincounsellor", auth.issueTokenToCounsellor);
 
-apiRouter.use(auth.validateToken);
+apiRouter.use("/sms", auth.verifyToken);
 
 export default apiRouter;

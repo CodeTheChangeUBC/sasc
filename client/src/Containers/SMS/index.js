@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-//import { addTwilioEntry, removeTwilioEntry } from '../../Redux/Actions/smsActions';
-import './styles.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./styles.css";
 
 class SMS extends Component {
   render() {
@@ -49,11 +48,10 @@ class SMS extends Component {
   }
 }
 
-//function mapStateToProps(state) {
-//  console.log('state', state);
-//  return {
-//    item: state.item
-//  };
-//}
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.loggedIn
+  };
+}
 
 export default SMS;
