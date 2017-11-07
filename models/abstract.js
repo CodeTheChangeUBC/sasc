@@ -108,6 +108,41 @@ exports.retrieve = function(model, id, res, callback) {
 		});
 }
 
+// Retrieve user specified by username in params
+// Can't abstract because users use username while counsellors use email to login
+exports.getUserCredentialsByUsername = function(username, res, callback) {
+	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
+		[username],
+		function(err, result) {
+			if (res) httpResponse(err, 400, result[0], 200, res);
+			else noHttpResponse(err, result[0], callback);
+		});
+}
+
+// Retrieve counsellor specified by email in params
+// Can't abstract because users use username while counsellors use email to login
+exports.getCounsellorCredentialsByEmail =  function(email, res, callback) {
+	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
+		[email],
+		function(err, result) {
+			if (res) httpResponse(err, 400, result[0], 200, res);
+			else noHttpResponse(err, result[0], callback);
+		});
+}
+
+// Retrieve user or counsellor specified by username or email in params respectively
+// The "user" in retrieveUserByIdentifier refers to the general term including both users and counsellors
+exports.retrieveUserByIdentifier = function(model, loginID, res, callback) {
+	var identifier = 'username';
+	if (model === "counsellor") identifier = 'email';
+	db.get().query('SELECT '+identifier+', password FROM '+model+' WHERE '+identifier+' = '+loginID+';',
+		[loginID],
+		function(err, result) {
+			if (res) httpResponse(err, 400, result[0], 200, res);
+			else noHttpResponse(err, result[0], callback);
+		});
+}
+
 // List all models
 // - model is name of model (string)
 exports.list = function(model, res) {
