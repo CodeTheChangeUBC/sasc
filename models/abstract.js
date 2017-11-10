@@ -39,14 +39,6 @@ exports.process = function(values, callback) {
 	}
 }
 
-// compare password
-// exports.comparePassword = function(password, callback) {
-// 	bcrypt.compare(password, hash, function(err, res) {
-// 	    callback(res)
-// 	});
-// }
-
-// 
 
 // Destroy model
 // - model is name of model (string)
@@ -92,6 +84,7 @@ exports.retrieveByValues = function(model, values, valueNames, callback) {
 	var query = 'SELECT * FROM '+model+' WHERE';
 	query += fieldQueries(valueNames,1);
 	db.get().query(query, values, function(err,results,fields) {
+			console.log('Error: ' + err);
 			if (err) callback(err);
 			callback(null, results);
 		});
