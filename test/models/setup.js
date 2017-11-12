@@ -2,6 +2,7 @@ const Counsellor = require('../../models').counsellor
 const User = require('../../models').user
 const Session = require('../../models').session
 const Message = require('../../models').message
+const Twilio = require('../../models').twilio
 
 // Users
 exports.user1 = {
@@ -71,35 +72,71 @@ exports.message2 = {
 	fromTwilio: 1,
 }
 
+exports.twilio1 = {
+	email: "email@email.com",
+	twilioPhoneNumber: '6047778888',
+	accountSid: '746503745',
+	authToken: '4Eydj677fG'
+}
+
+exports.twilio2 = {
+	email: "email2@email2.com",
+	twilioPhoneNumber: '6048887777',
+	accountSid: '111111111',
+	authToken: '19874kbdvfl0'
+}
+
+function createMessages(callback) {
+	Message.create(exports.message1, () => {
+		Message.create(exports.message2, () => {
+			callback();
+		});
+	});			
+}
+
+function createSessions(callback) {
+	Session.create(exports.session1, () => {
+		Session.create(exports.session2, () => {
+			callback();
+		});
+	});
+}
+
+function createTwilios(callback) {
+	Twilio.create(exports.twilio1, () => {
+		Twilio.create(exports.twilio2, () => {
+			callback();
+		});
+	});
+}
+
+function createHttp(app, url, object, callback) {
+	app.post(url).send(object).end((err,res) => {
+		callback();
+	});
+}
+
+function createAllHttp(app,callback) {
+	createHttp(app,'/users',exports.user1, () => {
+		createHttp(app,'/users', exports.user2, () => {
+			createHttp(app, '/counsellors', exports.couns1, () => {
+				createHttp(app, '/counsellors', exports.couns2, callback)
+			});
+		});
+	});
+}
+
+
+
 
 // Initialize db by inputting initial data
 exports.setup = function(db,app,done) {
-	app
-	.post('/users')
-	.send(exports.user1)
-	.end(function(err, res) {
-		app
-		.post('/users')
-		.send(exports.user2)
-		.end(function(err, res) {
-			app
-			.post('/counsellors')
-			.send(exports.couns1)
-			.end(function(err, res) {
-				app
-				.post('/counsellors')
-				.send(exports.couns2)
-				.end(function(err, res) {
-					Session.create(exports.session1, function() {
-						Session.create(exports.session2, function() {
-							Message.create(exports.message1, function() {
-								Message.create(exports.message2, function() {
-									done();		
-								});
-							});
-						});
-					});
-				});
+	createAllHttp(app, () => {
+		createSessions(() => {
+			createMessages(() => {
+				createTwilios(() => {
+					done();
+				})
 			});
 		});
 	});
@@ -125,7 +162,11 @@ exports.resetDb = function(db,app,done) {
 				// Wipe counsellors 
 				Counsellor.destroyAll((err) => {
 					if (err) done(err);
-					done()
+					// Wipe Twilios
+					Twilio.destroyAll((err) => {
+						if (err) done(err);
+						done();
+					});
 				});
 			});
 		});

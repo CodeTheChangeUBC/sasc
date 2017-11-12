@@ -34,3 +34,16 @@ exports.update = function(id, vals, callback) {
 exports.destroy = function(id, callback) {
 	abstract.destroy('twilio', id, null, callback);
 }
+
+// Count the number of twilio objects
+exports.count = function(callback) {
+	abstract.count('twilio').then(count => callback(count)).catch(err => callback('',err));
+}
+
+// Destroy all Twilios
+// Returns a callback that ensures the all sessions are removed when called
+// THIS IS FOR TESTING PURPOSES
+// ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
+exports.destroyAll = function(callback) {	
+	abstract.destroyAll('twilio').then(() => callback()).catch(err => callback(err));
+}

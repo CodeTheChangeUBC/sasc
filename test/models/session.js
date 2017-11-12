@@ -48,7 +48,7 @@ describe('SESSION TESTS', function() {
 
 	after(function(done) {
 		setup.resetDb(db,app,done);
-	})
+	});
 
 	// Ensure test setup was correct
 	describe('Setup', function() {
