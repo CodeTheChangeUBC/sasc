@@ -6,24 +6,24 @@ It should either be called from app.js or app_test.js
 
 */
 
-import express from 'express';
-import path from 'path';
-import favicon from 'serve-favicon';
-import logger from 'morgan';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import mysql from 'mysql';
-import apiRouter from './api/index';
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
+const apiRouter = require('./api/index');
 
-import config from './webpack.config.dev';
-import webpack from 'webpack';
-import serveStatic from 'serve-static';
+const config = require('./webpack.config.dev');
+const webpack = require('webpack');
+const serveStatic = require('serve-static');
 
 const compiler = webpack(config);
 
-import index from './routes/index';
-import users from './routes/users';
-import counsellors from './routes/counsellors';
+const index = require('./routes/index');
+const users = require('./routes/users');
+const counsellors = require('./routes/counsellors');
 
 var app = express();
 

@@ -1,10 +1,9 @@
-import express from 'express';
+const express = require('express');
 
 const apiRouter = express.Router();
 
-//const usersController = require('../routes').users;
-import usersController from '../models/user';
-import auth from "../authenticator";
+const usersController = require('../models/user');
+const auth = require('../authenticator');
 
 // testing, remove when done ---------------------------
 // dummy post method works!
@@ -32,4 +31,4 @@ apiRouter.post("/logincounsellor", auth.issueTokenToCounsellor);
 
 apiRouter.use("/sms", auth.verifyToken);
 
-export default apiRouter;
+module.exports = apiRouter;

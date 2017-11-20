@@ -1,7 +1,7 @@
-import webpack from 'webpack';  
-import path from 'path';
+const webpack = require('webpack');
+const path = require('path');
 
-export default {  
+module.exports = {  
   debug: true,
   devtool: 'cheap-module-eval-source-map',
   noInfo: false,
