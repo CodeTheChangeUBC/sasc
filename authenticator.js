@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const secrets = require("./socket_server/secrets");
 const secret = secrets.secret;
 
-// consult: https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt
+// works cited: https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt
 
 exports.issueTokenToUser = function (req, res, next) {
   userModel.getUserCredentialsByUsername(req.body.username, function (user) {
@@ -74,7 +74,7 @@ exports.verifyToken = function (req, res, next) {
         req.user = result;
         return next();
       }
-    });
+  });
     
     
   } else {
