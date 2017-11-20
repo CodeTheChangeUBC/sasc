@@ -10,10 +10,7 @@ exports.create = function(req, res) {
 		password: req.body.password,
 	}
 	//var valueNames = '(ID,firstName,lastName,email,password)';
-	abstract.process(values, function(err, values, res) {
-		if (err) { return err; }
-		abstract.create('counsellor', values, res);
-	});
+	abstract.create('counsellor', values, res);
 }
 
 // Update counsellor

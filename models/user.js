@@ -11,11 +11,7 @@ exports.create = function(req, res) {
 		phoneNumber: req.body.phoneNumber,
 		password: req.body.password
 	}
-	abstract.process(values, function(err, values, res) {
-		if (err) { return err; }
-		abstract.create('user', values, res);
-	});
-	
+	abstract.create('user', values, res);
 }
 
 // Destroy user
