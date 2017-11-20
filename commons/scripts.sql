@@ -16,7 +16,7 @@ CREATE TABLE user (
 	age int,
 	gender VARCHAR(24) NOT NULL,
 	phoneNumber VARCHAR(15) NOT NULL ,
-	password VARCHAR(30) NOT NULL,
+	password VARCHAR(72) NOT NULL,
 	UNIQUE(username),
 	PRIMARY KEY (ID)
 );

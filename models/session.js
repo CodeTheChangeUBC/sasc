@@ -4,9 +4,14 @@ const abstract = require('./abstract.js')
 // Create session
 // - s is a session
 exports.create = function(s, callback) {
-	var values = [s.beginTime, s.endTime, s.counsellorID, s.userID];
-	var valueNames = '(ID, beginTime, endTime, counsellorID, userID)';
-	abstract.create('session', values, valueNames, null, callback)
+	var values = {
+		beginTime: s.beginTime, 
+		endTime: s.endTime, 
+		counsellorID: s.counsellorID, 
+		userID: s.userID
+	}
+	//var valueNames = '(ID, beginTime, endTime, counsellorID, userID)';
+	abstract.create('session', values, null, callback)
 
 }
 
@@ -41,15 +46,14 @@ exports.retrieveByID = function(id, callback) {
 // - vals is a dictionary of new values
 exports.update = function(id, vals, callback) {
 	exports.retrieveByID(id, (err, session) => {
-		var values = [
-			vals.beginTime || session.beginTime,
-			vals.endTime || session.endTime,
-			vals.counsellorID || session.counsellorID,
-			vals.userID || session.userID,
-			session.ID
-		]
-		var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
-		abstract.update('session', values, valueNames, null, callback)
+		var values = {
+			beginTime: vals.beginTime || session.beginTime,
+			endTime: vals.endTime || session.endTime,
+			counsellorID: vals.counsellorID || session.counsellorID,
+			userID: vals.userID || session.userID,
+		}
+		//var valueNames = ['beginTime', 'endTime', 'counsellorID', 'userID'];
+		abstract.update('session', values, id, null, callback)
 	});
 }
 

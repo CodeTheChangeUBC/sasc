@@ -34,7 +34,7 @@ When you are ready to merge your branch with master, please create a pull reques
 
 ### (Local) DB Setup 
 
-Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into msql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
+Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into mysql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
 ```
 create database sasc_dev_db;
 ```

@@ -2,6 +2,8 @@
 // for all models 
 
 const db = require('../db.js');
+var bcrypt = require('bcrypt');
+const SALT_ROUNDS = 10;
 
 // Create model 
 // - Values should contain (ordered) values for SQL insert
@@ -9,22 +11,42 @@ const db = require('../db.js');
 // - valueNames is string containing all values needed for creation
 // - should have form: (ID, val1, val2, ...., valn)
 // - if callback is specified, call callback instead of res
-exports.create = function(model, values, valueNames, res, callback) {
-	exports.count(model)
-	.then(function(lastID) {
-		var newVals = [lastID+1].concat(values);
-		var unknowns = computeUnknowns(newVals.length);
-		db.get().query('INSERT INTO '+model+' '+valueNames+' VALUES '+unknowns+';',
-			newVals, 
-			function(err, results) {
-				if (res) httpResponse(err, 400, results, 201, res);
-				else noHttpResponse(err, results, callback);
+exports.create = function(model, values, res, callback) {
+	exports.count(model).then(lastID => {
+		values['ID'] = lastID+1;
+		exports.process(values, values => {
+			db.get().query('INSERT INTO '+model+' SET ?', values, 
+				(err, results) => {
+					if (res) httpResponse(err, 400, results, 201, res);
+					else noHttpResponse(err, results, callback);
 			});
+		});	
 	}).catch(error => {
 		if (callback) callback(error);
 		else httpResponse(error, 400, null, null, res)
 	});
 }
+
+// Hash password
+exports.process = function(values, callback) {
+	if (values.password) {
+	    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
+	    	values.password = hash
+	        callback(values)
+		})
+	} else {
+		callback(values)
+	}
+}
+
+// compare password
+// exports.comparePassword = function(password, callback) {
+// 	bcrypt.compare(password, hash, function(err, res) {
+// 	    callback(res)
+// 	});
+// }
+
+// 
 
 // Destroy model
 // - model is name of model (string)
@@ -43,11 +65,8 @@ exports.destroy = function(model, id, res, callback) {
 // - values is ordered set of values to update (should include model id last)
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
-exports.update = function(model, values, valueNames, res, callback) {
-	var query = 'UPDATE '+model+' SET';
-	var fieldQuery = fieldQueries(valueNames);
-	query += fieldQuery + ' WHERE ID=?;';
-	db.get().query(query, values, function(err, results, fields) {
+exports.update = function(model, values, id, res, callback) {
+	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
 			if (res) httpResponse(err, 400, results, 200, res);
 			else noHttpResponse(err, results, callback)
 	});
@@ -181,7 +200,6 @@ function noHttpResponse(err,data,toCall) {
 // Function to call when returning data or error in Http response
 function httpResponse(err, errCode, data, dataCode, res) {
 	if (err) {
-		console.log('DB ERROR:: ' + err);
 		res.status(errCode).send(err);
 		return;
 	}

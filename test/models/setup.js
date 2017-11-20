@@ -5,6 +5,7 @@ const Message = require('../../models').message
 
 // Users
 exports.user1 = {
+	username: 'tammy',
 	age: 30,
 	gender: 'female',
 	phoneNumber: '(604) 111-1111',
@@ -12,6 +13,7 @@ exports.user1 = {
 }
 
 exports.user2 = {
+	username: 'bobby123',
 	age: 25,
 	gender: 'other',
 	phoneNumber: '6049999999',

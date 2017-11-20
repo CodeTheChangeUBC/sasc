@@ -15,15 +15,39 @@ const app = chai.request(server);
 
 describe('MESSAGE TESTS', function() {
 
+	// attributes
+	var sessionID = 1;
+	var messageTime = '1970-03-01 00:00:00';
+	var counsellorID = 2;
+	var userID = 2;
+	var messageContent = "The first message";
+	var fromCounsellor = 1;
+	var fromTwilio = 0;
+
 	var message = {
-		sessionID: 1,
-		messageTime: '1970-03-01 00:00:00',
-		counsellorID: 2,
-		userID: 2,
-		messageContent: "The first message",
-		fromCounsellor: 1,
-		fromTwilio: 0
+		sessionID: sessionID,
+		messageTime: messageTime,
+		counsellorID: counsellorID,
+		userID: userID,
+		messageContent: messageContent,
+		fromCounsellor: fromCounsellor,
+		fromTwilio: fromTwilio
 	}
+
+	// Function to create a message 
+	// - expDiff is expected difference in count after creation
+	// - expStatus is expected status after sending post request
+	function createMessage(msg, expDiff, done) {
+		Message.count(count => {
+			Message.create(msg,(err,model) => {
+				Message.count(newCount => {
+					expect(newCount).to.equal(count+expDiff);
+					if (err) done(err);
+					else done();
+				});					
+			});
+		});
+	};
 
 	before(function(done) {
 		setup.setup(db,app,done);
@@ -55,20 +79,48 @@ describe('MESSAGE TESTS', function() {
 				});					
 			});
 		});
-		
-		it('should not create new message without content', function(done) {
-			message.messageContent = null;
-			Message.count(count => {
-				Message.create(message, (err, model) => {
-					Message.count(newCount => {
-						expect(newCount).to.equal(count);
-						// reset message content
-						message.messageContent = "The first message";
-						done();
+
+		it('should still create new message without message time', function(done) {
+			message.messageTime = null;
+			createMessage(message, 1, (err) => {
+				message.messageTime = messageTime;
+				// now delete this extra message
+				Message.count(count => {
+					Message.destroy(count, (err) => {
+						if (err) done(err);
+						Message.count(newCount => {
+							expect(newCount).to.equal(count-1);
+							done();
+						})
 					});
 				});
 			});
 		});
+		
+		it('should not create new message without content', function(done) {
+			message.messageContent = null;
+			createMessage(message, 0, (err) => {
+				message.messageContent = messageContent;
+				done();
+			});
+		});
+
+		it('should not create new message without counsellor indicator', function(done) {
+			message.fromCounsellor = null;
+			createMessage(message, 0, (err) => {
+				message.fromCounsellor = fromCounsellor;
+				done();
+			});
+		});
+
+		it('should not create new message twilio indicator', function(done) {
+			message.fromTwilio = null;
+			createMessage(message, 0, (err) => {
+				message.fromTwilio = fromTwilio;
+				done();
+			});
+		});
+
 	});
 
 	describe('Retrieval', function() {
