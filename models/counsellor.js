@@ -1,5 +1,5 @@
-const db = require('../db.js')
-const abstract = require('./abstract.js')
+const db = require('../db');
+const abstract = require('./abstract');
 
 // Create counsellor from post request
 exports.create = function(req, res) {
@@ -10,7 +10,10 @@ exports.create = function(req, res) {
 		password: req.body.password,
 	}
 	//var valueNames = '(ID,firstName,lastName,email,password)';
-	abstract.create('counsellor', values, res);
+	abstract.process(values, function(err, values, res) {
+		if (err) { return err; }
+		abstract.create('counsellor', values, res);
+	});
 }
 
 // Update counsellor
@@ -44,8 +47,8 @@ exports.retrieve = function(req, res) {
 }
 
 // Retrieve email and password specified by email in params
-exports.getCounsellorCredentialsByEmail = function(req, res) {
-	abstract.getCounsellorCredentialsByEmail(req.body.email, res);
+exports.getCounsellorByEmail = function(req, res) {
+	abstract.getCounsellorByEmail(req.body.email, res);
 }
 
 // destroy given counsellor

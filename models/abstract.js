@@ -40,13 +40,13 @@ exports.process = function(values, callback) {
 }
 
 // compare password
-// exports.comparePassword = function(password, callback) {
-// 	bcrypt.compare(password, hash, function(err, res) {
-// 	    callback(res)
-// 	});
-// }
+exports.comparePassword = function(password, callback) {
+ 	bcrypt.compare(password, hash, function(err, res) {
+ 	    if (err) { return callback(err); }
 
-// 
+ 	    callback(res);
+ 	});
+}
 
 // Destroy model
 // - model is name of model (string)
@@ -110,9 +110,34 @@ exports.retrieve = function(model, id, res, callback) {
 
 // Retrieve user specified by username in params
 // Can't abstract because users use username while counsellors use email to login
-exports.getUserCredentialsByUsername = function(username, res, callback) {
-	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
+exports.lookupByUsername = function(model, username, req, res, callback) {
+	console.log("hello");
+	db.get().query('SELECT * FROM user WHERE username = '+username+';',
 		[username],
+		function(err, results, fields) {
+			if (err) {
+				res.status(404).send(err);
+				next();
+			}
+			req.model = results[0];
+			callback();
+		});
+}
+
+// Get user by ID
+exports.getUserById = function(id, res, callback) {
+	db.get().query('SELECT * FROM user WHERE ID = '+ id +';',
+		[id],
+		function(err, result) {
+			if (res) httpResponse(err, 400, result[0], 200, res);
+			else noHttpResponse(err, result[0], callback);
+		});
+}
+
+// Get counsellor by ID
+exports.getCounsellorById = function(id, res, callback) {
+	db.get().query('SELECT * FROM counsellor WHERE ID = '+ id +';',
+		[id],
 		function(err, result) {
 			if (res) httpResponse(err, 400, result[0], 200, res);
 			else noHttpResponse(err, result[0], callback);
@@ -121,8 +146,8 @@ exports.getUserCredentialsByUsername = function(username, res, callback) {
 
 // Retrieve counsellor specified by email in params
 // Can't abstract because users use username while counsellors use email to login
-exports.getCounsellorCredentialsByEmail =  function(email, res, callback) {
-	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
+exports.getCounsellorByEmail =  function(email, res, callback) {
+	db.get().query('SELECT * WHERE email = '+email+';',
 		[email],
 		function(err, result) {
 			if (res) httpResponse(err, 400, result[0], 200, res);

@@ -21,7 +21,8 @@ const serveStatic = require('serve-static');
 
 const compiler = webpack(config);
 
-const index = require('./routes/index');
+//const index = require('./routes/index');
+const router = require('./routes/index');
 const users = require('./routes/users');
 const counsellors = require('./routes/counsellors');
 
@@ -58,7 +59,10 @@ exports.server = function(database, databaseMode) {
   const staticPath = path.join(__dirname, '/client');
 
   app.use(serveStatic(staticPath));
-  app.use('/', index);
+  
+  router(app);
+
+  //app.use('/', index);
   app.use('/users', users);
   app.use('/counsellors', counsellors);
 

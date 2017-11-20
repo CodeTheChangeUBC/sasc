@@ -9,9 +9,13 @@ exports.create = function(req, res) {
 		age: parseInt(req.body.age), 
 		gender: req.body.gender,
 		phoneNumber: req.body.phoneNumber,
-		password: req.body.password,
+		password: req.body.password
 	}
-	abstract.create('user', values, res);
+	abstract.process(values, function(err, values, res) {
+		if (err) { return err; }
+		abstract.create('user', values, res);
+	});
+	
 }
 
 // Destroy user
@@ -57,8 +61,8 @@ exports.retrieve = function(req, res) {
 }
 
 // Retrieve username and password specified by username in params
-exports.getUserCredentialsByUsername = function(req, res) {
-	abstract.getUserCredentialsByUsername(req.body.username, res);
+exports.lookupByUsername = function(req, res) {
+	abstract.lookupByUsername('user', req.body.username, res);
 }
 
 // List all users
