@@ -43,9 +43,14 @@ exports.retrieve = function(req, res) {
 	abstract.retrieve('counsellor', req.params.counsellorId, res);
 }
 
-// Retrieve email and password specified by email in params
-exports.getCounsellorByEmail = function(req, res) {
-	abstract.getCounsellorByEmail(req.body.email, res);
+// Retrieve email and password specified by email in req.body
+exports.lookupByEmail = function(req, res) {
+	abstract.lookupByValue('counsellor', req.body.email, req, res, callback);
+}
+
+// Retrieve user by id
+exports.lookupById = function(req, res) {
+	abstract.lookupByValue('counsellor', 'ID', req.body.id, req, res, callback);
 }
 
 // destroy given counsellor

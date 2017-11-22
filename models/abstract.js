@@ -5,6 +5,8 @@ const db = require('../db.js');
 var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
+var async = require('async');
+
 // Create model 
 // - Values should contain (ordered) values for SQL insert
 // - model is name of model (string)
@@ -109,63 +111,14 @@ exports.retrieve = function(model, id, res, callback) {
 }
 
 // Retrieve user specified by username in params
-// Can't abstract because users use username while counsellors use email to login
-exports.lookupByUsername = function(model, username, req, res, callback) {
-	console.log("hello");
-	db.get().query('SELECT * FROM user WHERE username = '+username+';',
-		[username],
-		function(err, results, fields) {
-			if (err) {
-				res.status(404).send(err);
-				next();
-			}
-			req.model = results[0];
-			callback();
-		});
-}
-
-// Get user by ID
-exports.getUserById = function(id, res, callback) {
-	db.get().query('SELECT * FROM user WHERE ID = '+ id +';',
-		[id],
-		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
-		});
-}
-
-// Get counsellor by ID
-exports.getCounsellorById = function(id, res, callback) {
-	db.get().query('SELECT * FROM counsellor WHERE ID = '+ id +';',
-		[id],
-		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
-		});
-}
-
-// Retrieve counsellor specified by email in params
-// Can't abstract because users use username while counsellors use email to login
-exports.getCounsellorByEmail =  function(email, res, callback) {
-	db.get().query('SELECT * WHERE email = '+email+';',
-		[email],
-		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
-		});
-}
-
-// Retrieve user or counsellor specified by username or email in params respectively
-// The "user" in retrieveUserByIdentifier refers to the general term including both users and counsellors
-exports.retrieveUserByIdentifier = function(model, loginID, res, callback) {
-	var identifier = 'username';
-	if (model === "counsellor") identifier = 'email';
-	db.get().query('SELECT '+identifier+', password FROM '+model+' WHERE '+identifier+' = '+loginID+';',
-		[loginID],
-		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
-		});
+exports.lookupByValue = function(model, identifier, value, req, res, callback) {
+	console.log("abstract");
+	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
+		[value], 
+		function (err, rows) {
+		if (err) { res.send(err); callback(err, null); }
+		else { res.send(rows[0]); callback(null, rows[0]); }
+	});	
 }
 
 // List all models

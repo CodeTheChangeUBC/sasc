@@ -58,7 +58,13 @@ exports.retrieve = function(req, res) {
 
 // Retrieve username and password specified by username in params
 exports.lookupByUsername = function(req, res) {
-	abstract.lookupByUsername('user', req.body.username, res);
+	console.log("hello")
+	abstract.lookupByValue('user', 'username', req.body.username, req, res, callback);
+}
+
+// Retrieve user by id
+exports.lookupById = function(req, res) {
+	abstract.lookupByValue('user', 'ID', req.body.id, req, res, callback);
 }
 
 // List all users
