@@ -3,7 +3,6 @@ const express = require('express');
 const apiRouter = express.Router();
 
 const usersController = require('../models/user');
-const auth = require('../authenticator');
 
 // testing, remove when done ---------------------------
 // dummy post method works!
@@ -24,11 +23,5 @@ const auth = require('../authenticator');
 apiRouter.post('/register', usersController.create);
 
 //apiRouter.post('/login', usersController.retrieve);
-
-apiRouter.post("/login", auth.issueTokenToUser);
-
-apiRouter.post("/logincounsellor", auth.issueTokenToCounsellor);
-
-apiRouter.use("/sms", auth.verifyToken);
 
 module.exports = apiRouter;
