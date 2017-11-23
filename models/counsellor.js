@@ -2,7 +2,7 @@ const db = require('../db');
 const abstract = require('./abstract');
 
 // Create counsellor from post request
-exports.create = function(req, res) {
+exports.create = function(req, res, callback) {
 	var values = {
 		firstName: req.body.firstName, 
 		lastName: req.body.lastName,
@@ -10,7 +10,7 @@ exports.create = function(req, res) {
 		password: req.body.password,
 	}
 	//var valueNames = '(ID,firstName,lastName,email,password)';
-	abstract.create('counsellor', values, res);
+	abstract.createCallbackVer('counsellor', values, res, callback);
 }
 
 // Update counsellor
@@ -46,6 +46,10 @@ exports.retrieve = function(req, res) {
 // Retrieve email and password specified by email in req.body
 exports.lookupByEmail = function(req, res) {
 	abstract.lookupByValue('counsellor', req.body.email, req, res, callback);
+}
+
+exports.lookupIdByEmail = function(req, res, callback) {
+	abstract.lookupId('counsellor', 'email', req.body.email, req, res, callback);
 }
 
 // Retrieve user by id
