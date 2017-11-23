@@ -5,8 +5,6 @@ const db = require('../db.js');
 var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
-var async = require('async');
-
 // Create model 
 // - Values should contain (ordered) values for SQL insert
 // - model is name of model (string)
@@ -19,13 +17,25 @@ exports.create = function(model, values, res, callback) {
 		exports.process(values, values => {
 			db.get().query('INSERT INTO '+model+' SET ?', values, 
 				(err, results) => {
-					if (res) httpResponse(err, 400, results, 201, res);
-					else noHttpResponse(err, results, callback);
+					if (res) { callback(null, values); }
+					else { callback(err, null); }
 			});
-		});	
+		});
 	}).catch(error => {
 		if (callback) callback(error);
 		else httpResponse(error, 400, null, null, res)
+	});
+}
+
+/// Second version of create
+exports.createCallbackVer = function(model, values, res, callback) {
+	db.get().query('INSERT INTO '+model+' SET ?', values, 
+		(err, results) => {
+			if (res) { 
+				callback(null, values); }
+			else { 
+				callback(err, null); 
+			}
 	});
 }
 
@@ -110,15 +120,24 @@ exports.retrieve = function(model, id, res, callback) {
 		});
 }
 
-// Retrieve user specified by username in params
+// Retrieve value specified by identifier
 exports.lookupByValue = function(model, identifier, value, req, res, callback) {
-	console.log("abstract");
 	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 		[value], 
 		function (err, rows) {
-		if (err) { res.send(err); callback(err, null); }
-		else { res.send(rows[0]); callback(null, rows[0]); }
-	});	
+		if (err) { callback(err, null); }
+		else { callback(null, rows[0]); }
+	});
+}
+
+// Retrieve ID from email or username
+exports.lookupId = function(model, identifier, value, req, res, callback) {
+	db.get().query('SELECT ID FROM ' + model + ' WHERE ' + identifier + ' = ?;',
+		[value],
+		function (err, result) {
+			if (err) { callback(err, null); }
+			else { callback(null, result[0].ID); }
+		});
 }
 
 // List all models
@@ -137,6 +156,13 @@ exports.count = function(model) {
 			if (err) reject(err);
 			fulfill(results[0].count);
 		});	
+	});
+}
+
+exports.countCallbackVer = function(model, callback) {	
+	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
+		if (err) callback(err, null);
+		else callback(null, results[0].count);
 	});
 }
 

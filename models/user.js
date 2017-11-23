@@ -3,15 +3,16 @@ const abstract = require('./abstract.js');
 
 // Create user from post request
 // TODO: Encrypt password
-exports.create = function(req, res) {
+exports.create = function(req, res, callback) {
 	var values = {
 	    username: req.body.username,
 		age: parseInt(req.body.age), 
 		gender: req.body.gender,
 		phoneNumber: req.body.phoneNumber,
-		password: req.body.password
+		email: req.body.email,
+		password: req.body.password,
 	}
-	abstract.create('user', values, res);
+	abstract.createCallbackVer('user', values, res, callback);
 }
 
 // Destroy user
@@ -56,15 +57,18 @@ exports.retrieve = function(req, res) {
 	abstract.retrieve('user', req.params.userId, res);
 }
 
-// Retrieve username and password specified by username in params
-exports.lookupByUsername = function(req, res) {
-	console.log("hello")
+// Retrieve username and password specified by username from form field
+exports.lookupByUsername = function(req, res, callback) {
 	abstract.lookupByValue('user', 'username', req.body.username, req, res, callback);
 }
 
+exports.lookupIdByUsername = function(req, res, callback) {
+	abstract.lookupId('user', 'username', req.body.username, req, res, callback);
+}
+
 // Retrieve user by id
-exports.lookupById = function(req, res) {
-	abstract.lookupByValue('user', 'ID', req.body.id, req, res, callback);
+exports.lookupById = function(req, res, callback) {
+	abstract.lookupByValue('user', req.body.username, req.body.id, req, res, callback);
 }
 
 // List all users
