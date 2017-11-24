@@ -52,11 +52,11 @@ exports.process = function(values, callback) {
 }
 
 // compare password
-exports.comparePassword = function(password, callback) {
+exports.comparePassword = function(password, hash, callback) {
  	bcrypt.compare(password, hash, function(err, res) {
- 	    if (err) { return callback(err); }
+ 	    if (err) { return callback(err, null); }
 
- 	    callback(res);
+ 	    callback(null, res);
  	});
 }
 
@@ -121,7 +121,7 @@ exports.retrieve = function(model, id, res, callback) {
 }
 
 // Retrieve value specified by identifier
-exports.lookupByValue = function(model, identifier, value, req, res, callback) {
+exports.lookupByValue = function(model, identifier, value, callback) {
 	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 		[value], 
 		function (err, rows) {
@@ -131,7 +131,7 @@ exports.lookupByValue = function(model, identifier, value, req, res, callback) {
 }
 
 // Retrieve ID from email or username
-exports.lookupId = function(model, identifier, value, req, res, callback) {
+exports.lookupId = function(model, identifier, value, callback) {
 	db.get().query('SELECT ID FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 		[value],
 		function (err, result) {

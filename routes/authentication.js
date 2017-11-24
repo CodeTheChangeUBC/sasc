@@ -9,6 +9,10 @@ function tokenForUser(user) {
     return jwt.encode({ sub: user.ID, iat: timestamp }, config.secret);
 }
 
+exports.signin = function(req, res) {
+    res.send({ token: tokenForUser(req.user) });
+}
+
 exports.signup = function(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
@@ -23,7 +27,7 @@ exports.signup = function(req, res, next) {
 
     // Welcome to callback hell :D
     // Check if user with this username already exists
-    User.lookupByUsername(req, res, function(err, existingUser) {
+    User.lookupByUsername(username, function(err, existingUser) {
 
         if (err) { throw err; }
 
@@ -48,7 +52,7 @@ exports.signup = function(req, res, next) {
             User.create(req, res, function(err, result) {
                 if (err) { res.status(422).send({ error: 'Cannot create user.'}); }
 
-                User.lookupIdByUsername(req, res, function(err, result) {
+                User.lookupIdByUsername(username, function(err, result) {
                     if (err) { throw err; }
 
                     if (!result) { res.status(422).send({ error: 'Username does not exist.' }); }

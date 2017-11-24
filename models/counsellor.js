@@ -44,17 +44,18 @@ exports.retrieve = function(req, res) {
 }
 
 // Retrieve email and password specified by email in req.body
-exports.lookupByEmail = function(req, res) {
-	abstract.lookupByValue('counsellor', req.body.email, req, res, callback);
+exports.lookupByEmail = function(email, callback) {
+	abstract.lookupByValue('counsellor', 'email', email, callback);
 }
 
+// Retrieve counsellor ID from email
 exports.lookupIdByEmail = function(req, res, callback) {
-	abstract.lookupId('counsellor', 'email', req.body.email, req, res, callback);
+	abstract.lookupId('counsellor', 'email', req.body.email, callback);
 }
 
 // Retrieve user by id
-exports.lookupById = function(req, res) {
-	abstract.lookupByValue('counsellor', 'ID', req.body.id, req, res, callback);
+exports.lookupById = function(id, callback) {
+	abstract.lookupByValue('counsellor', 'ID', id, callback);
 }
 
 // destroy given counsellor

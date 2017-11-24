@@ -58,17 +58,18 @@ exports.retrieve = function(req, res) {
 }
 
 // Retrieve username and password specified by username from form field
-exports.lookupByUsername = function(req, res, callback) {
-	abstract.lookupByValue('user', 'username', req.body.username, req, res, callback);
+exports.lookupByUsername = function(username, callback) {
+	abstract.lookupByValue('user', 'username', username, callback);
 }
 
-exports.lookupIdByUsername = function(req, res, callback) {
-	abstract.lookupId('user', 'username', req.body.username, req, res, callback);
+// Retrieve ID by username
+exports.lookupIdByUsername = function(username, callback) {
+	abstract.lookupId('user', 'username', username, callback);
 }
 
 // Retrieve user by id
-exports.lookupById = function(req, res, callback) {
-	abstract.lookupByValue('user', req.body.username, req.body.id, req, res, callback);
+exports.lookupById = function(id, callback) {
+	abstract.lookupByValue('user', 'ID', id, callback);
 }
 
 // List all users
