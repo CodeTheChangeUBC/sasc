@@ -1,14 +1,14 @@
 INSERT INTO user (ID, username, age, gender, phoneNumber, email, password)
-VALUES (1, "Dot", 18, "female", "07734", "dot@example.com", "ovo!!!!!!");
+VALUES (1, "Dot", 18, "cis woman", "07734", "dot@example.com", "ovo!!!!!!");
 
 INSERT INTO user (ID, username, age, gender, phoneNumber, email, password)
-VALUES (2, "stringbean", 18, "male", "55378008", "stringbean@example.com", "late");
+VALUES (2, "stringbean", 18, "cis man", "55378008", "stringbean@example.com", "late");
 
 INSERT INTO user (ID, username, age, gender, phoneNumber, email, password)
 VALUES (3, "vegetable", 18, "non-binary", "379009", "vegetable@example.com", "chili");
 
 INSERT INTO user (ID, username, age, gender, phoneNumber, email, password)
-VALUES (4, "potato", 18, "transgender female", "004008", "tomato@example.com", "tomato");
+VALUES (4, "potato", 18, "trans woman", "004008", "tomato@example.com", "tomato");
 
 INSERT INTO counsellor (ID, firstName, lastName, email, password)
 VALUES (1, "Bean", "McFluff", "beanmcfluff@example.com", "beanisapug");
