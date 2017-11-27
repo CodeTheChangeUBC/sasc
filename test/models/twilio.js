@@ -23,6 +23,18 @@ describe('SESSION TESTS', function() {
 		setup.resetDb(db,app,done);
 	});
 
+	var email = "email3@email3.com";
+	var twilioPhoneNumber = '6040001111';
+	var accountSid = '98889998898';
+	var authToken = 'AUUTHTHSHZHZH';
+
+	var twilio = {
+		email: email,
+		twilioPhoneNumber: twilioPhoneNumber,
+		accountSid: accountSid,
+		authToken: authToken
+	}
+
 	// Ensure test setup was correct
 	describe('Setup', function() {
 		it ('should be 2', function(done) {
@@ -33,6 +45,52 @@ describe('SESSION TESTS', function() {
 			});
 		});		
 	});	
+
+	// Add Twilios
+	describe('Create', () => {
+		
+		it('should create new twilio', function(done) {
+			Twilio.create(twilio, () => {
+				Twilio.count((count,err) => {
+					expect(count).to.equal(setup.twilioCount+1);
+					done();
+				});					
+			});
+		});
+
+	});
+
+	describe('Retrieval', function() {
+
+		it('should retrieve by values', function(done) {
+			Twilio.retrieveByValues(twilio, (err,result) => {
+				expect(result).to.be.an('array');
+				expect(result[0]).to.include({'ID':setup.twilioCount+1});
+				done();
+			});
+		})
+
+		it('should retrieve by id', function(done) {
+			Twilio.retrieveByID(setup.twilioCount+1, (err,twil) => {
+				expect(twil).to.include({'ID': setup.twilioCount+1});
+				done();
+			})
+		})
+	});
+
+	describe('Updating', function() {
+		it('should change email of twilio', function(done) {
+			var new_email = "new@email.ca";
+			Twilio.update(setup.twilioCount+1, {'email': new_email}, function(err, twil) {
+				if (err) done(err);
+				Twilio.retrieveByID(setup.twilioCount+1, (err,twil) => {
+					expect(String(twil.email)).to.equal(new_email);
+					done();
+				});
+			});
+		});
+	});
+
 
 	
 });

@@ -147,6 +147,7 @@ exports.userCount = 2;
 exports.counsellorCount = 2;
 exports.sessionCount = 2;
 exports.messageCount = 2;
+exports.twilioCount = 2;
 
 // Wipe test db of all models
 exports.resetDb = function(db,app,done) {

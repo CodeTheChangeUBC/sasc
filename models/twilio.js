@@ -15,6 +15,12 @@ exports.retrieveByValues = function(t, callback) {
 	abstract.retrieveByValues('twilio', values, valueNames, callback);
 }
 
+// Retrieve twilio by id
+exports.retrieveByID = function(id, callback) {
+	abstract.retrieve('twilio', id, null, callback);
+}
+
+
 // Update twilio 
 //  - id is ID of twilio object to be updated
 // - vals is a dictionary containing the values to be updated. 
