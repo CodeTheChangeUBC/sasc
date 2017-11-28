@@ -150,7 +150,7 @@ describe('SESSION TESTS', function() {
 			});
 		});
 
-		it('should not destroy not existent session', function(done) {
+		it('should not destroy non existent session', function(done) {
 			Session.count(count => {
 				Session.destroy(setup.sessionCount+2, (err, res) => {
 					if (err) done(err);

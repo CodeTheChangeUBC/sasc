@@ -91,6 +91,32 @@ describe('SESSION TESTS', function() {
 		});
 	});
 
+	describe('Deleting', function() {
+		it('should destroy session', function(done) {
+			Twilio.count(count => {
+				Twilio.destroy(setup.twilioCount+1, (err, res) => {
+					if (err) done(err);
+					Twilio.count(newCount => {
+						expect(newCount).to.equal(count-1);
+						done();
+					});
+				});
+			});
+		});
+
+		it('should not destroy non existent session', function(done) {
+			Twilio.count(count => {
+				Twilio.destroy(setup.twilioCount+2, (err, res) => {
+					if (err) done(err);
+					Twilio.count(newCount => {
+						expect(newCount).to.equal(count);
+						done();
+					});
+				});
+			});
+		})
+	});
+
 
 	
 });
