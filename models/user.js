@@ -5,7 +5,7 @@ const abstract = require('./abstract.js');
 // TODO: Encrypt password
 exports.create = function(req, res, callback) {
 	var values = {
-	    username: req.body.username,
+	    username: req.body.username.toLowerCase(),
 		age: parseInt(req.body.age), 
 		gender: req.body.gender,
 		phoneNumber: req.body.phoneNumber,
