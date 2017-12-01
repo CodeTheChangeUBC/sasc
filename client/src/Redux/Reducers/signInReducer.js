@@ -2,7 +2,7 @@ import { SIGN_IN , SIGN_OUT } from './../Actions/signInActions';
 
 const initialState = {
   signedIn: false,
-  phoneNumber: null,
+  username: null,
 }
 
 const signInReducer = (state = initialState, action) => {
@@ -10,12 +10,12 @@ const signInReducer = (state = initialState, action) => {
     case SIGN_IN:
       return {
         signedIn: true,
-        phoneNumber: action.payload.phoneNumber
+        username: action.payload.username
       };
     case SIGN_OUT:
       return {
         signedIn: false,
-        phoneNumber: null
+        username: null
       };
     default:
       return state;

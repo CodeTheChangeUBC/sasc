@@ -33,8 +33,8 @@ const Form = ({
         </select>
         </label>
     }
-    <label>Phone Number:
-      <input type="text" name="phoneNumber" onChange={onChange}/>
+    <label>Username:
+      <input type="text" name="username" onChange={onChange}/>
     </label>
     <label>Password:
       <input type="password" name="password" required onChange={onChange}/>
