@@ -4,13 +4,14 @@ const User = require('../models/user');
 const Counsellor = require('../models/counsellor');
 const config = require('../config');
 
-function tokenForUser(user) {
-    const timestamp = new Date().getTime();
-    return jwt.encode({ sub: user.ID, iat: timestamp }, config.secret);
+function tokenForUser(user, role) {
+    const timestamp = new Date().getTime();                         // in milliseconds
+    const expiry = (new Date().getTime() + 60 * 60 * 1000)/1000;    // An hour from now (in seconds)
+    return jwt.encode({ sub: user.ID, iat: timestamp, exp: expiry, role: role }, config.secret);
 }
 
 exports.signin = function(req, res) {
-    res.send({ token: tokenForUser(req.user) });
+    res.send({ token: tokenForUser(req.user, 'user') });
 }
 
 exports.signup = function(req, res, next) {
@@ -49,7 +50,7 @@ exports.signup = function(req, res, next) {
             user = result;
             req.body.password = result.password;
 
-            User.create(req, res, function(err, result) {
+            User.create(user, res, function(err, result) {
                 if (err) { res.status(422).send({ error: 'Cannot create user.'}); }
 
                 User.lookupIdByUsername(username, function(err, result) {
@@ -60,7 +61,75 @@ exports.signup = function(req, res, next) {
                     user.ID = result;
                     
                     // Send token back to client
-                    res.json({ token: tokenForUser(user) });
+                    res.json({ token: tokenForUser(user, 'user') });
+                });
+            
+            });
+        
+        });
+    
+    });
+
+}
+
+// Authentication for counsellors
+
+exports.signinCounsellor = function(req, res) {
+    res.send({ token: tokenForUser(req.user, 'counsellor') });
+}
+
+exports.signupCounsellor = function(req, res, next) {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const password = req.body.password;
+    
+    if (!email || !password) {
+        return res.status(422).send({ error: 'You must provide email and password.' });
+    }
+
+    console.log("there is email and password")
+
+    // Check if counsellor with this email already exists
+    Counsellor.lookupByEmail(email, function(err, existingCounsellor) {
+
+        if (err) { console.log("error"); throw err; }
+
+        // If a counsellor with the email already exists, return an error
+        if (existingCounsellor) {
+            console.log("email is in use")
+            console.log(existingCounsellor)
+            return res.status(422).send({ error: 'Email is in use' });
+        }
+
+        var counsellor = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
+        };
+        console.log("counsellor created")
+        Abstract.process(counsellor, function (result) {
+            counsellor = result;
+            req.body.password = result.password;
+            console.log("password hashed")
+            console.log(counsellor)
+            Counsellor.create(counsellor, res, function(err, result) {
+                if (err) { res.status(422).send({ error: 'Cannot create counsellor.'}); }
+                console.log("create returns")
+                console.log(result);
+                Counsellor.lookupIdByEmail(email, function(err, result) {
+                    if (err) { console.log("error"); throw err; }
+
+                    if (!result) { console.log("email doesn't exist"); res.status(422).send({ error: 'Email does not exist.' }); }
+
+                    console.log("counsellor id")
+                    console.log(result);
+                    req.body.ID = result;
+                    counsellor.ID = result;
+                    
+                    // Send token back to client
+                    res.json({ token: tokenForUser(counsellor, 'counsellor') });
                 });
             
             });
