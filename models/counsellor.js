@@ -4,6 +4,7 @@ const abstract = require('./abstract');
 // Create counsellor from post request
 exports.create = function(values, res, callback) {
 	values['email'] = values['email'].toLowerCase();
+	console.log("inside counsellor create");
 	abstract.createCallbackVer('counsellor', values, res, callback);
 }
 
@@ -19,9 +20,7 @@ exports.update = function(req, res) {
 		
 	}
 	// Add password if there
-	if (req.body.password) {
-		values['password'] = req.body.password;
-	}
+	if (req.body.password) { values['password'] = req.body.password; }
 	// then update counsellor
 	abstract.update('counsellor', values, counsellor.ID, res);	
 }

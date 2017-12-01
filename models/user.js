@@ -34,9 +34,7 @@ exports.update = function(req, res) {
 		//password: req.body.password ? req.body.password : user.password,
 	}
 	// Is password being updated?
-	if (req.body.password) {
-		values['password'] = req.body.password;
-	}
+	if (req.body.password) { values['password'] = req.body.password; }
 	abstract.update('user', values, user.ID, res);	
 }
 

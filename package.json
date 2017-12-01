@@ -30,7 +30,6 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
-    "passport-local-roles": "^1.0.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",

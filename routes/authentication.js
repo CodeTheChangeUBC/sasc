@@ -108,7 +108,7 @@ exports.signupCounsellor = function(req, res, next) {
             email: email,
             password: password
         };
-        console.log("counsellor created")
+        console.log("counsellor object created")
         Abstract.process(counsellor, function (result) {
             counsellor = result;
             req.body.password = result.password;

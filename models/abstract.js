@@ -1,3 +1,4 @@
+"use strict";
 // Abstract model which implements common methods 
 // for all models 
 
@@ -22,23 +23,20 @@ exports.create = function(model, values, res, callback) {
 			});
 		});
 	}).catch(error => {
-		if (callback) callback(error);
-		else httpResponse(error, 400, null, null, res)
+		if (callback) { callback(error); }
+		else { httpResponse(error, 400, null, null, res); }
 	});
 }
 
 /// Second version of create
 exports.createCallbackVer = function(model, values, res, callback) {
-	console.log("abstract")
+	console.log(model);
+	console.log(values);
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
 		function(err, results) {
-			if (err) { 
-				console.log("abstract error")
-				callback(err, null);
-			}
-			else { 
-				console.log("abstract success")
-				callback(null, "success"); }
+			if (err) { console.log("hey"); callback(err, null); }
+
+			else { console.log("yup"); callback(null, "success"); }
 		});
 }
 
@@ -46,12 +44,10 @@ exports.createCallbackVer = function(model, values, res, callback) {
 exports.process = function(values, callback) {
 	if (values.password) {
 	    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
-	    	values.password = hash
-	        callback(values)
-		})
-	} else {
-		callback(values)
-	}
+	    	values.password = hash;
+	        callback(values);
+		});
+	} else { callback(values); }
 }
 
 // compare password
@@ -70,8 +66,8 @@ exports.destroy = function(model, id, res, callback) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
 		function(err, result) {
-			if (res) httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res);
-			else noHttpResponse(err, result, callback)
+			if (res) { httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res); }
+			else { noHttpResponse(err, result, callback); }
 		});
 }
 
@@ -82,8 +78,8 @@ exports.destroy = function(model, id, res, callback) {
 // (not including id)
 exports.update = function(model, values, id, res, callback) {
 	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			if (res) httpResponse(err, 400, results, 200, res);
-			else noHttpResponse(err, results, callback)
+			if (res) { httpResponse(err, 400, results, 200, res); }
+			else { noHttpResponse(err, results, callback); }
 	});
 }
 
@@ -108,7 +104,7 @@ exports.retrieveByValues = function(model, values, valueNames, callback) {
 	query += fieldQueries(valueNames,1);
 	db.get().query(query, values, function(err,results,fields) {
 			console.log('Error: ' + err);
-			if (err) callback(err);
+			if (err) { callback(err); }
 			callback(null, results);
 		});
 }
@@ -119,8 +115,8 @@ exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback)
+			if (res) { httpResponse(err, 400, result[0], 200, res); }
+			else { noHttpResponse(err, result[0], callback); }
 		});
 }
 
@@ -157,7 +153,7 @@ exports.list = function(model, res) {
 exports.count = function(model) {	
 	return new Promise(function(fulfill, reject) {
 		db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err,results,fields) {			
-			if (err) reject(err);
+			if (err) { reject(err); }
 			fulfill(results[0].count);
 		});	
 	});
@@ -165,8 +161,8 @@ exports.count = function(model) {
 
 exports.countCallbackVer = function(model, callback) {	
 	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
-		if (err) callback(err, null);
-		else callback(null, results[0].count);
+		if (err) { callback(err, null); }
+		else { callback(null, results[0].count); }
 	});
 }
 
@@ -178,7 +174,7 @@ exports.countCallbackVer = function(model, callback) {
 exports.destroyAll = function(model) {
 	return new Promise(function(fulfill, reject) {
 		db.get().query('DELETE FROM '+model, function(err,result) {
-			if (err) reject(err);
+			if (err) { reject(err); }
 			fulfill();
 		});
 	});
@@ -191,7 +187,7 @@ exports.destroyAll = function(model) {
 exports.listByForeignKey = function(model, fk, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
 		function(err, results, fields) {
-			if (err) callback(err);
+			if (err) { callback(err); }
 			callback(null,results);
 		});
 }
@@ -201,8 +197,8 @@ exports.listByForeignKey = function(model, fk, id, callback) {
 // - data is data to return
 // - toCall is function to call
 function noHttpResponse(err,data,toCall) {
-	if (err) toCall(err);
-	else toCall(null,data);
+	if (err) { toCall(err); }
+	else { toCall(null,data); }
 }
 
 // Function to call when returning data or error in Http response
@@ -219,7 +215,7 @@ function computeUnknowns(len) {
 	var unknowns = '(';
 	for (var j=0; j<len; j++) {
 		unknowns += '?'
-		if (j!=len-1) unknowns += ', ';
+		if (j!=len-1) { unknowns += ', '; }
 	}
 	unknowns += ')';	
 	return unknowns;
@@ -233,8 +229,8 @@ function fieldQueries(fields, and) {
 	for (var j=0; j<fields.length; j++) {
 		query += ' '+fields[j]+'=?';
 		if (j!=fields.length-1) {
-			if (and) query += ' AND'
-			else query += ',' 
+			if (and) { query += ' AND'; }
+			else { query += ','; }
 		}
 	}
 	return query;
