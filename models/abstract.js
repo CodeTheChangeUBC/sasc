@@ -107,6 +107,7 @@ exports.retrieveByValues = function(model, values, valueNames, callback) {
 	var query = 'SELECT * FROM '+model+' WHERE';
 	query += fieldQueries(valueNames,1);
 	db.get().query(query, values, function(err,results,fields) {
+			console.log('Error: ' + err);
 			if (err) callback(err);
 			callback(null, results);
 		});
