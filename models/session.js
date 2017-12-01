@@ -4,14 +4,7 @@ const abstract = require('./abstract.js')
 // Create session
 // - s is a session
 exports.create = function(s, callback) {
-	var values = {
-		beginTime: s.beginTime, 
-		endTime: s.endTime, 
-		counsellorID: s.counsellorID, 
-		userID: s.userID
-	}
-	//var valueNames = '(ID, beginTime, endTime, counsellorID, userID)';
-	abstract.create('session', values, null, callback)
+	abstract.create('session', s, null, callback)
 
 }
 
