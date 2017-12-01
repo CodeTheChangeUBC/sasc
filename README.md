@@ -71,5 +71,17 @@ To run the specific test file `./test/<feature-name>/<test-name>.js`:
 mocha ./test/<feature-name>/<test-name>.js
 ```
 
+### Style Guide
 
+#### If Statements
 
+* When the block that follows an if statement only has one statement, put a curly brace around the statement and keep it on the same line as the boolean condition.
+
+An example:
+```
+if (pet === "cat") { cat(); }
+
+else if (pet === "dog") { dog(); }
+
+else { bird(); }
+```
