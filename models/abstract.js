@@ -29,14 +29,17 @@ exports.create = function(model, values, res, callback) {
 
 /// Second version of create
 exports.createCallbackVer = function(model, values, res, callback) {
+	console.log("abstract")
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
-		(err, results) => {
-			if (res) { 
-				callback(null, values); }
-			else { 
-				callback(err, null); 
+		function(err, results) {
+			if (err) { 
+				console.log("abstract error")
+				callback(err, null);
 			}
-	});
+			else { 
+				console.log("abstract success")
+				callback(null, "success"); }
+		});
 }
 
 // Hash password
