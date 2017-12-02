@@ -10,8 +10,6 @@ const requireAuthCounsellor = passport.authenticate('jwt-counsellor', { session:
 const requireSigninUser = passport.authenticate('local-user', { session: false });
 const requireSigninCounsellor = passport.authenticate('local-counsellor', { session: false });
 
-const Abstract = require('../models/abstract');
-const User = require('../models/user');
 
 module.exports = function(app) {
     app.get('/sms', requireAuthCounsellor, function(req, res) {

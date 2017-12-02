@@ -4,7 +4,6 @@ const abstract = require('./abstract');
 // Create counsellor from post request
 exports.create = function(values, res, callback) {
 	values['email'] = values['email'].toLowerCase();
-	console.log("inside counsellor create");
 	abstract.createCallbackVer('counsellor', values, res, callback);
 }
 

@@ -84,23 +84,15 @@ exports.signupCounsellor = function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
     
-    if (!email || !password) {
-        return res.status(422).send({ error: 'You must provide email and password.' });
-    }
-
-    console.log("there is email and password")
+    if (!email || !password) { return res.status(422).send({ error: 'You must provide email and password.' }); }
 
     // Check if counsellor with this email already exists
     Counsellor.lookupByEmail(email, function(err, existingCounsellor) {
 
-        if (err) { console.log("error"); throw err; }
+        if (err) { throw err; }
 
         // If a counsellor with the email already exists, return an error
-        if (existingCounsellor) {
-            console.log("email is in use")
-            console.log(existingCounsellor)
-            return res.status(422).send({ error: 'Email is in use' });
-        }
+        if (existingCounsellor) { return res.status(422).send({ error: 'Email is in use' }); }
 
         var counsellor = {
             firstName: firstName,
@@ -108,23 +100,19 @@ exports.signupCounsellor = function(req, res, next) {
             email: email,
             password: password
         };
-        console.log("counsellor object created")
+
         Abstract.process(counsellor, function (result) {
             counsellor = result;
             req.body.password = result.password;
-            console.log("password hashed")
-            console.log(counsellor)
+
             Counsellor.create(counsellor, res, function(err, result) {
                 if (err) { res.status(422).send({ error: 'Cannot create counsellor.'}); }
-                console.log("create returns")
-                console.log(result);
+
                 Counsellor.lookupIdByEmail(email, function(err, result) {
-                    if (err) { console.log("error"); throw err; }
+                    if (err) { throw err; }
 
-                    if (!result) { console.log("email doesn't exist"); res.status(422).send({ error: 'Email does not exist.' }); }
+                    if (!result) { res.status(422).send({ error: 'Email does not exist.' }); }
 
-                    console.log("counsellor id")
-                    console.log(result);
                     req.body.ID = result;
                     counsellor.ID = result;
                     

@@ -46,7 +46,7 @@ const localLoginCounsellor = new LocalStrategy(localOptionsCounsellor, function(
             if (err) { return done(err); }
             if (!isMatch) { return done(null, false); }
 
-            return done(null, user);
+            return done(null, counsellor);
         });
     });
 });

@@ -27,7 +27,7 @@ CREATE TABLE counsellor (
 	firstName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
 	email VARCHAR(256) NOT NULL,
-	password VARCHAR(30) NOT NULL,
+	password VARCHAR(60) NOT NULL,
 	UNIQUE(email),
 	PRIMARY KEY (ID)
 );

@@ -14,7 +14,7 @@ INSERT INTO counsellor (ID, firstName, lastName, email, password)
 VALUES (1, "Bean", "McFluff", "beanmcfluff@example.com", "beanisapug");
 
 INSERT INTO counsellor (ID, firstName, lastName, email, password)
-VALUES (2, "Fox", "McCloud", "foxmcloud@example.com", "corneria");
+VALUES (2, "Fox", "McCloud", "foxmccloud@example.com", "corneria");
 
 INSERT INTO session (ID, beginTime, endTime, counsellorID, userID)
 VALUES (1, "1970-01-01 00:00:01", "1980-01-01 00:00:01", 1, 1);
