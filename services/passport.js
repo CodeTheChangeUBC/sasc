@@ -64,11 +64,13 @@ const jwtLoginUser = new JwtStrategy(jwtOptions, function(payload, done) {
         User.lookupById(payload.sub, function(err, user) {
             if (err) { return done(err, false); }
 
-            if (user) { done(null, user); } 
+            if (user) { return done(null, user); } 
 
-            else { done(null, false); }
+            else { return done(null, false); }
         });
     }
+
+    else { return done(null, false); }
 });
 
 const jwtLoginCounsellor = new JwtStrategy(jwtOptions, function(payload, done) {
@@ -77,11 +79,13 @@ const jwtLoginCounsellor = new JwtStrategy(jwtOptions, function(payload, done) {
         Counsellor.lookupById(payload.sub, function(err, counsellor) {
             if (err) { return done(err, false); }
 
-            if (counsellor) { done(null, counsellor); } 
+            if (counsellor) { return done(null, counsellor); } 
 
-            else { done(null, false); }
+            else { return done(null, false); }
         });
-    }  
+    }
+
+    else { return done(null, false); }
 });
 
 passport.use("jwt-user", jwtLoginUser);

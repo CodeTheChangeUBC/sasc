@@ -51,12 +51,12 @@ exports.signup = function(req, res, next) {
             req.body.password = result.password;
 
             User.create(user, res, function(err, result) {
-                if (err) { res.status(422).send({ error: 'Cannot create user.'}); }
+                if (err) { return res.status(422).send({ error: 'Cannot create user.'}); }
 
                 User.lookupIdByUsername(username, function(err, result) {
                     if (err) { throw err; }
 
-                    if (!result) { res.status(422).send({ error: 'Username does not exist.' }); }
+                    if (!result) { return res.status(422).send({ error: 'Username does not exist.' }); }
                     req.body.ID = result;
                     user.ID = result;
                     
@@ -106,12 +106,12 @@ exports.signupCounsellor = function(req, res, next) {
             req.body.password = result.password;
 
             Counsellor.create(counsellor, res, function(err, result) {
-                if (err) { res.status(422).send({ error: 'Cannot create counsellor.'}); }
+                if (err) { return res.status(422).send({ error: 'Cannot create counsellor.'}); }
 
                 Counsellor.lookupIdByEmail(email, function(err, result) {
                     if (err) { throw err; }
 
-                    if (!result) { res.status(422).send({ error: 'Email does not exist.' }); }
+                    if (!result) { return res.status(422).send({ error: 'Email does not exist.' }); }
 
                     req.body.ID = result;
                     counsellor.ID = result;
