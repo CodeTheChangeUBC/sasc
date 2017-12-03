@@ -10,10 +10,10 @@ const Form = ({
 }) => (
   <form onSubmit={onSubmit}>
     {username &&
-	    <label>Username:
-		  <input type="text" name="username" onChange={onChange}/>
-		</label>
-	}
+      <label>Username:
+      <input type="text" name="username" onChange={onChange}/>
+    </label>
+  }
     {age &&
         <label>Age:
           <input type="number" name="age" onChange={onChange}/>
@@ -22,13 +22,13 @@ const Form = ({
     {gender &&
         <label>Gender:
         <select onChange={onChange} name="gender">
-		  <option value="no-select">Please select</option>
+      <option value="no-select">Please select</option>
           <option value="cis-woman">Cis woman</option>
-		  <option value="cis-man">Cis man</option>
+      <option value="cis-man">Cis man</option>
           <option value="non-binary">Non-binary</option>
           <option value="trans-woman">Trans woman</option>
           <option value="trans-man">Trans man</option>
-		  <option value="two-spirit">Two Spirit</option>
+      <option value="two-spirit">Two Spirit</option>
           <option value="other">Other</option>
         </select>
         </label>
@@ -42,5 +42,13 @@ const Form = ({
     <input type="submit" value="Submit" />
   </form>
 );
+
+Form.propTypes = {
+    username: PropTypes.bool,
+    age: PropTypes.bool,
+    gender: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onChange: PropTypes.func
+};
 
 export default Form;
