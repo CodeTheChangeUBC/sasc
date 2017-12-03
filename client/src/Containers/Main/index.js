@@ -16,7 +16,7 @@ class Main extends Component {
           <Route path="/chat" component={Chat}/>
           <Route path="/login" component={Login}/>
           <Route path="/register" component={Register}/>
-          <Route path="/smssettings" component={SMSSettings}/>
+          <Route path="/sms" component={SMSSettings}/>
         </Switch>
       </div>
     );

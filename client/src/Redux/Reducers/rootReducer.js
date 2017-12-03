@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   messages,
   rooms,
   activeRoom,
-  signInReducer
+  signInReducer,
   smssettings
 });
 

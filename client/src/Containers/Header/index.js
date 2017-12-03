@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SMS from "../SMS/index";
 import { Link } from 'react-router-dom';
 import './styles.css';
 
