@@ -23,10 +23,3 @@ module.exports = function(app) {
     app.post('/signup', Authentication.signup);
     app.post('/signupcounsellor', Authentication.signupCounsellor);
 }
-
-/* GET home page. */
-/*router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;*/

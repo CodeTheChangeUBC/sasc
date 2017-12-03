@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import SMS from "../SMS/index";
-import { 
-  BrowserRouter,
-  Route,
-  Link,
-  Redirect,
-  withRouter,
-  PrivateRoute
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './styles.css';
 
 class Header extends Component {

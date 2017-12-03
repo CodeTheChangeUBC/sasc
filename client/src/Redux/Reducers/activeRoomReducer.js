@@ -1,4 +1,4 @@
-import initialState from './initialState'
+import initialState from './initialState';
 
 export default function activeRoomReducer(state = initialState.activeRoom, action) {
  
@@ -7,11 +7,11 @@ export default function activeRoomReducer(state = initialState.activeRoom, actio
       return Object.assign({}, state.activeRoom, {
         title: action.room.title,
         messages: action.room.messages
-      })
+      });
     case 'NEW_MESSAGE': 
       return Object.assign({}, action.payload.room, { 
         messages: [...action.payload.room.messages, action.payload.newMessage]
-      }) 
+      });
     default:
      return state; 
   }
