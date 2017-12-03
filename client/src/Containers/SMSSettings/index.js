@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Sms from "./../../Components/Sms";
+import Display from "./Display";
 import "./styles.css";
 
 import { fetchSMSSettings } from "../../Redux/Actions/smsActions";
 
 class SMSSettings extends Component {
-
+  /*
   constructor() {
     super();
 
@@ -17,7 +19,7 @@ class SMSSettings extends Component {
 
   componentDidMount() {
     var settingsObj = this.props.fetchSMSSettings();
-    this.setState(JSON.parse(settingsObj));
+    //this.setState(JSON.parse(settingsObj));
   }
 
   componentDidUpdate() {
@@ -45,65 +47,14 @@ class SMSSettings extends Component {
     };
     //this.props.fetchSMSSettings();
   }
-
+  */
   render() {
     return (
       <div className="SMSSettings">
         <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <h2>SMS To Email Settings</h2>
-              
-              <form>
-                <div className="form-group">
-                  <label className="control-label">Chat Contact Main Email:</label>
-                  <input type="email" className="form-control" id="email" />
-                </div>
-                <div className="form-group">  
-                  <label className="control-label">Twilio Phone Number:</label>
-                  <input type="text" className="form-control" id="twilio-phone" />
-                </div>
-                <div className="form-group">
-                  <label className="control-label">Twilio Account SID:</label>
-                  <input type="text" className="form-control" id="twilio-accountsid" />
-                </div>
-                <div className="form-group">
-                  <label className="control-label">Twilio Auth Token:</label>
-                  <input type="text" className="form-control" id="twilio-authtoken" />
-                </div>
-                  <button type="submit" className="btn btn-primary" name="submit">Submit</button>
-              </form>
-        
-            </div>
-            <div className="col-md-6">
-              <h4>Current Settings</h4>
-              <ul className="list-group">
-                <li className="list-group-item">
-                  <div className="list-item">
-                    <p>Email: </p>
-                    {this.state.email}
-                  </div>
-                </li>
-                <li className="list-group-item">
-                  <div className="list-item">
-                    <p>Twilio Phone Number: </p>
-                    {this.state.twilioPhoneNumber}
-                  </div>
-                </li>
-                <li className="list-group-item">
-                  <div className="list-item">
-                    <p>Twilio Account Sid: </p>
-                    {this.state.accountSid}
-                  </div>
-                </li>
-                <li className="list-group-item">
-                  <div className="list-item">
-                    <p>Twilio Auth Token: </p>
-                    {this.state.authToken}
-                  </div>
-                </li>
-              </ul>
-            </div>
+          <div className="row">                         
+            <Sms />           
+            {/* <Display /> */}
           </div>
         </div>
       </div>
@@ -126,10 +77,12 @@ SMSSettings.propTypes = {
     "smssettings": PropTypes.object
 };
 
-function mapStateToProps(state) {
+/*function mapStateToProps(state) {
   return { 
     smssettings: state.smssettings
   };
 }
 
-export default connect(mapStateToProps, { fetchSMSSettings })(SMSSettings);
+export default connect(mapStateToProps, { fetchSMSSettings })(SMSSettings);*/
+
+export default SMSSettings;
