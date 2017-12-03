@@ -2,8 +2,8 @@ import { SIGN_IN , SIGN_OUT } from './../Actions/signInActions';
 
 const initialState = {
   signedIn: false,
-  username: null,
-}
+  username: null
+};
 
 const signInReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -20,6 +20,6 @@ const signInReducer = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default signInReducer;

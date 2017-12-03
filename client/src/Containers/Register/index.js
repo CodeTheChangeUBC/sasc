@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import Form from './../../Components/Form/';
+import PropTypes from 'prop-types';
 import './styles.css';
 import { signIn } from './../../Redux//Actions/signInActions';
 
@@ -12,7 +13,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-	  username: null,
+    username: null,
       age: null,
       gender: null,
       phoneNumber: null,
@@ -53,7 +54,7 @@ class Register extends Component {
       <div className="Register">
         <h2>Register</h2>
         <Form
-		  username
+      username
           age
           gender
           onSubmit={this.handleOnSubmit}
@@ -67,7 +68,11 @@ class Register extends Component {
 const mapDispatchToProps = dispatch => ({
   signUpUser: (data) => {
     dispatch(signIn(data));
-  },
+  }
 });
+
+Register.propTypes = {
+    dispatch: PropTypes.func
+};
 
 export default connect(mapDispatchToProps)(Register);

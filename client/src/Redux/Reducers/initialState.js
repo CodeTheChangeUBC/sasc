@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export default {
   messages: [
     { user: 'ChatBot',
