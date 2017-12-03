@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as messageActions from '../../Redux/Actions/messageActions';
 import { bindActionCreators } from 'redux';
-import uuid from 'uuid';
+import MessageBox from './MessageBox';
+import PropTypes from 'prop-types';
 import './styles.css';
+
+import io from 'socket.io-client';
+const socket = io('http://localhost:3000');
 
 class Chat extends Component {
 
@@ -34,7 +38,7 @@ class Chat extends Component {
   }
 
    _handleMessageEvent(){
-    console.log('Wait for it...')
+    console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
       console.log('received message', inboundMessage);
@@ -53,7 +57,7 @@ class Chat extends Component {
   }
 
   render() {
-    console.log('messages is...', this.props.messages)
+    console.log('messages is...', this.props.messages);
     return (
       <div className="Chat">
         <MessageBox msgs={this.props.messages} />
@@ -66,39 +70,6 @@ class Chat extends Component {
   }
 }
 
-/*
-
-TODO:
-move this to a separate comp
-
-*/
-class MessageBox extends Component {
-  render() {
-    return(
-      <div className='messageBox'>
-        {this.props.msgs.map(({message,user}) => 
-          <div key={uuid.v4()}>
-            <MessageInstance
-              user={user}
-              message={message}
-            />
-          </div>
-        )}
-      </div>
-    )}
-}
-
-class MessageInstance extends Component {
-  render() {
-    return(
-        <div className='messageInstance'>
-          {this.props.user} {this.props.message}
-        </div>
-      )
-  }
-}
-
-
 function mapStateToProps(state, ownProps) {
   return { messages: state.activeRoom.messages, room: state.activeRoom };
 }
@@ -106,5 +77,15 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch);
 }
+
+Chat.propTypes = {
+    messages: PropTypes.array,
+    room: PropTypes.object,
+    "room.title": PropTypes.string,
+    newMessage: PropTypes.func,
+    msgs: PropTypes.array,
+    user: PropTypes.string,
+    message: PropTypes.string
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
