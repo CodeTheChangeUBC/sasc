@@ -6,8 +6,6 @@ import Sms from "./../../Components/Sms";
 import Display from "./Display";
 import "./styles.css";
 
-import { fetchSMSSettings } from "../../Redux/Actions/smsActions";
-
 class SMSSettings extends Component {
   /*
   constructor() {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
 import RenderInput from './../RenderInput';
+import * as actions from '../../Redux/Actions/smsActions';
 import PropTypes from 'prop-types';
 
 class Sms extends Component {
@@ -45,6 +47,14 @@ Sms.propTypes = {
     handleSubmit: PropTypes.func
 };
 
-export default reduxForm({
-    form: 'sms'
+function mapStateToProps(state) {
+    return { form: state.form };
+}
+
+Sms = connect(mapStateToProps, actions)(Sms);
+
+Sms = reduxForm({
+ form: 'sms'
 })(Sms);
+
+export default Sms;

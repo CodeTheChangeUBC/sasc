@@ -12,13 +12,13 @@ const requireSigninCounsellor = passport.authenticate('local-counsellor', { sess
 
 
 module.exports = function(app) {
-    app.get('/sms', requireAuthCounsellor, function(req, res) {
+    app.get('/sms', function(req, res) {
         res.send({ hello: 'world' });
     });
     app.get('/useronly', requireAuthUser, function(req, res) {
         res.send({ no: 'counsellors allowed'});
     });
-    app.post('/signinCounsellor', requireSigninCounsellor, Authentication.signinCounsellor);
+    app.post('/signincounsellor', requireSigninCounsellor, Authentication.signinCounsellor);
     app.post('/signin', requireSigninUser, Authentication.signin);
     app.post('/signup', Authentication.signup);
     app.post('/signupcounsellor', Authentication.signupCounsellor);

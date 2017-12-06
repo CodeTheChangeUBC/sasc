@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
 import RenderInput from './../RenderInput';
+import * as actions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
 
@@ -8,6 +10,7 @@ class SignupCounsellor extends Component {
     handleFormSubmit({ firstName, lastName, email, password }) {
         console.log(firstName, lastName, email, password);
         // TODO: Register
+        this.props.signupCounsellor({ firstName, lastName, email, password });
     }
 
     render() {
@@ -38,9 +41,18 @@ class SignupCounsellor extends Component {
 }
 
 SignupCounsellor.propTypes = {
-    handleSubmit: PropTypes.func
+    handleSubmit: PropTypes.func,
+    signupCounsellor: PropTypes.func
 };
 
-export default reduxForm({
-    form: 'signupcounsellor'
+function mapStateToProps(state) {
+    return { form: state.form };
+}
+
+SignupCounsellor = connect(mapStateToProps, actions)(SignupCounsellor);
+
+SignupCounsellor = reduxForm({
+ form: 'signupcounsellor'
 })(SignupCounsellor);
+
+export default SignupCounsellor;
