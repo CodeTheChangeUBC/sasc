@@ -1,91 +1,87 @@
-const passport = require('passport');
-const Abstract = require('../models/abstract');
-const User = require('../models/user');
-const Counsellor = require('../models/counsellor');
-const config = require('../config');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const LocalStrategy = require('passport-local');
+const passport = require("passport");
+const Abstract = require("../models/abstract");
+const User = require("../models/user");
+const Counsellor = require("../models/counsellor");
+const config = require("../config");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const LocalStrategy = require("passport-local");
 
-const localOptionsUser = { 
-    usernameField: 'username',
+const localOptionsUser = {
+    usernameField: "username",
     session: false
 };
 
 const localOptionsCounsellor = {
-    usernameField: 'email',
+    usernameField: "email",
     session: false
-}
+};
 
-const localLoginUser = new LocalStrategy(localOptionsUser, function(username, password, done) {
-    // Retrieve user by username and compare hashed password
+function abstractLocalLogin(identifier, password, done, lookupUser, encryptPassword) {
+    // Retrieve user by identifier and compare hashed password
     // from database with the given password hashed
-    User.lookupByUsername(username, function(err, user) {
-        if (err) { return done(err); }
-        
-        if (!user) { return done(null, false); }
+    lookupUser(identifier, function (err, user) {
+        if (err) {
+            return done(err);
+        }
 
-        Abstract.comparePassword(password, user.password, function(err, isMatch) {
-            if (err) { return done(err); }
-            if (!isMatch) { return done(null, false); }
+        if (!user) {
+            return done(null, false);
+        }
+
+        encryptPassword(password, user.password, function (err, isMatch) {
+            if (err) {
+                return done(err);
+            }
+
+            if (!isMatch) {
+                return done(null, false);
+            }
 
             return done(null, user);
         });
 
     });
+}
 
-});
-
-const localLoginCounsellor = new LocalStrategy(localOptionsCounsellor, function(email, password, done) {
-    
-    Counsellor.lookupByEmail(email, function(err, counsellor) {
-        if (err) { return done(err); }
-        if (!counsellor) { return done(null, false); }
-
-        Abstract.comparePassword(password, counsellor.password, function(err, isMatch) {
-            if (err) { return done(err); }
-            if (!isMatch) { return done(null, false); }
-
-            return done(null, counsellor);
-        });
-    });
-});
-
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-    secretOrKey: config.secret
-};
-
-const jwtLoginUser = new JwtStrategy(jwtOptions, function(payload, done) {
+function abstractJwtLogin(payload, done, role, lookupById) {
     // lookup user by user id from payload subject
     // and return the user object if found
     // or false if not found
-    if (payload.role === "user") {
-        User.lookupById(payload.sub, function(err, user) {
-            if (err) { return done(err, false); }
-
-            if (user) { return done(null, user); } 
-
-            else { return done(null, false); }
+    if (payload.role === role) {
+        lookupById(payload.sub, function (err, user) {
+            if (err) {
+                return done(err, false);
+            } else if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
         });
+    } else {
+        return done(null, false);
     }
+}
 
-    else { return done(null, false); }
+const localLoginUser = new LocalStrategy(localOptionsUser, function (username, password, done) {
+    abstractLocalLogin(username, password, done, User.lookupByUsername, Abstract.comparePassword);
 });
 
-const jwtLoginCounsellor = new JwtStrategy(jwtOptions, function(payload, done) {
+const localLoginCounsellor = new LocalStrategy(localOptionsCounsellor, function (email, password, done) {
+    abstractLocalLogin(email, password, done, Counsellor.lookupByEmail, Abstract.comparePassword);
+});
 
-    if (payload.role === "counsellor") {
-        Counsellor.lookupById(payload.sub, function(err, counsellor) {
-            if (err) { return done(err, false); }
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+    secretOrKey: config.secret
+};
 
-            if (counsellor) { return done(null, counsellor); } 
+const jwtLoginUser = new JwtStrategy(jwtOptions, function (payload, done) {
+    abstractJwtLogin(payload, done, "user", User.lookupById);
+});
 
-            else { return done(null, false); }
-        });
-    }
-
-    else { return done(null, false); }
+const jwtLoginCounsellor = new JwtStrategy(jwtOptions, function (payload, done) {
+    abstractJwtLogin(payload, done, "counsellor", Counsellor.lookupById);
 });
 
 passport.use("jwt-user", jwtLoginUser);

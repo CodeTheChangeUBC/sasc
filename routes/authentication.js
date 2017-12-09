@@ -70,6 +70,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
                     return res.status(422).send({error: "Cannot create " + role + "."});
                 }
 
+                // lookup user to get the ID, which is needed to generate a token
                 lookupUser(usernameCredential, function (err, user) {
                     if (err) {
                         throw err;
