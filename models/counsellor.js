@@ -2,9 +2,9 @@ const db = require('../db');
 const abstract = require('./abstract');
 
 // Create counsellor from post request
-exports.create = function(values, res, callback) {
+exports.create = function(values, callback) {
 	values['email'] = values['email'].toLowerCase();
-	abstract.createCallbackVer('counsellor', values, res, callback);
+	abstract.createCallbackVer('counsellor', values, callback);
 }
 
 // Update counsellor

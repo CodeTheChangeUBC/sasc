@@ -3,9 +3,9 @@ const abstract = require('./abstract.js');
 
 // Create user from post request
 // TODO: Encrypt password
-exports.create = function(values, res, callback) {
+exports.create = function(values, callback) {
 	values['username'] = values['username'].toLowerCase();
-	abstract.createCallbackVer('user', values, res, callback);
+	abstract.createCallbackVer('user', values, callback);
 }
 
 // Destroy user

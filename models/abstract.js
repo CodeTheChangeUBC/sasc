@@ -28,7 +28,7 @@ exports.create = function(model, values, res, callback) {
 }
 
 /// Second version of create
-exports.createCallbackVer = function(model, values, res, callback) {
+exports.createCallbackVer = function(model, values, callback) {
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
 		function(err, results) {
 			if (err) { callback(err); }
