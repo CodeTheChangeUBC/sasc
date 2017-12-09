@@ -17,7 +17,7 @@ const localOptionsCounsellor = {
     session: false
 };
 
-function abstractLocalLogin(identifier, password, done, lookupUser, comparePassword) {
+function abstractLocalLogin(identifier, password, done, lookupUser, verifyPassword) {
     // Retrieve user by identifier and compare hashed password
     // from database with the given password hashed
     lookupUser(identifier, function (err, user) {
@@ -29,7 +29,7 @@ function abstractLocalLogin(identifier, password, done, lookupUser, comparePassw
             return done(null, false);
         }
 
-        comparePassword(password, user.password, function (err, isMatch) {
+        verifyPassword(password, user.password, function (err, isMatch) {
             if (err) {
                 return done(err);
             }
