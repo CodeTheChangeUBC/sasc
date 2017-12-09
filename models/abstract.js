@@ -1,4 +1,3 @@
-"use strict";
 // Abstract model which implements common methods 
 // for all models 
 
@@ -18,10 +17,10 @@ exports.create = function(model, values, res, callback) {
 		exports.process(values, values => {
 			db.get().query('INSERT INTO '+model+' SET ?', values, 
 				(err, results) => {
-					if (res) { callback(null, values); }
-					else { callback(err, null); }
+					if (res) { httpResponse(err, 400, results, 201, res); }
+					else { noHttpResponse(err, results, callback); }
 			});
-		});
+		});	
 	}).catch(error => {
 		if (callback) { callback(error); }
 		else { httpResponse(error, 400, null, null, res); }
@@ -29,12 +28,12 @@ exports.create = function(model, values, res, callback) {
 }
 
 /// Second version of create
-exports.createCallbackVer = function(model, values, res, callback) {
+exports.createCallbackVer = function(model, values, callback) {
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
 		function(err, results) {
-			if (err) { callback(err, null); }
+			if (err) { callback(err); }
 
-			else { callback(null, "success"); }
+			else { callback(null); }
 		});
 }
 
