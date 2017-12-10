@@ -151,7 +151,7 @@ exports.count = function(model) {
 	return new Promise(function(fulfill, reject) {
 		db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err,results,fields) {			
 			if (err) reject(err);
-			fulfill(results[0].count);
+			else fulfill(results[0].count);
 		});	
 	});
 }
@@ -202,13 +202,12 @@ function httpResponse(err, errCode, data, dataCode, res) {
 
 // Compute string of (?,...,?) of length len
 function computeUnknowns(len) {
-	var unknowns = '(';
-	for (var j=0; j<len; j++) {
-		unknowns += '?'
-		if (j!=len-1) unknowns += ', ';
+	var unknowns = ''
+	for (var i = len; i--;) {
+		unknowns += '?,'
 	}
-	unknowns += ')';	
-	return unknowns;
+	unknowns = unknowns.slice(0,-1)
+	return '(' + unknowns + ')';
 }
 
 // Compute string of ' field1=?, ... , fieldn=?'
