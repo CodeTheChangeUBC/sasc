@@ -73,6 +73,7 @@ exports.lookup = function(model, id, req, res, callback) {
 			if (err) {
 				res.status(404).send(err);
 				next();
+				return;
 			}
 			req.model = results[0];
 			callback();
@@ -96,8 +97,8 @@ exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback)
+			if (res) httpResponse(err, 400, result, 200, res);
+			else noHttpResponse(err, result, callback)
 		});
 }
 
@@ -107,8 +108,8 @@ exports.getUserCredentialsByUsername = function(username, res, callback) {
 	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
 		[username],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
+			if (res) httpResponse(err, 400, result, 200, res);
+			else noHttpResponse(err, result, callback);
 		});
 }
 
@@ -118,8 +119,8 @@ exports.getCounsellorCredentialsByEmail =  function(email, res, callback) {
 	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
 		[email],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
+			if (res) httpResponse(err, 400, result, 200, res);
+			else noHttpResponse(err, result, callback);
 		});
 }
 
@@ -131,8 +132,8 @@ exports.retrieveUserByIdentifier = function(model, loginID, res, callback) {
 	db.get().query('SELECT '+identifier+', password FROM '+model+' WHERE '+identifier+' = '+loginID+';',
 		[loginID],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
+			if (res) httpResponse(err, 400, result, 200, res);
+			else noHttpResponse(err, result, callback);
 		});
 }
 
