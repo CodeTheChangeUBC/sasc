@@ -122,8 +122,11 @@ exports.lookupByValue = function(model, identifier, value, callback) {
 	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 		[value], 
 		function (err, rows) {
-		if (err) { callback(err, null); }
-		else { callback(null, rows[0]); }
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, rows[0]);
+		}
 	});
 }
 
