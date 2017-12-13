@@ -51,7 +51,8 @@ SigninCounsellor.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        form: state.form
+        form: state.form,
+        errorMessage: state.auth.error
     };
 }
 

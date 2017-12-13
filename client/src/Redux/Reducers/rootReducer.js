@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   activeRoom,
   signInReducer,
   form,
-  authReducer
+  auth: authReducer
 });
 
 export default rootReducer;

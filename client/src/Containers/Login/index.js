@@ -37,6 +37,16 @@ class Login extends Component {
     this.props.signinUser(this.state, history);
   }
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+        return (
+            <div className="alert alert-danger">
+                {this.props.errorMessage}
+            </div>
+        );
+    }
+  }
+
   render() {
     return (
       <div className="Login">
@@ -45,13 +55,22 @@ class Login extends Component {
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />
+        {this.renderAlert()}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-    return state;
+    const { username, password } = state;
+    state.form = {
+      username,
+      password
+    };
+    return {
+      form: state.form,
+      errorMessage: state.auth.error
+    };
 }
 
 Login = connect(mapStateToProps, actions)(Login);
