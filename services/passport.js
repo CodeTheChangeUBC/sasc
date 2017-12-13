@@ -20,16 +20,16 @@ const localOptionsCounsellor = {
 function abstractLocalLogin(identifier, password, done, lookupUser, verifyPassword) {
     // Retrieve user by identifier and compare hashed password
     // from database with the given password hashed
-    lookupUser(identifier, function (err, user) {
+    lookupUser(identifier, function (err, users) {
         if (err) {
             return done(err);
         }
 
-        if (!user) {
+        if (users[0] === undefined || users[0] === null) {
             return done(null, false);
         }
 
-        verifyPassword(password, user.password, function (err, isMatch) {
+        verifyPassword(password, users[0].password, function (err, isMatch) {
             if (err) {
                 return done(err);
             }
@@ -38,7 +38,7 @@ function abstractLocalLogin(identifier, password, done, lookupUser, verifyPasswo
                 return done(null, false);
             }
 
-            return done(null, user);
+            return done(null, users[0]);
         });
 
     });
@@ -49,11 +49,12 @@ function abstractJwtLogin(payload, done, role, lookupById) {
     // and return the user object if found
     // or false if not found
     if (payload.role === role) {
-        lookupById(payload.sub, function (err, user) {
+        lookupById(payload.sub, function (err, users) {
             if (err) {
                 return done(err, false);
-            } else if (user) {
-                return done(null, user);
+            // If user exists, return user
+            } else if (users[0] !== undefined && users[0] !== null) {
+                return done(null, users);
             } else {
                 return done(null, false);
             }

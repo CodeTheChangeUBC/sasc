@@ -123,7 +123,7 @@ exports.lookupByValue = function(model, identifier, value, callback) {
 		[value], 
 		function (err, rows) {
 		if (err) { callback(err, null); }
-		else { callback(null, rows[0]); }
+		else { callback(null, rows); }
 	});
 }
 
