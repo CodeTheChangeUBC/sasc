@@ -3,8 +3,10 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './../Home';
 import Chat from './../Chat';
 import Login from './../Login';
+import SigninCounsellor  from './../../Components/Auth/SigninCounsellor';
+import SignupCounsellor  from './../../Components/Auth/SignupCounsellor';
 import Register from './../Register';
-import SMS from './../SMS';
+import SMSSettings from './../SMSSettings';
 import './styles.css';
 
 class Main extends Component {
@@ -15,8 +17,10 @@ class Main extends Component {
           <Route exact path="/" component={Home}/>
           <Route path="/chat" component={Chat}/>
           <Route path="/login" component={Login}/>
+          <Route path="/signincounsellor" component={SigninCounsellor}/>
+          <Route path="/signupcounsellor" component={SignupCounsellor}/>
           <Route path="/register" component={Register}/>
-          <Route path="/sms" component={SMS}/>
+          <Route path="/sms" component={SMSSettings}/>
         </Switch>
       </div>
     );

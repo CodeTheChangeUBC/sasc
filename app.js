@@ -10,3 +10,4 @@ const testServer = require('./server.js');
 var app = testServer.server(db,db.MODE_DEVELOPMENT);
 
 module.exports = app;
+

@@ -7,6 +7,7 @@ import Form from './../../Components/Form/';
 import PropTypes from 'prop-types';
 import './styles.css';
 import { signIn } from './../../Redux//Actions/signInActions';
+import * as actions from '../../Redux/Actions/authActions';
 
 class Register extends Component {
 
@@ -17,6 +18,7 @@ class Register extends Component {
       age: null,
       gender: null,
       phoneNumber: null,
+      email: null,
       password: null
     };
      this.handleOnChange = this.handleOnChange.bind(this);
@@ -35,8 +37,12 @@ class Register extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
+    console.log(this.state);
 
-    axios.post('/api/register', this.state)
+    const { history } = this.props;
+
+    this.props.signupUser(this.state, history);
+    /*axios.post(`${actions.ROOT_URL}/signup`, this.state)
       .then((resp) => {
         console.log('registering...');
 
@@ -46,7 +52,7 @@ class Register extends Component {
       })
       .catch(console.error);
 
-    this.props.dispatch(signIn(this.state));
+    this.props.dispatch(signIn(this.state));*/
   }
 
   render() {
@@ -65,14 +71,18 @@ class Register extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+/*const mapDispatchToProps = dispatch => ({
   signUpUser: (data) => {
     dispatch(signIn(data));
   }
-});
+});*/
+
+function mapStateToProps(state) {
+    return state;
+}
 
 Register.propTypes = {
     dispatch: PropTypes.func
 };
 
-export default connect(mapDispatchToProps)(Register);
+export default connect(mapStateToProps, actions)(Register);

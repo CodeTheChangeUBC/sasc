@@ -6,7 +6,7 @@ export default function roomReducer(state = initialState.rooms, action) {
     case 'NEW_ROOM':
       return [...state, action.room];
     case 'UPDATE_ROOM':
-      return [...state];
+      return [...state];  
     default:
      return state; 
   }

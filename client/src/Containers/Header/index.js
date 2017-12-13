@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SMS from "../SMS/index";
 import { Link } from 'react-router-dom';
 import './styles.css';
 
@@ -13,6 +12,8 @@ class Header extends Component {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/chat">Chat</Link></li>
             <li><Link to="/login">Login</Link></li>
+            <li><Link to="/signincounsellor">Counsellor Sign In</Link></li>
+            <li><Link to="/signupcounsellor">Counsellor Sign Up</Link></li>
             <li><Link to="/register">Register</Link></li>
             <li><Link to="/sms">SMS Settings</Link></li>
           </ul>

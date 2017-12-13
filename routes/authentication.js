@@ -6,13 +6,14 @@ const config = require("../config");
 
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
-    const expiry = (Date.now() + 60 * 60 * 1000) / 1000;    // An hour from now (in seconds)
+    const expiry = (Date.now() + 60.0 * 60.0 * 1000.0) / 1000.0;    // An hour from now (in seconds)
     return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret);
 }
 
 function convertToSentence(listOfNouns) {
     const len = listOfNouns.length;
     var str = "";
+
     listOfNouns.forEach(function (ignore, i) {
         if (i === 1) {
             // First word
@@ -31,7 +32,6 @@ function convertToSentence(listOfNouns) {
 }
 
 function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryptPassword, create) {
-
     var error = false;
     var missingCredentials = [];
 
@@ -48,8 +48,6 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
     var usernameCredential = requiredCredentials[Object.keys(requiredCredentials)[0]];
 
-    // Welcome to callback hell :D
-    // I think promises might be better
     // Check if user with their corresponding identifier already exists
     lookupUser(usernameCredential, function (err, users) {
 
@@ -121,7 +119,6 @@ exports.signinCounsellor = function (req, res) {
 };
 
 exports.signupCounsellor = function (req, res) {
-
     var counsellor = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -135,5 +132,4 @@ exports.signupCounsellor = function (req, res) {
     };
 
     abstractSignup(counsellor, requiredCredentials, "counsellor", res, Counsellor.lookupByEmail, Abstract.process, Counsellor.create);
-
 };
