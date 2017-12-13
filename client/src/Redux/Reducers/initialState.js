@@ -1,4 +1,6 @@
 export default {
+  auth: {},
+
   messages: [
     { user: 'ChatBot',
       message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'

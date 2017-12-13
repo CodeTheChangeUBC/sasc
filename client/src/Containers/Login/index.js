@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import SigninCounsellor from "../../Components/Auth/signincounsellor";
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 import Form from './../../Components/Form/';
+import * as actions from '../../Redux/Actions/authActions';
 import './styles.css';
 
 class Login extends Component {
@@ -31,16 +32,9 @@ class Login extends Component {
     ev.preventDefault();
     console.log(this.state);
 
-    axios.post('/api/login', this.state)
-      .then((resp) => {
-        console.log('logging in...');
+    const { history } = this.props;
 
-        // TODO: if successful login of user, update view layer
-        // TODO: if unsuccessful, show flash message
-
-      })
-      .catch(console.error);
-
+    this.props.signinUser(this.state, history);
   }
 
   render() {
@@ -55,5 +49,11 @@ class Login extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+    return state;
+}
+
+Login = connect(mapStateToProps, actions)(Login);
 
 export default Login;

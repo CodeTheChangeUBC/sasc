@@ -9,6 +9,7 @@ class Sms extends Component {
   handleFormSubmit({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
         console.log(email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken);
         // TODO: Need to push to database
+        this.props.setSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken });
   }
 
   render() {
@@ -51,10 +52,10 @@ function mapStateToProps(state) {
     return { form: state.form };
 }
 
-Sms = connect(mapStateToProps, actions)(Sms);
+var SmsForm = connect(mapStateToProps, actions)(Sms);
 
-Sms = reduxForm({
+SmsForm = reduxForm({
  form: 'sms'
-})(Sms);
+})(SmsForm);
 
-export default Sms;
+export default SmsForm;

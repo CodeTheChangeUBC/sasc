@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import RenderInput from './../RenderInput';
-import * as actions from '../../Redux/Actions/authActions';
+import RenderInput from './../../RenderInput';
+import * as actions from '../../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
 
@@ -49,10 +49,10 @@ function mapStateToProps(state) {
     return { form: state.form };
 }
 
-SignupCounsellor = connect(mapStateToProps, actions)(SignupCounsellor);
+var SignupCounsellorForm = connect(mapStateToProps, actions)(SignupCounsellor);
 
-SignupCounsellor = reduxForm({
+SignupCounsellorForm = reduxForm({
  form: 'signupcounsellor'
-})(SignupCounsellor);
+})(SignupCounsellorForm);
 
-export default SignupCounsellor;
+export default SignupCounsellorForm;

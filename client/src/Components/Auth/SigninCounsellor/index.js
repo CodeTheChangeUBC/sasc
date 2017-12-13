@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import RenderInput from './../RenderInput';
-import * as actions from '../../Redux/Actions/authActions';
+import RenderInput from './../../RenderInput';
+import * as actions from '../../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
 
 class SigninCounsellor extends Component {
     handleFormSubmit({ email, password }) {
         console.log(email, password);
-        // TODO: Login
-        this.props.signinCounsellor({ email, password });
+        const { history } = this.props;
+
+        this.props.signinCounsellor({ email, password }, history);
+    }
+
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className="alert alert-danger">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
     }
 
     render() {
@@ -26,6 +37,7 @@ class SigninCounsellor extends Component {
                     <label>Password:</label>
                     <Field name="password" component={RenderInput} type="password" className="form-control" />
                 </div>
+                {this.renderAlert()}
                 <button action="submit" className="btn btn-primary">Sign in</button>
             </form>
         );
@@ -38,13 +50,15 @@ SigninCounsellor.propTypes = {
 };
 
 function mapStateToProps(state) {
-    return { form: state.form };
+    return {
+        form: state.form
+    };
 }
 
-SigninCounsellor = connect(mapStateToProps, actions)(SigninCounsellor);
+var SigninCounsellorForm = connect(mapStateToProps, actions)(SigninCounsellor);
 
-SigninCounsellor = reduxForm({
- form: 'signincounsellor'
-})(SigninCounsellor);
+SigninCounsellorForm = reduxForm({
+    form: 'signincounsellor'
+})(SigninCounsellorForm);
 
-export default SigninCounsellor;
+export default SigninCounsellorForm;
