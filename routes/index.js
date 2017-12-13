@@ -5,10 +5,10 @@ const Authentication = require('./authentication');
 const passportService = require('../services/passport');
 const passport = require('passport');
 
-const requireAuthUser = passport.authenticate('jwt-user', { session: false });
-const requireAuthCounsellor = passport.authenticate('jwt-counsellor', { session: false });
-const requireSigninUser = passport.authenticate('local-user', { session: false });
-const requireSigninCounsellor = passport.authenticate('local-counsellor', { session: false });
+const requireAuthUser = passport.authenticate('jwt-user', {session: false});
+const requireAuthCounsellor = passport.authenticate('jwt-counsellor', {session: false});
+const requireSigninUser = passport.authenticate('local-user', {session: false});
+const requireSigninCounsellor = passport.authenticate('local-counsellor', {session: false});
 
 
 module.exports = function(app) {

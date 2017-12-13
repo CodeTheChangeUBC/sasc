@@ -48,16 +48,15 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
     var usernameCredential = requiredCredentials[Object.keys(requiredCredentials)[0]];
 
-    // Welcome to callback hell :D
-    // I think promises might be better
     // Check if user with their corresponding identifier already exists
-    lookupUser(usernameCredential, function (err, existingUser) {
+    lookupUser(usernameCredential, function (err, users) {
+
         if (err) {
-            throw err;
+            return res.status(422).send({error: "Cannot look up user."});
         }
 
         // If a user with the identifier already exists, return an error
-        if (existingUser) {
+        if (users[0] !== undefined && users[0] !== null) {
             return res.status(422).send({error: usernameCredential.charAt(0).toUpperCase() + " is in use."});
         }
 
@@ -70,12 +69,13 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
                 }
 
                 // lookup user to get the ID, which is needed to generate a token
-                lookupUser(usernameCredential, function (err, user) {
+                lookupUser(usernameCredential, function (err, users) {
                     if (err) {
-                        throw err;
+                        return res.status(422).send({error: "Cannot look up user."});
                     }
 
-                    if (!user) {
+                    // If there aren't any users, send error
+                    if (users[0] === undefined || users[0] === null) {
                         return res.status(422).send({error: role.charAt(0).toUpperCase() + " does not exist."});
                     }
 
