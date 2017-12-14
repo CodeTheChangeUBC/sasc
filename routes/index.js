@@ -21,5 +21,5 @@ module.exports = function(app) {
     app.post('/signincounsellor', requireSigninCounsellor, Authentication.signinCounsellor);
     app.post('/signin', requireSigninUser, Authentication.signin);
     app.post('/signup', Authentication.signup);
-    app.post('/signupcounsellor', Authentication.signupCounsellor);
+    app.post('/signupcounsellor', requireAuthCounsellor, Authentication.signupCounsellor);
 }
