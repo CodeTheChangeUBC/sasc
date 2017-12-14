@@ -8,9 +8,7 @@ import PropTypes from 'prop-types';
 
 class SigninCounsellor extends Component {
     handleFormSubmit({ email, password }) {
-        console.log(email, password);
         const { history } = this.props;
-
         this.props.signinCounsellor({ email, password }, history);
     }
 

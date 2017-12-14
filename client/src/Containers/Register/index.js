@@ -42,19 +42,9 @@ class Register extends Component {
     const { history } = this.props;
 
     this.props.signupUser(this.state, history);
-    /*axios.post(`${actions.ROOT_URL}/signup`, this.state)
-      .then((resp) => {
-        console.log('registering...');
-
-        // TODO: if successful registration of user, update view layer
-        // TODO: if unsuccessful, show flash message
-
-      })
-      .catch(console.error);
-
-    this.props.dispatch(signIn(this.state));*/
   }
 
+  // TODO: Form validation
   render() {
     return (
       <div className="Register">
@@ -70,12 +60,6 @@ class Register extends Component {
     );
   }
 }
-
-/*const mapDispatchToProps = dispatch => ({
-  signUpUser: (data) => {
-    dispatch(signIn(data));
-  }
-});*/
 
 function mapStateToProps(state) {
     return state;

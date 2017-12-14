@@ -29,9 +29,17 @@ export function signinCounsellor({email, password}, history) {
     };
 }
 
-export function signupCounsellor({firstName, lastName, email, password}) {
+export function signupCounsellor({firstName, lastName, email, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL}/signupcounsellor`, {firstName, lastName, email, password});
+        axios.post(`${ROOT_URL}/signupcounsellor`, {firstName, lastName, email, password})
+            .then(response => {
+                dispatch({ type: AUTH_USER });
+                localStorage.setItem('token', response.data.token);
+                history.push('/sms');
+            })
+            .catch(() => {
+                dispatch(authError('Username in use.'));
+            });
     };
 }
 
@@ -49,8 +57,22 @@ export function signinUser({username, password}, history) {
     };
 }
 
-export function signupUser({username, age, gender, phoneNumber, email, password}) {
+export function signupUser({username, age, gender, phoneNumber, email, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL}/signup`, {username, age, gender, phoneNumber, email, password});
+        axios.post(`${ROOT_URL}/signup`, {username, age, gender, phoneNumber, email, password})
+            .then(response => {
+                dispatch({ type: AUTH_USER });
+                localStorage.setItem('token', response.data.token);
+                history.push('/home');
+            })
+            .catch(() => {
+                dispatch(authError('Username in use.'));
+            });
     };
+}
+
+export function signoutUser() {
+    localStorage.removeItem('token');
+    
+    return { type: UNAUTH_USER };
 }
