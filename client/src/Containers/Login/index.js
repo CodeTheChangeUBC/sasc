@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Form from './../../Components/Auth/SigninUser';
@@ -56,6 +57,11 @@ class Login extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
+        <div>
+          <p>
+            A member of the SASC? Login <Link className="nav-link" to="/signincounsellor">here</Link> as a counsellor.
+           </p>
+        </div>
       </div>
     );
   }

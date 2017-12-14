@@ -6,7 +6,7 @@ import './styles.css';
 
 class Header extends Component {
   renderLinks() {
-    if (this.props.authenticated) {
+    if (this.props.authenticated || this.props.authenticatedCounsellor) {
         return (<li className="nav-item">
             <Link className="nav-link" to="/signout">Logout</Link>
         </li>);
@@ -17,15 +17,22 @@ class Header extends Component {
             </li>),
             (<li className="nav-item" key={2}>
                 <Link className="nav-link" to="/register">Register</Link>
-            </li>),
-            (<li className="nav-item" key={3}>
-                <Link className="nav-link" to="/signincounsellor">Login Counsellor</Link>
-            </li>),
-            (<li className="nav-item" key={4}>
-                <Link className="nav-link" to="/signupcounsellor">Register Counsellor</Link>
             </li>)
         ];
         
+    }
+  }
+
+  renderLinksCounsellor() {
+    if (this.props.authenticatedCounsellor) {
+        return [
+            (<li className="nav-item" key={1}>
+                <Link to="/sms">SMS Settings</Link>
+            </li>),
+            (<li className="nav-item" key={2}>
+                <Link className="nav-link" to="/signupcounsellor">Register a Counsellor</Link>
+            </li>)
+        ];
     }
   }
 
@@ -38,7 +45,7 @@ class Header extends Component {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/chat">Chat</Link></li>
             {this.renderLinks()}
-            <li><Link to="/sms">SMS Settings</Link></li>
+            {this.renderLinksCounsellor()}
           </ul>
         </nav>        
       </div>
@@ -47,12 +54,14 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    authenticated: PropTypes.bool
+    authenticated: PropTypes.bool,
+    authenticatedCounsellor: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        authenticated: state.auth.authenticated
+        authenticated: state.auth.authenticated,
+        authenticatedCounsellor: state.auth.authenticatedCounsellor
     };
 }
 

@@ -48,7 +48,7 @@ class SignupCounsellor extends Component {
                     <Field name="passwordConfirmation" component={RenderInput} type="password" className="form-control" />
                 </div>
                 {this.renderAlert()}
-                <button action="submit" className="btn btn-primary">Sign in</button>
+                <button action="submit" className="btn btn-primary">Register and Sign in as this Counsellor</button>
             </form>
         );
     }

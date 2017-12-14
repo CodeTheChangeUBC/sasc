@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 export default function(ComposedComponent) {
-  class Authentication extends Component {
+  class AuthenticationForCounsellor extends Component {
     static contextTypes = {
       router: React.PropTypes.object
     };
 
     componentWillMount() {
-      if (!this.props.authenticated) {
+      if (!this.props.authenticatedCounsellor) {
         this.context.router.history.push('/signincounsellor');
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
+      if (!nextProps.authenticatedCounsellor) {
         this.context.router.history.push('/signincounsellor');
       }
     }
@@ -25,8 +25,8 @@ export default function(ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
+    return { authenticatedCounsellor: state.auth.authenticatedCounsellor };
   }
 
-  return connect(mapStateToProps)(Authentication);
+  return connect(mapStateToProps)(AuthenticationForCounsellor);
 }
