@@ -3,10 +3,7 @@ import {
     AUTH_COUNSELLOR,
     UNAUTH_USER,
     AUTH_ERROR,
-    REMOVE_ERROR,
-    SET_ROLE_USER,
-    SET_ROLE_COUNSELLOR,
-    FETCH_NAME
+    REMOVE_ERROR
 } from './../Actions/authActions';
 import initialState from './initialState';
 
@@ -22,12 +19,6 @@ export default function(state = initialState.auth, action) {
             return {...state, error: action.payload};
         case REMOVE_ERROR:
             return {...state, error: ''};
-        case SET_ROLE_USER:
-            return {...state, role: 'user'};
-        case SET_ROLE_COUNSELLOR:
-            return {...state, role: 'counsellor'};
-        case FETCH_NAME:
-            return { ...state, name: action.payload };
     }
 
     return state;

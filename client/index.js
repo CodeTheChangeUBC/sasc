@@ -4,20 +4,28 @@ import App from './src/Containers/App';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from './src/Redux/Store/configureStore';
 import { Provider } from 'react-redux';
-import { 
-    AUTH_USER, 
-    AUTH_COUNSELLOR, 
-    checkRoleInToken } from './src/Redux/Actions/authActions';
+import {
+    ROOT_URL,
+    AUTH_USER,
+    AUTH_COUNSELLOR } from './src/Redux/Actions/authActions';
+import axios from "axios";
 
 const store = configureStore();
 
 const token = localStorage.getItem('token');
 
 if (token) {
-    // TODO: Figure out whether this is a user or a counsellor
-    checkRoleInToken(token);
-    console.log(checkRoleInToken);
-    //store.dispatch({ type: AUTH_COUNSELLOR });
+    axios.post(`${ROOT_URL}/checkrole`, {token: token})
+        .then(response => {
+            if (response.data.role === "counsellor") {
+                store.dispatch({type: AUTH_COUNSELLOR});
+            } else if (response.data.role === "user") {
+                store.dispatch({type: AUTH_USER});
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
 }
 
 ReactDOM.render((
