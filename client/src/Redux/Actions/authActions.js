@@ -3,8 +3,9 @@ export const AUTH_USER = "auth_user";
 export const AUTH_COUNSELLOR = "auth_counsellor";
 export const UNAUTH_USER = "unauth_user";
 export const AUTH_ERROR = "auth_error";
-export const REMOVE_ERROR = "erase_error";
-export const CHECK_ROLE = "check_role";
+export const REMOVE_ERROR = "remove_error";
+export const SET_ROLE_USER = "set_role_user";
+export const SET_ROLE_COUNSELLOR = "set_role_counsellor";
 export const FETCH_NAME = 'fetch_name';
 
 // Actions
@@ -41,7 +42,14 @@ export function signinCounsellor({email, password}, history) {
 
 export function signupCounsellor({firstName, lastName, email, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL}/signupcounsellor`, {firstName, lastName, email, password})
+        var header = { 
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
+        };
+        var data = {firstName, lastName, email, password};
+        axios.post(`${ROOT_URL}/signupcounsellor`, data, header)
             .then(response => {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem('token', response.data.token);
@@ -89,9 +97,19 @@ export function signoutUser() {
 
 export function checkRoleInToken(token) {
     return function(dispatch) {
-        axios.get(`${ROOT_URL}/checkrole/ + ${token}`)
+        console.log("in here")
+        axios.post(`${ROOT_URL}/checkrole`, {token: token})
             .then(response => {
-                return response.data;
+                console.log(response);
+                if (response.data === "counsellor") {
+                    dispatch({type: AUTH_USER});
+                } else if (response.data === "user") {
+                    dispatch({type: AUTH_COUNSELLOR});
+                }
+            })
+            .catch(error => {
+                console.log("error")
+                console.log(error);
             });
     };
 }

@@ -15,12 +15,8 @@ const token = localStorage.getItem('token');
 
 if (token) {
     // TODO: Figure out whether this is a user or a counsellor
-    const user = checkRoleInToken(token);
-    if (user === "user") {
-        store.dispatch({ type: AUTH_USER });
-    } else if (user === "counsellor") {
-        store.dispatch({ type: AUTH_COUNSELLOR });
-    }
+    checkRoleInToken(token);
+    console.log(checkRoleInToken);
     //store.dispatch({ type: AUTH_COUNSELLOR });
 }
 

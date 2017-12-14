@@ -21,10 +21,6 @@ module.exports = function(app) {
     app.post('/signincounsellor', requireSigninCounsellor, Authentication.signinCounsellor);
     app.post('/signin', requireSigninUser, Authentication.signin);
     app.post('/signup', Authentication.signup);
-    app.post('/signupcounsellor', Authentication.signupCounsellor);
-    app.get('/checkrole/:token', function(req, res) {
-        // decode JWT token to check role
-        const role = Authentication.decodeTokenToGetRole(req.params.token);
-        res.send({role: role});
-    });
+    app.post('/signupcounsellor', requireAuthCounsellor, Authentication.signupCounsellor);
+    app.post('/checkrole', Authentication.decodeTokenToCheckRole);
 }
