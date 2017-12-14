@@ -44,7 +44,7 @@ const Form = ({
         <input type="password" name="passwordConfirm" onChange={onChange} required />
       </label>
     }
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Register and sign in as this counsellor" />
   </form>
 );
 
