@@ -8,6 +8,7 @@ import SignupCounsellor  from './../../Components/Auth/SignupCounsellor';
 import Signout from './../../Components/Auth/Signout';
 import Register from './../Register';
 import SMSSettings from './../SMSSettings';
+import requireAuthCounsellor from './../../Components/Auth/requireAuthCounsellor';
 import './styles.css';
 
 class Main extends Component {
@@ -22,7 +23,7 @@ class Main extends Component {
           <Route path="/signupcounsellor" component={SignupCounsellor}/>
           <Route path="/signout" component={Signout} />
           <Route path="/register" component={Register}/>
-          <Route path="/sms" component={SMSSettings}/>
+          <Route path="/sms" component={requireAuthCounsellor(SMSSettings)}/>
         </Switch>
       </div>
     );

@@ -2,6 +2,7 @@
 export const AUTH_USER = "auth_user";
 export const UNAUTH_USER = "unauth_user";
 export const AUTH_ERROR = "auth_error";
+export const FETCH_NAME = 'fetch_name';
 
 // Actions
 import axios from "axios";
@@ -75,4 +76,20 @@ export function signoutUser() {
     localStorage.removeItem('token');
     
     return { type: UNAUTH_USER };
+}
+
+// An example to see how to make authenticated requests to the server
+export function fetchName() {
+    return function(dispatch) {
+    axios.get(`${ROOT_URL}/useronly`, {
+        headers: { authorization: localStorage.getItem('token') }
+    })
+        .then(response => {
+            dispatch({
+                type: FETCH_NAME,
+                payload: response.data.name
+            });
+            console.log(response.data.name)
+        });
+    }
 }

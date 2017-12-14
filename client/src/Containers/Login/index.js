@@ -30,7 +30,6 @@ class Login extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    console.log(this.state);
 
     const { history } = this.props;
 
