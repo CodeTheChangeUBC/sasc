@@ -57,7 +57,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
         // If a user with the identifier already exists, return an error
         if (users[0] !== undefined && users[0] !== null) {
-            return res.status(422).send({error: usernameCredential.charAt(0).toUpperCase() + " is in use."});
+            return res.status(422).send({error: usernameCredential + " is in use."});
         }
 
         encryptPassword(user, function (result) {
@@ -76,7 +76,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
                     // If there aren't any users, send error
                     if (users[0] === undefined || users[0] === null) {
-                        return res.status(422).send({error: role.charAt(0).toUpperCase() + " does not exist."});
+                        return res.status(422).send({error: role.charAt(0).toUpperCase() + role.slice(1) + " does not exist."});
                     }
 
                     // Send token back to client
