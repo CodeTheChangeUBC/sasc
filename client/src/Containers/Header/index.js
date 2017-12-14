@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 class Header extends Component {
   renderLinks() {
     if (this.props.authenticated) {
-        return <li className="nav-item">
+        return (<li className="nav-item">
             <Link className="nav-link" to="/signout">Logout</Link>
-        </li>
+        </li>);
     } else {
         return [
-            <li className="nav-item" key={1}>
+            (<li className="nav-item" key={1}>
                 <Link className="nav-link" to="/login">Login</Link>
-            </li>,
-            <li className="nav-item" key={2}>
+            </li>),
+            (<li className="nav-item" key={2}>
                 <Link className="nav-link" to="/register">Register</Link>
-            </li>,
-            <li className="nav-item" key={3}>
+            </li>),
+            (<li className="nav-item" key={3}>
                 <Link className="nav-link" to="/signincounsellor">Login Counsellor</Link>
-            </li>,
-            <li className="nav-item" key={4}>
+            </li>),
+            (<li className="nav-item" key={4}>
                 <Link className="nav-link" to="/signupcounsellor">Register Counsellor</Link>
-            </li>
+            </li>)
         ];
         
     }
@@ -44,6 +45,10 @@ class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+    authenticated: PropTypes.bool
+};
 
 function mapStateToProps(state) {
     return {

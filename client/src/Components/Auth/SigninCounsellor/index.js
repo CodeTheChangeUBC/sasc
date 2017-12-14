@@ -44,7 +44,9 @@ class SigninCounsellor extends Component {
 
 SigninCounsellor.propTypes = {
     handleSubmit: PropTypes.func,
-    signinCounsellor: PropTypes.func
+    signinCounsellor: PropTypes.func,
+    history: PropTypes.object,
+    errorMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {

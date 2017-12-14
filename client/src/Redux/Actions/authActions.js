@@ -89,7 +89,7 @@ export function fetchName() {
                 type: FETCH_NAME,
                 payload: response.data.name
             });
-            console.log(response.data.name)
+            //console.log(response.data.name);
         });
-    }
+    };
 }

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 class Sms extends Component {
   handleFormSubmit({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
-        console.log(email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken);
+        //console.log(email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken);
         // TODO: Need to push to database
         this.props.setSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken });
   }
@@ -45,7 +45,8 @@ class Sms extends Component {
 }
 
 Sms.propTypes = {
-    handleSubmit: PropTypes.func
+    handleSubmit: PropTypes.func,
+    setSMSDetails: PropTypes.func
 };
 
 function mapStateToProps(state) {

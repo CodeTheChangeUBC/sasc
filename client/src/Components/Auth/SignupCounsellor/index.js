@@ -5,7 +5,6 @@ import RenderInput from './../../RenderInput';
 import * as actions from '../../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
-
 class SignupCounsellor extends Component {
     handleFormSubmit({ firstName, lastName, email, password, passwordConfirmation }) {
         const { history } = this.props;
@@ -57,7 +56,9 @@ class SignupCounsellor extends Component {
 
 SignupCounsellor.propTypes = {
     handleSubmit: PropTypes.func,
-    signupCounsellor: PropTypes.func
+    signupCounsellor: PropTypes.func,
+    history: PropTypes.object,
+    errorMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {

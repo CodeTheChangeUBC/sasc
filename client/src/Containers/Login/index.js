@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Form from './../../Components/Form/';
 import * as actions from '../../Redux/Actions/authActions';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 class Login extends Component {
@@ -60,6 +61,12 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+    signinUser: PropTypes.func,
+    history: PropTypes.object,
+    errorMessage: PropTypes.string
+};
+
 function mapStateToProps(state) {
     const { username, password } = state;
     state.form = {
@@ -72,6 +79,4 @@ function mapStateToProps(state) {
     };
 }
 
-Login = connect(mapStateToProps, actions)(Login);
-
-export default Login;
+export default connect(mapStateToProps, actions)(Login);

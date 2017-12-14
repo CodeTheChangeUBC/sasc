@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/authActions';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 class Home extends Component {
@@ -13,6 +14,10 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+    name: PropTypes.string
+};
 
 function mapStateToProps(state) {
     return { message: state.auth.name };
