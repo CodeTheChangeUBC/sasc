@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 
-import Form from './../../Components/Form/';
+import Form from './../../Components/Auth/SignupUser';
 import PropTypes from 'prop-types';
 import './styles.css';
 import { signIn } from './../../Redux//Actions/signInActions';
@@ -14,7 +14,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-    username: null,
+      username: null,
       age: null,
       gender: null,
       phoneNumber: null,
@@ -53,6 +53,10 @@ class Register extends Component {
       username
           age
           gender
+          email
+          phoneNumber
+          password
+          passwordConfirm
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />
