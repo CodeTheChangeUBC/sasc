@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Form = ({ 
-  username,
-  age, 
-  gender,
+const Form = ({
   email,
-  phoneNumber,
   password,
-  passwordConfirm,
   onSubmit,
   onChange
 }) => (

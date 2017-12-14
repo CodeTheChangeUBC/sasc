@@ -4,6 +4,7 @@ export const AUTH_COUNSELLOR = "auth_counsellor";
 export const UNAUTH_USER = "unauth_user";
 export const AUTH_ERROR = "auth_error";
 export const REMOVE_ERROR = "erase_error";
+export const CHECK_ROLE = "check_role";
 export const FETCH_NAME = 'fetch_name';
 
 // Actions
@@ -21,7 +22,7 @@ function authError(error) {
 export function removeError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
-    }
+    };
 }
 
 export function signinCounsellor({email, password}, history) {
@@ -88,9 +89,9 @@ export function signoutUser() {
 
 export function checkRoleInToken(token) {
     return function(dispatch) {
-        axios.get(`${ROOT_URL}/checkrole`, token)
+        axios.get(`${ROOT_URL}/checkrole/ + ${token}`)
             .then(response => {
-                return response;
+                return response.data;
             });
     };
 }

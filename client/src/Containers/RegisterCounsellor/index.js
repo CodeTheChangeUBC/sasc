@@ -109,7 +109,9 @@ function mapStateToProps(state) {
 RegisterCounsellor.propTypes = {
     dispatch: PropTypes.func,
     history: PropTypes.object,
-    signupCounsellor: PropTypes.func
+    signupCounsellor: PropTypes.func,
+    errorMessage: PropTypes.string,
+    removeError: PropTypes.func
 };
 
 export default connect(mapStateToProps, actions)(RegisterCounsellor);

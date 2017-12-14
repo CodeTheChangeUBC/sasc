@@ -74,7 +74,8 @@ class Login extends Component {
 Login.propTypes = {
     signinUser: PropTypes.func,
     history: PropTypes.object,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    removeError: PropTypes.func
 };
 
 function mapStateToProps(state) {

@@ -68,7 +68,8 @@ class LoginCounsellor extends Component {
 LoginCounsellor.propTypes = {
     signinCounsellor: PropTypes.func,
     history: PropTypes.object,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    removeError: PropTypes.func
 };
 
 function mapStateToProps(state) {

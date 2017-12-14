@@ -4,6 +4,7 @@ import {
     UNAUTH_USER,
     AUTH_ERROR,
     REMOVE_ERROR,
+    CHECK_ROLE,
     FETCH_NAME
 } from './../Actions/authActions';
 import initialState from './initialState';
@@ -20,6 +21,8 @@ export default function(state = initialState.auth, action) {
             return {...state, error: action.payload};
         case REMOVE_ERROR:
             return {...state, error: ''};
+        case CHECK_ROLE:
+            return {...state, role: action.payload};
         case FETCH_NAME:
             return { ...state, name: action.payload };
     }

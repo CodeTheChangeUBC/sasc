@@ -117,7 +117,9 @@ function mapStateToProps(state) {
 Register.propTypes = {
     dispatch: PropTypes.func,
     history: PropTypes.object,
-    signupUser: PropTypes.func
+    signupUser: PropTypes.func,
+    errorMessage: PropTypes.string,
+    removeError: PropTypes.func
 };
 
 export default connect(mapStateToProps, actions)(Register);
