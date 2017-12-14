@@ -1,74 +1,61 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
-import RenderInput from './../../RenderInput';
-import * as actions from '../../../Redux/Actions/authActions';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-class SignupCounsellor extends Component {
-    handleFormSubmit({ firstName, lastName, email, password, passwordConfirmation }) {
-        const { history } = this.props;
-        this.props.signupCounsellor({ firstName, lastName, email, password }, history);
+const Form = ({ 
+  firstName,
+  lastName,
+  email,
+  password,
+  passwordConfirm,
+  onSubmit,
+  onChange
+}) => (
+  <form onSubmit={onSubmit}>
+    {
+      firstName &&
+      <label>First Name:
+        <input type="text" name="firstName" onChange={onChange} required />
+      </label>
     }
-
-    renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div className="alert alert-danger">
-                    <strong>Oops!</strong> {this.props.errorMessage}
-                </div>
-            );
-        }
+    {
+      lastName &&
+        <label>Last Name:
+          <input type="text" name="lastName" onChange={onChange} required />
+        </label>
     }
-
-    // TODO: Form validation
-    render() {
-        const { handleSubmit } = this.props;
-
-        return (
-            <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-                <div className="form-group">
-                    <label>First Name:</label>
-                    <Field name="firstName" component={RenderInput} type="text" className="form-control" />
-                </div>
-                <div className="form-group">
-                    <label>Last Name:</label>
-                    <Field name="lastName" component={RenderInput} type="text" className="form-control" />
-                </div>
-                <div className="form-group">
-                    <label>Email:</label>
-                    <Field name="email" component={RenderInput} type="text" className="form-control" />
-                </div>
-                <div className="form-group">
-                    <label>Password:</label>
-                    <Field name="password" component={RenderInput} type="password" className="form-control" />
-                </div>
-                <div className="form-group">
-                    <label>Password Confirmation:</label>
-                    <Field name="passwordConfirmation" component={RenderInput} type="password" className="form-control" />
-                </div>
-                {this.renderAlert()}
-                <button action="submit" className="btn btn-primary">Register and Sign in as this Counsellor</button>
-            </form>
-        );
+    {
+      email &&
+      <label>
+        Email:
+        <input type="email" name="email" onChange={onChange} required />
+      </label>
     }
-}
+    {
+      password &&
+      <label>
+        Password:
+        <input type="password" name="password" onChange={onChange} required />
+      </label>
+    }
+    {
+      passwordConfirm &&
+      <label>
+        Password Confirm:
+        <input type="password" name="passwordConfirm" onChange={onChange} required />
+      </label>
+    }
+    <input type="submit" value="Submit" />
+  </form>
+);
 
-SignupCounsellor.propTypes = {
-    handleSubmit: PropTypes.func,
-    signupCounsellor: PropTypes.func,
-    history: PropTypes.object,
-    errorMessage: PropTypes.string
+Form.propTypes = {
+    firstName: PropTypes.bool,
+    lastName: PropTypes.bool,
+    email: PropTypes.bool,
+    password: PropTypes.bool,
+    passwordConfirm: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onChange: PropTypes.func
 };
 
-function mapStateToProps(state) {
-    return { form: state.form };
-}
-
-var SignupCounsellorForm = connect(mapStateToProps, actions)(SignupCounsellor);
-
-SignupCounsellorForm = reduxForm({
- form: 'signupcounsellor'
-})(SignupCounsellorForm);
-
-export default SignupCounsellorForm;
+export default Form;

@@ -3,6 +3,7 @@ import {
     AUTH_COUNSELLOR,
     UNAUTH_USER,
     AUTH_ERROR,
+    REMOVE_ERROR,
     FETCH_NAME
 } from './../Actions/authActions';
 import initialState from './initialState';
@@ -17,6 +18,8 @@ export default function(state = initialState.auth, action) {
             return {...state, authenticated: false, authenticatedCounsellor: false};
         case AUTH_ERROR:
             return {...state, error: action.payload};
+        case REMOVE_ERROR:
+            return {...state, error: ''};
         case FETCH_NAME:
             return { ...state, name: action.payload };
     }

@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Form from './../../Components/Auth/SigninUser';
+import Form from './../../Components/Auth/SigninCounsellor';
 import * as actions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-class Login extends Component {
+class LoginCounsellor extends Component {
 
   constructor(props) {
     super(props);
     this.state = { 
-      username: null,
-      password: null,
-      error: null
+      email: null,
+      password: null
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -39,7 +38,7 @@ class Login extends Component {
 
     const { history } = this.props;
 
-    this.props.signinUser(this.state, history);
+    this.props.signinCounsellor(this.state, history);
   }
 
   renderAlert() {
@@ -61,26 +60,21 @@ class Login extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
-        <div>
-          <p>
-            Are you a member of the SASC? Login <Link className="nav-link" to="/signincounsellor">here</Link> as a counsellor.
-           </p>
-        </div>
       </div>
     );
   }
 }
 
-Login.propTypes = {
-    signinUser: PropTypes.func,
+LoginCounsellor.propTypes = {
+    signinCounsellor: PropTypes.func,
     history: PropTypes.object,
     errorMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    const { username, password } = state;
+    const { email, password } = state;
     state.form = {
-      username,
+      email,
       password
     };
     return {
@@ -89,4 +83,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect(mapStateToProps, actions)(LoginCounsellor);

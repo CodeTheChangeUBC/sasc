@@ -16,19 +16,19 @@ const Form = ({
     {
       username &&
       <label>Username:
-        <input type="text" name="username" onChange={onChange}/>
+        <input type="text" name="username" onChange={onChange} required />
       </label>
     }
     {
       age &&
         <label>Age:
-          <input type="number" name="age" onChange={onChange}/>
+          <input type="number" name="age" onChange={onChange} required />
         </label>
     }
     {
       gender &&
       <label>Gender:
-        <select onChange={onChange} name="gender">
+        <select onChange={onChange} name="gender" required>
           <option value="no-select">Please select</option>
           <option value="cis-woman">Cis woman</option>
           <option value="cis-man">Cis man</option>
@@ -44,28 +44,28 @@ const Form = ({
       email &&
       <label>
         Email:
-        <input type="text" name="email" onChange={onChange}/>
+        <input type="email" name="email" onChange={onChange} required />
       </label>
     }
     {
       phoneNumber &&
       <label>
         Phone Number:
-        <input type="number" name="phoneNumber" onChange={onChange}/>
+        <input type="number" name="phoneNumber" onChange={onChange} required />
       </label>
     }
     {
       password &&
       <label>
         Password:
-        <input type="password" name="password" onChange={onChange}/>
+        <input type="password" name="password" onChange={onChange} required />
       </label>
     }
     {
       passwordConfirm &&
       <label>
         Password Confirm:
-        <input type="password" name="passwordConfirm" onChange={onChange}/>
+        <input type="password" name="passwordConfirm" onChange={onChange} required />
       </label>
     }
     <input type="submit" value="Submit" />

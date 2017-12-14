@@ -10,6 +10,10 @@ function tokenForUser(user, role) {
     return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret);
 }
 
+exports.decodeTokenToGetRole = function (token) {
+    return jwt.decode(token, config.secret).role;
+}
+
 function convertToSentence(listOfNouns) {
     const len = listOfNouns.length;
     var str = "";

@@ -3,6 +3,7 @@ export const AUTH_USER = "auth_user";
 export const AUTH_COUNSELLOR = "auth_counsellor";
 export const UNAUTH_USER = "unauth_user";
 export const AUTH_ERROR = "auth_error";
+export const REMOVE_ERROR = "erase_error";
 export const FETCH_NAME = 'fetch_name';
 
 // Actions
@@ -15,6 +16,12 @@ function authError(error) {
         type: AUTH_ERROR,
         payload: error
     };
+}
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    }
 }
 
 export function signinCounsellor({email, password}, history) {
@@ -37,10 +44,10 @@ export function signupCounsellor({firstName, lastName, email, password}, history
             .then(response => {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem('token', response.data.token);
-                history.push('/sms');
+                history.push('/');
             })
-            .catch(() => {
-                dispatch(authError('Username in use.'));
+            .catch(error => {
+                dispatch(authError(error.response.data.error));
             });
     };
 }
@@ -67,8 +74,8 @@ export function signupUser({username, age, gender, phoneNumber, email, password}
                 localStorage.setItem('token', response.data.token);
                 history.push('/home');
             })
-            .catch(() => {
-                dispatch(authError('Username in use.'));
+            .catch(error => {
+                dispatch(authError(error.response.data.error));
             });
     };
 }
@@ -77,6 +84,15 @@ export function signoutUser() {
     localStorage.removeItem('token');
     
     return { type: UNAUTH_USER };
+}
+
+export function checkRoleInToken(token) {
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/checkrole`, token)
+            .then(response => {
+                return response;
+            });
+    };
 }
 
 // An example to see how to make authenticated requests to the server

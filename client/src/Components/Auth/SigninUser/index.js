@@ -44,7 +44,7 @@ const Form = ({
       email &&
       <label>
         Email:
-        <input type="text" name="email" onChange={onChange}/>
+        <input type="email" name="email" onChange={onChange}/>
       </label>
     }
     {
