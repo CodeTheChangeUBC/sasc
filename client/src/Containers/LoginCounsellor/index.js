@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
-import Form from './../../Components/Auth/SigninCounsellor';
+import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -57,6 +57,8 @@ class LoginCounsellor extends Component {
       <div className="Login">
         <h2>Login</h2>
         <Form
+          email
+          password
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

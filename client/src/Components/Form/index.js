@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 const Form = ({ 
   username,
+  firstName,
+  lastName,
   age, 
   gender,
   email,
@@ -10,13 +12,28 @@ const Form = ({
   password,
   passwordConfirm,
   onSubmit,
-  onChange
+  onChange,
+  twilioPhoneNumber,
+  twilioAccountSid,
+  twilioAuthToken
 }) => (
   <form onSubmit={onSubmit}>
     {
       username &&
       <label>Username:
         <input type="text" name="username" onChange={onChange} required />
+      </label>
+    }
+    {
+      firstName &&
+      <label>First Name:
+        <input type="text" name="firstName" onChange={onChange} required />
+      </label>
+    }
+    {
+      lastName &&
+      <label>Last Name:
+        <input type="text" name="lastName" onChange={onChange} required />
       </label>
     }
     {
@@ -68,12 +85,35 @@ const Form = ({
         <input type="password" name="passwordConfirm" onChange={onChange} required />
       </label>
     }
+    {
+      twilioPhoneNumber &&
+      <label>
+        Twilio Phone Number:
+        <input type="number" name="twilioPhoneNumber" onChange={onChange} required />
+      </label>
+    }
+    {
+      twilioAccountSid &&
+      <label>
+        Twilio Account SID:
+        <input type="text" name="twilioAccountSid" onChange={onChange} required />
+      </label>
+    }
+    {
+      twilioAuthToken &&
+      <label>
+        Twilio Auth Token:
+        <input type="text" name="twilioAuthToken" onChange={onChange} required />
+      </label>
+    }
     <input type="submit" value="Submit" />
   </form>
 );
 
 Form.propTypes = {
     username: PropTypes.bool,
+    firstName: PropTypes.bool,
+    lastName: PropTypes.bool,
     age: PropTypes.bool,
     gender: PropTypes.bool,
     email: PropTypes.bool,
@@ -81,7 +121,10 @@ Form.propTypes = {
     password: PropTypes.bool,
     passwordConfirm: PropTypes.bool,
     onSubmit: PropTypes.func,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    twilioPhoneNumber: PropTypes.bool,
+    twilioAccountSid: PropTypes.bool,
+    twilioAuthToken: PropTypes.bool
 };
 
 export default Form;

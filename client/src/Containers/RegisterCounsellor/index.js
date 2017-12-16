@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Form from './../../Components/Auth/SignupCounsellor';
+import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';

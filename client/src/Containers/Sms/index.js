@@ -4,18 +4,20 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
+import * as smsActions from '../../Redux/Actions/smsActions';
 import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-class Login extends Component {
+class Sms extends Component {
 
   constructor(props) {
     super(props);
     this.state = { 
-      username: null,
-      password: null,
-      error: null
+      email: null,
+      twilioPhoneNumber: null,
+      twilioAccountSid: null,
+      twilioAuthToken: null
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -40,61 +42,47 @@ class Login extends Component {
 
     const { history } = this.props;
 
-    this.props.signinUser(this.state, history);
-  }
-
-  renderAlert() {
-    if (this.props.errorMessage) {
-        return (
-            <div className="alert alert-danger">
-                {this.props.errorMessage}
-            </div>
-        );
-    }
+    this.props.setSMSDetails(this.state, history);
   }
 
   render() {
     return (
-      <div className="Login">
-        <h2>Login</h2>
+      <div className="Sms">
+        <h2>SMS Settings</h2>
         <Form
-          username
-          password
+          email
+          twilioPhoneNumber
+          twilioAccountSid
+          twilioAuthToken
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />
-        {this.renderAlert()}
-        <div>
-          <p>
-            Are you a member of the SASC? Login <Link className="nav-link" to="/signincounsellor">here</Link> as a counsellor.
-           </p>
-        </div>
       </div>
     );
   }
 }
 
-Login.propTypes = {
-    signinUser: PropTypes.func,
+Sms.propTypes = {
+    setSMSDetails: PropTypes.func,
     history: PropTypes.object,
-    errorMessage: PropTypes.string,
     removeError: PropTypes.func
 };
 
 function mapStateToProps(state) {
-    const { username, password } = state;
+    const { email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken } = state;
     state.form = {
-      username,
-      password
+      email,
+      twilioPhoneNumber,
+      twilioAccountSid,
+      twilioAuthToken
     };
     return {
-      form: state.form,
-      errorMessage: state.auth.error
+      form: state.form
     };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser: authActions.signinUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({ setSMSDetails: smsActions.setSMSDetails, removeError: authActions.removeError }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Sms);

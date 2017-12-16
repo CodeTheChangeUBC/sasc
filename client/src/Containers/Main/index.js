@@ -5,9 +5,9 @@ import Chat from './../Chat';
 import Login from './../Login';
 import LoginCounsellor  from './../LoginCounsellor';
 import RegisterCounsellor  from './../RegisterCounsellor';
-import Signout from './../../Components/Auth/Signout';
+import Signout from './../Signout';
 import Register from './../Register';
-import SMSSettings from './../SMSSettings';
+import SMSSettings from './../Sms';
 import requireAuthCounsellor from './../../Components/Auth/requireAuthCounsellor';
 import './styles.css';
 

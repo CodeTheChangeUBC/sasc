@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as actions from '../../../Redux/Actions/authActions';
+import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
 class Signout extends Component {
@@ -16,8 +16,12 @@ class Signout extends Component {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signoutUser: authActions.signoutUser }, dispatch);
+}
+
 Signout.propTypes = {
     signoutUser: PropTypes.func
 };
 
-export default connect(null, actions)(Signout);
+export default connect(null, mapDispatchToProps)(Signout);
