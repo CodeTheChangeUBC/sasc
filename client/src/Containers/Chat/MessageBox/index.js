@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MessageInstance from './MessageInstance';
+import MessageInstance from './../MessageInstance';
 import uuid from 'uuid';
 import PropTypes from 'prop-types';
 import './styles.css';

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as messageActions from '../../Redux/Actions/messageActions';
 import { bindActionCreators } from 'redux';
-import MessageBox from './MessageBox';
+import io from 'socket.io-client';
+import MessageBox from './../MessageBox';
+import * as messageActions from '../../../Redux/Actions/messageActions';
+import config from '../../../Components/config';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-import io from 'socket.io-client';
-const socket = io('http://localhost:3000');
+const socket = io(config.api);
 
-class Chat extends Component {
+class ChatApp extends Component {
 
   constructor(props) {
     super(props);
@@ -18,9 +19,10 @@ class Chat extends Component {
       messages: props.messages,
       connected: false
     };
-     this.handleOnChange = this.handleOnChange.bind(this);
-     this.handleOnSubmit = this.handleOnSubmit.bind(this);
-     this._handleMessageEvent = this._handleMessageEvent.bind(this);
+
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this._handleMessageEvent = this._handleMessageEvent.bind(this);
   }
 
   componentWillMount() {
@@ -29,19 +31,19 @@ class Chat extends Component {
         this.setState({connected: true});
      }
     // this._handleMessageEvent()
-    console.log('will mount initated');
+    //console.log('will mount initated');
    }
 
   componentDidMount(){
-   console.log('did mount');
+   //console.log('did mount');
    this._handleMessageEvent();  
   }
 
    _handleMessageEvent(){
-    console.log('Wait for it...');
+    //console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
-      console.log('received message', inboundMessage);
+      //console.log('received message', inboundMessage);
     });
   } 
 
@@ -71,14 +73,18 @@ class Chat extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return { messages: state.activeRoom.messages, room: state.activeRoom };
+  return { username: state.activeRoom.username, messages: state.activeRoom.messages, room: state.activeRoom };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch);
 }
 
-Chat.propTypes = {
+ChatApp.defaultProps = {
+  username: 'Anonymous'
+};
+
+ChatApp.propTypes = {
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,
@@ -88,4 +94,4 @@ Chat.propTypes = {
     message: PropTypes.string
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatApp);
