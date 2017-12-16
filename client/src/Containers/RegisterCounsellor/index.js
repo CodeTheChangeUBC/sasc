@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Auth/SignupCounsellor';
-import * as actions from '../../Redux/Actions/authActions';
+import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -106,6 +107,10 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, removeError: authActions.removeError }, dispatch);
+}
+
 RegisterCounsellor.propTypes = {
     dispatch: PropTypes.func,
     history: PropTypes.object,
@@ -114,4 +119,4 @@ RegisterCounsellor.propTypes = {
     removeError: PropTypes.func
 };
 
-export default connect(mapStateToProps, actions)(RegisterCounsellor);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterCounsellor);

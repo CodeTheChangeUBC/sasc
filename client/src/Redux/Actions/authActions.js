@@ -79,7 +79,7 @@ export function signupUser({username, age, gender, phoneNumber, email, password}
             .then(response => {
                 dispatch({ type: AUTH_USER });
                 localStorage.setItem('token', response.data.token);
-                history.push('/home');
+                history.push('/');
             })
             .catch(error => {
                 dispatch(authError(error.response.data.error));

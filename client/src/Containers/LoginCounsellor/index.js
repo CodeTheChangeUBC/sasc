@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Auth/SigninCounsellor';
-import * as actions from '../../Redux/Actions/authActions';
+import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -84,4 +85,8 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(LoginCounsellor);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signinCounsellor: authActions.signinCounsellor, removeError: authActions.removeError }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginCounsellor);

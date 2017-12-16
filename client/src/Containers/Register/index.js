@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Auth/SignupUser';
-import * as actions from '../../Redux/Actions/authActions';
+import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -122,4 +123,8 @@ Register.propTypes = {
     removeError: PropTypes.func
 };
 
-export default connect(mapStateToProps, actions)(Register);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signupUser: authActions.signupUser, removeError: authActions.removeError }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
