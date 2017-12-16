@@ -4,11 +4,16 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import MessageBox from './../MessageBox';
 import * as messageActions from '../../../Redux/Actions/messageActions';
-import config from '../../../Components/config';
+import { config } from '../../../Components/config';
 import PropTypes from 'prop-types';
 import './styles.css';
 
 const socket = io(config.api);
+
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
 
 class ChatApp extends Component {
 
@@ -59,7 +64,7 @@ class ChatApp extends Component {
   }
 
   render() {
-    console.log('messages is...', this.props.messages);
+    //console.log('messages is...', this.props.messages);
     return (
       <div className="Chat">
         <MessageBox msgs={this.props.messages} />

@@ -5,11 +5,12 @@ const Authentication = require('./authentication');
 const passportService = require('../services/passport');
 const passport = require('passport');
 
+const socket = require('./socket');
+
 const requireAuthUser = passport.authenticate('jwt-user', {session: false});
 const requireAuthCounsellor = passport.authenticate('jwt-counsellor', {session: false});
 const requireSigninUser = passport.authenticate('local-user', {session: false});
 const requireSigninCounsellor = passport.authenticate('local-counsellor', {session: false});
-
 
 module.exports = function(app) {
     app.get('/counselloronly', function(req, res) {
@@ -23,4 +24,5 @@ module.exports = function(app) {
     app.post('/signup', Authentication.signup);
     app.post('/signupcounsellor', requireAuthCounsellor, Authentication.signupCounsellor);
     app.post('/checkrole', Authentication.decodeTokenToCheckRole);
+    app.post('/userjoinschat', );
 }

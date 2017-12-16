@@ -4,13 +4,15 @@ import rooms from './roomsReducer';
 import activeRoom from './activeRoomReducer';
 import signInReducer from './signInReducer';
 import authReducer from './authReducer';
+import formReducer from './formReducer';
 
 const rootReducer = combineReducers({
   messages,
   rooms,
   activeRoom,
   signInReducer,
-  auth: authReducer
+  auth: authReducer,
+  form: formReducer
 });
 
 export default rootReducer;

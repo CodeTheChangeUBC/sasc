@@ -4,9 +4,16 @@ import './styles.css';
 
 class MessageInstance extends Component {
   render() {
+    const fromMe = this.props.fromMe ? 'from-me' : '';
+
     return(
-        <div className="messageInstance">
-          {this.props.user} {this.props.message}
+        <div className={`messageInstance ${fromMe}`}>
+            <div>
+              {this.props.user}
+            </div>
+            <div>
+              {this.props.message}
+            </div>
         </div>
       );
   }
@@ -15,6 +22,12 @@ class MessageInstance extends Component {
 MessageInstance.propTypes = {
     user: PropTypes.string,
     message: PropTypes.string
+};
+
+MessageInstance.defaultProps = {
+  message: '',
+  user: '',
+  fromMe: false
 };
 
 export default MessageInstance;

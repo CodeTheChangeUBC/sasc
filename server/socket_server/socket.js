@@ -2,11 +2,11 @@
 // It has 2 roles:
 // 
 // 1) Verify that incoming connections are legitimate.
-// 2) Create the appropriate students and counselors.
+// 2) Create the appropriate students and counsellors.
 // 
 // Communication between sockets is done in User objects themselves.
 
-var Counselor = require('./acc/counselor')
+var Counsellor = require('./acc/counsellor')
 var Student = require('./acc/student')
 
 var util = require('./secrets')
@@ -29,9 +29,9 @@ function Handler (io) {
   // On a connection, create the appropriate user object.
   io.on('connection', socket => {
     switch (socket.payload.type) {
-      case 'COUNSELOR':
-        console.log('Counselor connected!')
-        new Counselor(socket)
+      case 'COUNSELLOR':
+        console.log('Counsellor connected!')
+        new Counsellor(socket)
       break
       case 'STUDENT':
         console.log('Student connected!')

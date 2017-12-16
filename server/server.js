@@ -15,34 +15,33 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const apiRouter = require('./api/index');
 
-const config = require('./webpack.config.dev');
+const config = require('./../webpack.config.dev');
 const webpack = require('webpack');
 const serveStatic = require('serve-static');
 
 const compiler = webpack(config);
 
-//const index = require('./routes/index');
 const router = require('./routes/index');
 const users = require('./routes/users');
 const counsellors = require('./routes/counsellors');
+const socket = require('./routes/socket');
 
 var app = express();
 
 exports.server = function(database, databaseMode) {
   // DB setup
-  //const db = require('./db');
   database.connect(databaseMode, function(err) {
     if (err) {
       console.log('Unable to connect to MySQL.');
     }
     else {
-      console.log('WE ARE CONNECTED BABY');
+      console.log('WE ARE CONNECTED TO THE DB BABY');
     }
   });
 
   // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'jade');
+  //app.set('views', path.join(__dirname, 'views'));
+  //app.set('view engine', 'jade');
 
   // uncomment after placing your favicon in /public
   //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -56,13 +55,12 @@ exports.server = function(database, databaseMode) {
   }));
 
   app.use(require('webpack-hot-middleware')(compiler));
-  const staticPath = path.join(__dirname, '/client');
+  const staticPath = path.join(__dirname, '/../client');
 
   app.use(serveStatic(staticPath));
   
   router(app);
 
-  //app.use('/', index);
   app.use('/users', users);
   app.use('/counsellors', counsellors);
 
@@ -72,9 +70,9 @@ exports.server = function(database, databaseMode) {
 
   app.get('*', function(req, res) {  
    //console.log('get route caught this');
-   res.sendFile(path.join(__dirname, 'client', 'index.html')); 
+   res.sendFile(path.join(__dirname, '/../client', 'index.html')); 
   });
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
+  app.use(express.static(path.join(__dirname, '/../client', 'build')));
 
 
 
