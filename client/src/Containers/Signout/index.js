@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 

@@ -8,15 +8,9 @@ export function getSMSDetails({ email }) {
     };
 }
 
-export function postSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
+export function setSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
     return function(dispatch) {
         axios.post(`${ROOT_URL}/postSMSDetails`);
-    };
-}
-
-export function updateSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
-    return function(dispatch) {
-        axios.update(`${ROOT_URL}/updateSMSDetails`);
     };
 }
 
