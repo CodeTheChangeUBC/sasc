@@ -58,7 +58,16 @@ exports.retrieve = function(req, res) {
 
 // Retrieve username and password specified by username in params
 exports.getUserCredentialsByUsername = function(req, res) {
-	abstract.getUserCredentialsByUsername(req.body.username, res);
+	username = req.body.username;
+	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
+		[username],
+		function(err, result) {
+			if (err) {
+				res.status(400).send(err);
+				return;
+			}
+			res.status(200).send(result[0]);
+		});
 }
 
 // List all users
