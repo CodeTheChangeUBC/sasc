@@ -59,7 +59,7 @@ class Register extends Component {
   renderAlert() {
         if (this.props.errorMessage) {
             return (
-                <div className="alert alert-danger">
+                <div>
                     {this.props.errorMessage}
                 </div>
             );
@@ -69,7 +69,7 @@ class Register extends Component {
   renderPasswordCheckAlert() {
       if (this.state.error) {
           return (
-              <div className="alert alert-danger">
+              <div>
                   {this.state.error}
               </div>
           );
