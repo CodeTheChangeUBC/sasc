@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import MessageBox from './../MessageBox';
 import * as messageActions from '../../../Redux/Actions/messageActions';
-import { config } from '../../../Components/config';
+import { config } from '../../../Config';
 import PropTypes from 'prop-types';
 import './styles.css';
 
