@@ -46,7 +46,7 @@ class ChatApp extends Component {
 
    _handleMessageEvent(){
     //console.log('Wait for it...');
-    socket.on('chat message', (inboundMessage) => {
+    socket.on('server:chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
       //console.log('received message', inboundMessage);
     });
@@ -58,7 +58,7 @@ class ChatApp extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    socket.emit('chat message', {message: this.state.input, room: this.props.room.title});
+    socket.emit('client:chat message', {message: this.state.input, room: this.props.room.title});
     // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
     this.setState({ input: '' });
   }
