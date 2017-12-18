@@ -1,5 +1,6 @@
 //const socketHandler = require("./../socket_server/socket");
 const io = require("socket.io")();
+console.log("inside routes/socket.js")
 
 io.on("connection", function (socket) {
     const username = socket.handshake.query.username;
