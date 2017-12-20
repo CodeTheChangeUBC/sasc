@@ -1,4 +1,4 @@
-const sessionController = require("../models/session");
+const sessonModel = require("../models/session");
 
 exports.createSession = function (req, res) {
     var session = {
@@ -7,7 +7,7 @@ exports.createSession = function (req, res) {
         counsellorID: req.body.counsellorID,
         userID: req.body.userID
     };
-    sessionController.create(session, function (err) {
+    sessonModel.create(session, function (err) {
         if (err) {
             return res.status(422).send({error: "Failed to create session."});
         } else {
@@ -18,7 +18,7 @@ exports.createSession = function (req, res) {
 
 exports.counsellorGetSessions = function (req, res) {
     const counsellorID = req.params.counsellorID;
-    sessionController.listByCounsellor(counsellorID, function (err, results) {
+    sessonModel.listByCounsellor(counsellorID, function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to retrieve session."});
         }

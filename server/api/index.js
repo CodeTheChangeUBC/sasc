@@ -26,10 +26,13 @@ const usersController = require('../models/user');
 apiRouter.post('/register', usersController.create);
 
 apiRouter.post('/sessions', sessionController.createSession);
-apiRouter.get('/sessions/:id', sessionController.counsellorGetSessions);
+apiRouter.get('/sessions/counsellor/:counsellorID', sessionController.counsellorGetSessions);
 
 apiRouter.post('/chats', chatroomController.createChatroom);
-apiRouter.get('/chats/:counsellorID', chatroomController.counsellorGetChatrooms);
+
+apiRouter.get('/chats/user/:userID', chatroomController.userGetChatroom);
+apiRouter.get('/chats/counsellor/:counsellorID', chatroomController.counsellorGetChatrooms);
+
 apiRouter.post('/chats/messages', messageController.addMessage);
 apiRouter.get('/chats/:chatroomID/messages', messageController.getMessages);
 

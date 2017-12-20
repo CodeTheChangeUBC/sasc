@@ -10,3 +10,8 @@ exports.create = function (values, callback) {
 exports.listByCounsellor = function (counsellorID, callback) {
     abstract.listByForeignKey('chatroom', 'counsellorID', counsellorID, callback);
 };
+
+// Retrieve by user ID
+exports.listByUser = function(userID, callback) {
+    abstract.listByForeignKey('chatroom', 'userID', userID, callback);
+}

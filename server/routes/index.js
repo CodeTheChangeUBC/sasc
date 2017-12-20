@@ -25,5 +25,4 @@ module.exports = function(app) {
     app.post('/signupcounsellor', authentication.signupCounsellor);
     app.post('/checkrole', authentication.decodeTokenToCheckRole);
 
-    app.post('/chats', sessionController.createSession);
 }

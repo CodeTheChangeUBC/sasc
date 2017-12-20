@@ -1,4 +1,4 @@
-const messageController = require("../models/message");
+const messageModel = require("../models/message");
 
 exports.addMessage = function (req, res) {
     var message = {
@@ -11,7 +11,7 @@ exports.addMessage = function (req, res) {
         fromCounsellor: req.body.fromCounsellor,
         fromTwilio: req.body.fromTwilio
     };
-    messageController.create(message, function (err) {
+    messageModel.create(message, function (err) {
         if (err) {
             return res.status(422).send({error: "Failed to store message."});
         } else {
@@ -22,7 +22,7 @@ exports.addMessage = function (req, res) {
 
 exports.getMessages = function (req, res) {
     const chatroomID = req.params.chatroomID;
-    messageController.listByChatroom(chatroomID, function (err, results) {
+    messageModel.listByChatroom(chatroomID, function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to retrieve messages."});
         }
