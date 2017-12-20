@@ -10,11 +10,6 @@ import './styles.css';
 
 const socket = io(config.api);
 
-socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-
 class ChatApp extends Component {
 
   constructor(props) {
@@ -46,7 +41,7 @@ class ChatApp extends Component {
 
    _handleMessageEvent(){
     //console.log('Wait for it...');
-    socket.on('server:chat message', (inboundMessage) => {
+    socket.on('chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
       //console.log('received message', inboundMessage);
     });
@@ -58,7 +53,7 @@ class ChatApp extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    socket.emit('client:chat message', {message: this.state.input, room: this.props.room.title});
+    socket.emit('chat message', {message: this.state.input, room: this.props.room.title});
     // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
     this.setState({ input: '' });
   }
