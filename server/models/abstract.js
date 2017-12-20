@@ -30,10 +30,10 @@ exports.create = function(model, values, res, callback) {
 /// Second version of create
 exports.createCallbackVer = function(model, values, callback) {
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
-		function(err, results) {
-			if (err) { callback(err); }
+		function(err) {
+			if (err) { console.log("error"); callback(err); }
 
-			else { callback(null); }
+			else { console.log("success"); callback(null); }
 		});
 }
 
@@ -184,8 +184,8 @@ exports.destroyAll = function(model) {
 exports.listByForeignKey = function(model, fk, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
 		function(err, results, fields) {
-			if (err) { callback(err); }
-			callback(null,results);
+			if (err) { callback(err, null); }
+			callback(null, results);
 		});
 }
 

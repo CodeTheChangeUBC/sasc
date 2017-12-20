@@ -4,7 +4,7 @@ const abstract = require('./abstract.js')
 // - m is a dictionary containing message values
 // - 	valueNames, but without ID
 exports.create = function(m, callback) {
-	abstract.create('message', m, null, callback)
+	abstract.createCallbackVer('message', m, callback);
 }
 
 // counts number of message
@@ -19,6 +19,23 @@ exports.count = function(callback) {
 exports.destroyAll = function(callback) {	
 	abstract.destroyAll('message').then(() => callback()).catch(err => callback(err));
 }
+
+// I might get rid of this but will keep for now
+exports.listByRole = function(role, ID, callback) {
+	var typeOfID = '';
+	if (role === 'counsellor') {
+		typeOfID = 'counsellorID';
+	} else if (role === 'user' || role === 'noAccountUser') {
+		typeOfID = 'userID';
+	}
+	
+	abstract.listByForeignKey('message', typeOfID, ID, callback);
+}
+
+// List all the messages of a given chatroom
+exports.listByChatroom = function (chatroomID, callback) {
+    abstract.listByForeignKey('message', 'chatroomID', chatroomID, callback);
+};
 
 // Retrieve by counsellor ID
 exports.listByCounsellor = function(counsellorID, callback) {
