@@ -137,6 +137,7 @@ exports.lookupId = function(model, identifier, value, callback) {
 		});
 }
 
+
 // List all models
 // - model is name of model (string)
 exports.list = function(model, res) {
@@ -205,17 +206,6 @@ function httpResponse(err, errCode, data, dataCode, res) {
 		return;
 	}
 	res.status(dataCode).send(data);
-}
-
-// Compute string of (?,...,?) of length len
-function computeUnknowns(len) {
-	var unknowns = '(';
-	for (var j=0; j<len; j++) {
-		unknowns += '?'
-		if (j!=len-1) { unknowns += ', '; }
-	}
-	unknowns += ')';	
-	return unknowns;
 }
 
 // Compute string of ' field1=?, ... , fieldn=?'
