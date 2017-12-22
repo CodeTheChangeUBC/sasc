@@ -88,7 +88,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
         });
 
     });
-}
+};
 
 exports.decodeTokenToCheckRole = function (req, res) {
     const role = jwt.decode(req.body.token, config.secret).role;

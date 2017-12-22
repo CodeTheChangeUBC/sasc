@@ -18,7 +18,7 @@ exports.createSession = function (req, res) {
 
 exports.counsellorGetSessions = function (req, res) {
     const counsellorID = req.params.counsellorID;
-    sessonModel.listByCounsellor(counsellorID, function (err, results) {
+    sessionModel.listByCounsellor(counsellorID, function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to retrieve session."});
         }
