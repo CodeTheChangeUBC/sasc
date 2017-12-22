@@ -13,17 +13,17 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const apiRouter = require('./api/index');
+const apiRouter = require('./server/api/index');
 
-const config = require('./../webpack.config.dev');
+const config = require('./webpack.config.dev');
 const webpack = require('webpack');
 const serveStatic = require('serve-static');
 
 const compiler = webpack(config);
 
-const router = require('./routes/index');
-const users = require('./routes/users');
-const counsellors = require('./routes/counsellors');
+const router = require('./server/routes/index');
+const users = require('./server/routes/users');
+const counsellors = require('./server/routes/counsellors');
 
 var app = express();
 
@@ -54,7 +54,7 @@ exports.server = function(database, databaseMode) {
   }));
 
   app.use(require('webpack-hot-middleware')(compiler));
-  const staticPath = path.join(__dirname, '/../client');
+  const staticPath = path.join(__dirname, '/client');
 
   app.use(serveStatic(staticPath));
   
@@ -68,7 +68,7 @@ exports.server = function(database, databaseMode) {
 
   app.get('*', function(req, res) {  
    //console.log('get route caught this');
-   res.sendFile(path.join(__dirname, '/../client', 'index.html')); 
+   res.sendFile(path.join(__dirname, '/client', 'index.html')); 
   });
   app.use(express.static(path.join(__dirname, '/../client', 'build')));
 

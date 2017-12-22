@@ -5,7 +5,7 @@ development environment
 
 */
 
-const db = require('./db');
+const db = require('./server/db');
 const testServer = require('./server.js');
 var app = testServer.server(db,db.MODE_DEVELOPMENT);
 
