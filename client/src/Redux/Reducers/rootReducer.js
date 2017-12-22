@@ -5,7 +5,6 @@ import activeRoom from './activeRoomReducer';
 import signInReducer from './signInReducer';
 import auth from './authReducer';
 import form from './formReducer';
-import chat from './chatReducer';
 
 const rootReducer = combineReducers({
   messages,
@@ -13,8 +12,7 @@ const rootReducer = combineReducers({
   activeRoom,
   signInReducer,
   auth,
-  form,
-  chat
+  form
 });
 
 export default rootReducer;
