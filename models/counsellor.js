@@ -1,16 +1,10 @@
-const db = require('../db.js')
-const abstract = require('./abstract.js')
+const db = require('../db');
+const abstract = require('./abstract');
 
 // Create counsellor from post request
-exports.create = function(req, res) {
-	var values = {
-		firstName: req.body.firstName, 
-		lastName: req.body.lastName,
-		email: req.body.email,
-		password: req.body.password,
-	}
-	//var valueNames = '(ID,firstName,lastName,email,password)';
-	abstract.create('counsellor', values, res);
+exports.create = function(values, callback) {
+	values['email'] = values['email'].toLowerCase();
+	abstract.createCallbackVer('counsellor', values, callback);
 }
 
 // Update counsellor
@@ -25,9 +19,7 @@ exports.update = function(req, res) {
 		
 	}
 	// Add password if there
-	if (req.body.password) {
-		values['password'] = req.body.password;
-	}
+	if (req.body.password) { values['password'] = req.body.password; }
 	// then update counsellor
 	abstract.update('counsellor', values, counsellor.ID, res);	
 }
@@ -60,6 +52,21 @@ exports.getCounsellorCredentialsByEmail = function(req, res) {
 			}
 			res.status(200).send(result[0]);
 		});
+}
+
+// Retrieve email and password specified by email in req.body
+exports.lookupByEmail = function(email, callback) {
+	abstract.lookupByValue('counsellor', 'email', email, callback);
+}
+
+// Retrieve counsellor ID from email
+exports.lookupIdByEmail = function(email, callback) {
+	abstract.lookupId('counsellor', 'email', email, callback);
+}
+
+// Retrieve user by id
+exports.lookupById = function(id, callback) {
+	abstract.lookupByValue('counsellor', 'ID', id, callback);
 }
 
 // destroy given counsellor

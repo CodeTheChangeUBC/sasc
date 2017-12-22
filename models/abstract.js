@@ -17,28 +17,44 @@ exports.create = function(model, values, res, callback) {
 		exports.process(values, values => {
 			db.get().query('INSERT INTO '+model+' SET ?', values, 
 				(err, results) => {
-					if (res) httpResponse(err, 400, results, 201, res);
-					else noHttpResponse(err, results, callback);
+					if (res) { httpResponse(err, 400, results, 201, res); }
+					else { noHttpResponse(err, results, callback); }
 			});
 		});	
 	}).catch(error => {
-		if (callback) callback(error);
-		else httpResponse(error, 400, null, null, res)
+		if (callback) { callback(error); }
+		else { httpResponse(error, 400, null, null, res); }
 	});
+}
+
+/// Second version of create
+exports.createCallbackVer = function(model, values, callback) {
+	db.get().query('INSERT INTO '+model+' SET ?', values, 
+		function(err, results) {
+			if (err) { callback(err); }
+
+			else { callback(null); }
+		});
 }
 
 // Hash password
 exports.process = function(values, callback) {
 	if (values.password) {
 	    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
-	    	values.password = hash
-	        callback(values)
-		})
-	} else {
-		callback(values)
-	}
+	    	values.password = hash;
+	        callback(values);
+		});
+	} else { callback(values); }
 }
 
+// compare password
+exports.comparePassword = function(password, hash, callback) {
+ 	bcrypt.compare(password, hash, function(err, res) {
+ 	    if (err) { return callback(err, null); }
+
+ 	    callback(null, res);
+ 	});
+}
 
 // Destroy model
 // - model is name of model (string)
@@ -47,8 +63,8 @@ exports.destroy = function(model, id, res, callback) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
 		function(err, result) {
-			if (res) httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res);
-			else noHttpResponse(err, result, callback)
+			if (res) { httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res); }
+			else { noHttpResponse(err, result, callback); }
 		});
 }
 
@@ -59,8 +75,8 @@ exports.destroy = function(model, id, res, callback) {
 // (not including id)
 exports.update = function(model, values, id, res, callback) {
 	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			if (res) httpResponse(err, 400, results, 200, res);
-			else noHttpResponse(err, results, callback)
+			if (res) { httpResponse(err, 400, results, 200, res); }
+			else { noHttpResponse(err, results, callback); }
 	});
 }
 
@@ -85,7 +101,7 @@ exports.retrieveByValues = function(model, values, valueNames, callback) {
 	query += fieldQueries(valueNames,1);
 	db.get().query(query, values, function(err,results,fields) {
 			console.log('Error: ' + err);
-			if (err) callback(err);
+			if (err) { callback(err); }
 			callback(null, results);
 		});
 }
@@ -96,21 +112,31 @@ exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback)
+			if (res) { httpResponse(err, 400, result[0], 200, res); }
+			else { noHttpResponse(err, result[0], callback); }
 		});
 }
 
-// Retrieve user specified by username in params
-// Can't abstract because users use username while counsellors use email to login
-exports.getUserCredentialsByUsername = function(username, res, callback) {
-	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
-		[username],
-		function(err, result) {
-			if (res) httpResponse(err, 400, result[0], 200, res);
-			else noHttpResponse(err, result[0], callback);
+// Retrieve value specified by identifier
+exports.lookupByValue = function(model, identifier, value, callback) {
+	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
+		[value], 
+		function (err, rows) {
+		if (err) { callback(err, null); }
+		else { callback(null, rows); }
+	});
+}
+
+// Retrieve ID from email or username
+exports.lookupId = function(model, identifier, value, callback) {
+	db.get().query('SELECT ID FROM ' + model + ' WHERE ' + identifier + ' = ?;',
+		[value],
+		function (err, result) {
+			if (err) { callback(err, null); }
+			else { callback(null, result[0].ID); }
 		});
 }
+
 
 // List all models
 // - model is name of model (string)
@@ -125,9 +151,16 @@ exports.list = function(model, res) {
 exports.count = function(model) {	
 	return new Promise(function(fulfill, reject) {
 		db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err,results,fields) {			
-			if (err) reject(err);
+			if (err) { reject(err); }
 			fulfill(results[0].count);
 		});	
+	});
+}
+
+exports.countCallbackVer = function(model, callback) {	
+	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
+		if (err) { callback(err, null); }
+		else { callback(null, results[0].count); }
 	});
 }
 
@@ -139,7 +172,7 @@ exports.count = function(model) {
 exports.destroyAll = function(model) {
 	return new Promise(function(fulfill, reject) {
 		db.get().query('DELETE FROM '+model, function(err,result) {
-			if (err) reject(err);
+			if (err) { reject(err); }
 			fulfill();
 		});
 	});
@@ -152,7 +185,7 @@ exports.destroyAll = function(model) {
 exports.listByForeignKey = function(model, fk, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
 		function(err, results, fields) {
-			if (err) callback(err);
+			if (err) { callback(err); }
 			callback(null,results);
 		});
 }
@@ -162,8 +195,8 @@ exports.listByForeignKey = function(model, fk, id, callback) {
 // - data is data to return
 // - toCall is function to call
 function noHttpResponse(err,data,toCall) {
-	if (err) toCall(err);
-	else toCall(null,data);
+	if (err) { toCall(err); }
+	else { toCall(null,data); }
 }
 
 // Function to call when returning data or error in Http response
@@ -183,8 +216,8 @@ function fieldQueries(fields, and) {
 	for (var j=0; j<fields.length; j++) {
 		query += ' '+fields[j]+'=?';
 		if (j!=fields.length-1) {
-			if (and) query += ' AND'
-			else query += ',' 
+			if (and) { query += ' AND'; }
+			else { query += ','; }
 		}
 	}
 	return query;
