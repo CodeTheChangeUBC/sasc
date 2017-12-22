@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { config } from './../../Config';
 
-const ROOT_URL = 'http://localhost:3000';
+const ROOT_URL = config.api;
 
 export function getSMSDetails({ email }) {
     return function(dispatch) {        

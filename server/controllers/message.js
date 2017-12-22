@@ -2,7 +2,6 @@ const messageModel = require("../models/message");
 
 exports.addMessage = function (req, res) {
     var message = {
-        chatroomID: req.body.chatroomID,
         sessionID: req.body.sessionID,
         messageTime: req.body.messageTime,
         counsellorID: req.body.counsellorID,
@@ -21,8 +20,8 @@ exports.addMessage = function (req, res) {
 };
 
 exports.getMessages = function (req, res) {
-    const chatroomID = req.params.chatroomID;
-    messageModel.listByChatroom(chatroomID, function (err, results) {
+    const sessionID = req.params.sessionID;
+    messageModel.listBySession(sessionID, function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to retrieve messages."});
         }

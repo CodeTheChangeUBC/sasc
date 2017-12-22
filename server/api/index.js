@@ -2,9 +2,6 @@ const express = require('express');
 
 const apiRouter = express.Router();
 
-const messageController = require('../controllers/message');
-const sessionController = require('../controllers/session');
-const chatroomController = require('../controllers/chatroom');
 const usersController = require('../models/user');
 
 // testing, remove when done ---------------------------
@@ -24,17 +21,6 @@ const usersController = require('../models/user');
 // -----------------------------------------------------
 
 apiRouter.post('/register', usersController.create);
-
-apiRouter.post('/sessions', sessionController.createSession);
-apiRouter.get('/sessions/counsellor/:counsellorID', sessionController.counsellorGetSessions);
-
-apiRouter.post('/chats', chatroomController.createChatroom);
-
-apiRouter.get('/chats/user/:userID', chatroomController.userGetChatroom);
-apiRouter.get('/chats/counsellor/:counsellorID', chatroomController.counsellorGetChatrooms);
-
-apiRouter.post('/chats/messages', messageController.addMessage);
-apiRouter.get('/chats/:chatroomID/messages', messageController.getMessages);
 
 //apiRouter.post('/login', usersController.retrieve);
 
