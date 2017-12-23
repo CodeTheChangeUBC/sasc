@@ -1,3 +1,17 @@
+/*
+
+Registers using payload:
+
+ID int NOT NULL AUTO_INCREMENT,
+    age int,
+    gender VARCHAR(24),
+    phoneNumber VARCHAR(15) NOT NULL ,
+    password VARCHAR(30) NOT NULL,
+
+for gender we have the following options (radio buttons): male, female, non-binary, transgender male, transgender female, other: _______
+
+*/
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -50,6 +64,8 @@ class Register extends Component {
   }
 
   render() {
+    // TODO: style this form so it looks better
+
     return (
       <div className="Register">
         <h2>Register</h2>

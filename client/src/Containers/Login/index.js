@@ -5,6 +5,7 @@ import axios from 'axios';
 import Form from './../../Components/Form/';
 import './styles.css';
 
+
 class Login extends Component {
 
   constructor(props) {
@@ -44,6 +45,8 @@ class Login extends Component {
   }
 
   render() {
+    // TODO: style this form so it looks better
+    
     return (
       <div className="Login">
         <h2>Login</h2>
@@ -56,4 +59,13 @@ class Login extends Component {
   }
 }
 
-export default Login;
+
+function mapStateToProps(state, ownProps) {
+  return { user: state.user };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(loginActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
