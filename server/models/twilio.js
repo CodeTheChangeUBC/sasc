@@ -4,7 +4,7 @@ const abstract = require('./abstract.js');
 // Create twilio 
 // - twilio is a dictionary containing twilio values
 exports.create = function(twilio, callback) {
-	abstract.create('twilio', twilio, null, callback);
+	abstract.createCallbackVer('twilio', twilio, callback);
 }
 
 // Remove twilio
@@ -20,6 +20,10 @@ exports.retrieveByID = function(id, callback) {
 	abstract.retrieve('twilio', id, null, callback);
 }
 
+// Retrieve twilio by email
+exports.retrieveByEmail = function(email, callback) {
+	abstract.lookupByValue('twilio', 'email', email, callback);
+}
 
 // Update twilio 
 //  - id is ID of twilio object to be updated

@@ -31,9 +31,9 @@ exports.create = function(model, values, res, callback) {
 exports.createCallbackVer = function(model, values, callback) {
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
 		function(err) {
-			if (err) { console.log("error"); callback(err); }
+			if (err) { callback(err); }
 
-			else { console.log("success"); callback(null); }
+			else { callback(null); }
 		});
 }
 
@@ -62,9 +62,9 @@ exports.comparePassword = function(password, hash, callback) {
 exports.destroy = function(model, id, res, callback) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
-		function(err, result) {
-			if (res) { httpResponse(err, 400, { message: model+' deleted successfully' }, 204, res); }
-			else { noHttpResponse(err, result, callback); }
+		function(err) {
+			if (err) { callback(err); }
+			else { callback(null); }
 		});
 }
 
@@ -75,8 +75,8 @@ exports.destroy = function(model, id, res, callback) {
 // (not including id)
 exports.update = function(model, values, id, res, callback) {
 	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			if (res) { httpResponse(err, 400, results, 200, res); }
-			else { noHttpResponse(err, results, callback); }
+			if (err) { callback(err); }
+			else { callback(null); }
 	});
 }
 

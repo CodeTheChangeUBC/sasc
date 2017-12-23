@@ -23,6 +23,7 @@ const compiler = webpack(config);
 
 const router = require('./server/routes/index');
 const users = require('./server/routes/users');
+const twilio = require('./server/routes/twilio');
 const counsellors = require('./server/routes/counsellors');
 
 var app = express();
@@ -62,6 +63,7 @@ exports.server = function(database, databaseMode) {
 
   app.use('/users', users);
   app.use('/counsellors', counsellors);
+  app.use('/twilio', twilio);
 
   // adding apiRouter for login and registration
   app.use('/api', apiRouter);
