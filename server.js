@@ -25,6 +25,7 @@ const router = require('./server/routes/index');
 const users = require('./server/routes/users');
 const twilio = require('./server/routes/twilio');
 const counsellors = require('./server/routes/counsellors');
+const auth = require('./server/routes/authentication');
 
 var app = express();
 
@@ -58,9 +59,9 @@ exports.server = function(database, databaseMode) {
   const staticPath = path.join(__dirname, '/client');
 
   app.use(serveStatic(staticPath));
-  
-  router(app);
 
+  app.use('/', router);
+  app.use('/auth', auth);
   app.use('/users', users);
   app.use('/counsellors', counsellors);
   app.use('/twilio', twilio);
