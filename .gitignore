@@ -5,3 +5,4 @@ npm-debug.log*
 commons/twilioInstances.sql
 package-lock.json
 twilio/*
+.idea

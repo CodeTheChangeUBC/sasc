@@ -24,7 +24,6 @@ exports.update = function(req, res) {
 	abstract.update('counsellor', values, counsellor.ID, res);	
 }
 
-
 // list all counsellors
 exports.list = function(req, res) {
 	abstract.list('counsellor', res)
@@ -33,6 +32,11 @@ exports.list = function(req, res) {
 // retrieve single counsellor 
 exports.retrieve = function(req, res) {
 	abstract.retrieve('counsellor', req.params.counsellorId, res);
+}
+
+// Retrieve counsellor by values
+exports.retrieveByValues = function(values, callback) {
+	abstract.retrieveByValues('counsellor', values, callback);
 }
 
 // Retrieve email and password specified by email in req.body
@@ -73,8 +77,3 @@ exports.lookup = function(req, res, next) {
 exports.destroyAll = function(callback) {	
 	abstract.destroyAll('counsellor').then(() => callback()).catch(err =>  callback(err))
 }
-
-
-
-
-

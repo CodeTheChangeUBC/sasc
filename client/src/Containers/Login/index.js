@@ -8,6 +8,7 @@ import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
+
 class Login extends Component {
 
   constructor(props) {
@@ -54,6 +55,8 @@ class Login extends Component {
   }
 
   render() {
+    // TODO: style this form so it looks better
+    
     return (
       <div className="Login">
         <h2>Login</h2>

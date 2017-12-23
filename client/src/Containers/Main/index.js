@@ -10,6 +10,7 @@ import Register from './../Register';
 import SMSSettings from './../Sms';
 import requireAuthCounsellor from './../../Components/Auth/requireAuthCounsellor';
 import './styles.css';
+import CounsellorBar from "../../Components/Counsellor/CounsellorBar";
 
 class Main extends Component {
   render() {
