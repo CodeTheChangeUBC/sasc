@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as loginActions from '../../Redux/Actions/loginActions';
 import Form from './../../Components/Form/';
 import './styles.css';
 
