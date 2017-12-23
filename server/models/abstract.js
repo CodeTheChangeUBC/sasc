@@ -89,6 +89,7 @@ exports.lookup = function(model, id, req, res, callback) {
 			if (err) {
 				res.status(404).send(err);
 				next();
+				return;
 			}
 			req.model = results[0];
 			callback();
@@ -112,8 +113,8 @@ exports.retrieve = function(model, id, res, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
 		[id],
 		function(err, result) {
-			if (res) { httpResponse(err, 400, result[0], 200, res); }
-			else { noHttpResponse(err, result[0], callback); }
+			if (res) { httpResponse(err, 400, result, 200, res); }
+			else { noHttpResponse(err, result, callback); }
 		});
 }
 
@@ -125,16 +126,6 @@ exports.lookupByValue = function(model, identifier, value, callback) {
 		if (err) { callback(err, null); }
 		else { callback(null, rows); }
 	});
-}
-
-// Retrieve ID from email or username
-exports.lookupId = function(model, identifier, value, callback) {
-	db.get().query('SELECT ID FROM ' + model + ' WHERE ' + identifier + ' = ?;',
-		[value],
-		function (err, result) {
-			if (err) { callback(err, null); }
-			else { callback(null, result[0].ID); }
-		});
 }
 
 // List all models
@@ -150,8 +141,8 @@ exports.list = function(model, res) {
 exports.count = function(model) {	
 	return new Promise(function(fulfill, reject) {
 		db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err,results,fields) {			
-			if (err) { reject(err); }
-			fulfill(results[0].count);
+			if (err) reject(err);
+			else fulfill(results[0].count);
 		});	
 	});
 }
@@ -209,13 +200,12 @@ function httpResponse(err, errCode, data, dataCode, res) {
 
 // Compute string of (?,...,?) of length len
 function computeUnknowns(len) {
-	var unknowns = '(';
-	for (var j=0; j<len; j++) {
-		unknowns += '?'
-		if (j!=len-1) { unknowns += ', '; }
+	var unknowns = ''
+	for (var i = len; i--;) {
+		unknowns += '?,'
 	}
-	unknowns += ')';	
-	return unknowns;
+	unknowns = unknowns.slice(0,-1)
+	return '(' + unknowns + ')';
 }
 
 // Compute string of ' field1=?, ... , fieldn=?'

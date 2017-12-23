@@ -1,3 +1,32 @@
 .error {
     color: red;
 }
+
+.register-background {
+
+}
+
+.register-shell {
+  height: auto;
+  width: 300px;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  top: 80px;
+  left: 50%;
+  position: absolute;
+  margin-left: -150px;
+  background-color: powderblue;
+}
+
+.register-shell input, select, option, button {
+  width: fill;
+  background: azure;
+  appearance: none;
+  margin: 3px;
+}
+
+.register-shell select {
+  width: inherit;
+}
