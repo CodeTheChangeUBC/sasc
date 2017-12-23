@@ -20,11 +20,6 @@ exports.retrieveByID = function(id, callback) {
 	abstract.retrieve('twilio', id, null, callback);
 }
 
-// Retrieve twilio by email
-exports.retrieveByEmail = function(email, callback) {
-	abstract.lookupByValue('twilio', 'email', email, callback);
-}
-
 // Update twilio 
 //  - id is ID of twilio object to be updated
 // - vals is a dictionary containing the values to be updated. 
@@ -44,6 +39,10 @@ exports.update = function(id, vals, callback) {
 exports.destroy = function(id, callback) {
 	abstract.destroy('twilio', id, null, callback);
 }
+
+exports.list = function (callback) {
+	abstract.list("twilio", callback);
+};
 
 // Count the number of twilio objects
 exports.count = function(callback) {

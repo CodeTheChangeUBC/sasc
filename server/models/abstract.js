@@ -130,9 +130,13 @@ exports.lookupByValue = function(model, identifier, value, callback) {
 
 // List all models
 // - model is name of model (string)
-exports.list = function(model, res) {
-	db.get().query('SELECT * FROM '+model+';', function(err,models) {
-		httpResponse(err, 400, models, 200, res);
+exports.list = function(model, callback) {
+	db.get().query('SELECT * FROM '+model+';', function(err, rows) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, rows);
+		}
 	});
 }
 

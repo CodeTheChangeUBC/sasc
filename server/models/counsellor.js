@@ -25,8 +25,8 @@ exports.update = function(req, res) {
 }
 
 // list all counsellors
-exports.list = function(req, res) {
-	abstract.list('counsellor', res)
+exports.list = function(callback) {
+	abstract.list('counsellor', callback)
 }
 
 // retrieve single counsellor 

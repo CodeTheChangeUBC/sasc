@@ -79,8 +79,8 @@ exports.lookupById = function(id, callback) {
 }
 
 // List all users
-exports.list = function(req, res) {
-	abstract.list('user', res);
+exports.list = function(callback) {
+	abstract.list('user', callback);
 }
 
 // Counts the number of users
