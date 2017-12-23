@@ -24,7 +24,6 @@ exports.update = function(req, res) {
 	abstract.update('counsellor', values, counsellor.ID, res);	
 }
 
-
 // list all counsellors
 exports.list = function(req, res) {
 	abstract.list('counsellor', res)
@@ -38,20 +37,6 @@ exports.retrieve = function(req, res) {
 // Retrieve counsellor by values
 exports.retrieveByValues = function(values, callback) {
 	abstract.retrieveByValues('counsellor', values, callback);
-}
-
-// Retrieve email and password specified by email in params
-exports.getCounsellorCredentialsByEmail = function(req, res) {
-	email = req.body.email;
-	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
-		[email],
-		function(err, result) {
-			if (err) {
-				res.status(400).send(err);
-				return;
-			}
-			res.status(200).send(result[0]);
-		});
 }
 
 // Retrieve email and password specified by email in req.body
@@ -92,8 +77,3 @@ exports.lookup = function(req, res, next) {
 exports.destroyAll = function(callback) {	
 	abstract.destroyAll('counsellor').then(() => callback()).catch(err =>  callback(err))
 }
-
-
-
-
-
