@@ -99,17 +99,17 @@ exports.signup = function (req, res) {
     var user = {
         username: req.body.username.trim(),
         password: req.body.password,
-        age: req.body.age,
+        age: req.body.age.trim(),
         gender: req.body.gender,
-        phoneNumber: req.body.phoneNumber,
-        email: req.body.email,
+        phoneNumber: req.body.phoneNumber.trim(),
+        email: req.body.email.trim(),
         registered: 1
     };
 
     var requiredCredentials = {
         username: req.body.username.trim(),
         password: req.body.password,
-        email: req.body.email
+        email: req.body.email.trim()
     };
 
     abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.create);
@@ -126,8 +126,8 @@ exports.signinCounsellor = function (req, res) {
 
 exports.signupCounsellor = function (req, res) {
     var counsellor = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        firstName: req.body.firstName.trim(),
+        lastName: req.body.lastName.trim(),
         email: req.body.email.trim(),
         password: req.body.password
     };
