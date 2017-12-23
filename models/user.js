@@ -48,6 +48,20 @@ exports.retrieve = function(req, res) {
 	abstract.retrieve('user', req.params.userId, res);
 }
 
+// Retrieve username and password specified by username in params
+exports.getUserCredentialsByUsername = function(req, res) {
+	username = req.body.username;
+	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
+		[username],
+		function(err, result) {
+			if (err) {
+				res.status(400).send(err);
+				return;
+			}
+			res.status(200).send(result[0]);
+		});
+}
+
 // Retrieve username and password specified by username from form field
 exports.lookupByUsername = function(username, callback) {
 	abstract.lookupByValue('user', 'username', username, callback);
@@ -61,6 +75,7 @@ exports.lookupIdByUsername = function(username, callback) {
 // Retrieve user by id
 exports.lookupById = function(id, callback) {
 	abstract.lookupByValue('user', 'ID', id, callback);
+
 }
 
 // List all users

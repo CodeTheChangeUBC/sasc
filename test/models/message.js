@@ -1,4 +1,5 @@
 const Message = require('../../models').message;
+const Counsellor = require('../../models').counsellor;
 const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -125,6 +126,8 @@ describe('MESSAGE TESTS', function() {
 
 	describe('Retrieval', function() {
 		it('should retrieve messages by counsellor ID', function(done) {
+			// First, find counsellor 
+
 			Message.listByCounsellor(1, (err, messages) => {
 				if (err) done(err);
 				expect(messages.length).to.equal(1);
