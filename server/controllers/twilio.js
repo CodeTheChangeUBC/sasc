@@ -2,10 +2,11 @@ const twilioModel = require("../models/twilio");
 
 exports.addTwilioAccountInfo = function (req, res) {
     var twilio = {
+        ID: 1,
         email: req.body.email,
         twilioPhoneNumber: req.body.twilioPhoneNumber,
-        twilioAccountSid: req.body.twilioAccountSid,
-        twilioAuthToken: req.body.twilioAuthToken
+        accountSid: req.body.twilioAccountSid,
+        authToken: req.body.twilioAuthToken
     };
     twilioModel.create(twilio, function (err) {
         if (err) {
@@ -16,9 +17,8 @@ exports.addTwilioAccountInfo = function (req, res) {
     });
 };
 
-exports.getTwilioAccountInfo = function (req, res) {
-    const email = req.params.email;
-    twilioModel.retrieveByEmail(email, function (err, results) {
+exports.getAllTwilioAccountInfo = function (req, res) {
+    twilioModel.list(function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to retrieve twilio account information."});
         }
@@ -31,26 +31,36 @@ exports.getTwilioAccountInfo = function (req, res) {
     });
 };
 
-exports.updateTwilioAccountInfo = function (req, res) {
-    const id = req.body.id;
+exports.addOrUpdateTwilioAccountInfo = function (req, res) {
+    // Only one entry exists for twilio account information
+    const id = 1;
     const values = {
+        ID: id,
         email: req.body.email,
         twilioPhoneNumber: req.body.twilioPhoneNumber,
-        twilioAccountSid: req.body.twilioAccountSid,
-        twilioAuthToken: req.body.twilioAuthToken
+        accountSid: req.body.twilioAccountSid,
+        authToken: req.body.twilioAuthToken
     };
-    twilioModel.update(id, values, function (err) {
+    twilioModel.update(id, values, function (err, results, fields) {
         if (err) {
             return res.status(422).send({error: "Failed to update twilio account information."});
+        } else if (results.changedRows === 0) {
+            // There is no such entry so we'll create one
+            twilioModel.create(values, function (err) {
+                if (err) {
+                    return res.status(422).send({error: "Failed to add twilio account information."});
+                } else {
+                    return res.status(201).send({success: "Successfully added twilio account information."});
+                }
+            });
         } else {
             return res.status(201).send({success: "Successfully updated twilio account information."});
         }
     });
 };
 
-exports.deleteTwilioAccountInfo = function (req, res) {
-    const id = req.body.id;
-    twilioModel.destroy(id, function (req, res) {
+exports.deleteAllTwilioAccountInfo = function (req, res) {
+    twilioModel.destroyAll(function (err) {
         if (err) {
             return res.status(422).send({error: "Failed to remove twilio account information."});
         } else {

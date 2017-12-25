@@ -1,5 +1,5 @@
 CREATE TABLE twilio (
-	ID INT NOT NULL AUTO_INCREMENT,
+	ID INT NOT NULL,
 	email VARCHAR(256) NOT NULL,
 	twilioPhoneNumber VARCHAR(15),
 	accountSid VARCHAR(34),

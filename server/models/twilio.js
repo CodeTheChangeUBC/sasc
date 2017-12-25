@@ -20,24 +20,15 @@ exports.retrieveByID = function(id, callback) {
 	abstract.retrieve('twilio', id, null, callback);
 }
 
-// Update twilio 
-//  - id is ID of twilio object to be updated
-// - vals is a dictionary containing the values to be updated. 
-exports.update = function(id, vals, callback) {
-	exports.retrieveByID(id, (err, twilio) => {
-		var values = {
-			email: vals.email || twilio.email,
-			twilioPhoneNumber: vals.twilioPhoneNumber || twilio.twilioPhoneNumber,
-			accountSid: vals.accountSid || twilio.twilioPhoneNumber,
-			authToken: vals.authToken || twilio.authToken
-		}
-		abstract.update('twilio', values, id, null, callback);
-	});
-}
+// Update twilio
+exports.update = function(id, values, callback) {
+	values.twilioPhoneNumber = values.twilioPhoneNumber.toString();
+	abstract.update('twilio', values, id, callback);
+};
 
 // Delete twilio object by id
 exports.destroy = function(id, callback) {
-	abstract.destroy('twilio', id, null, callback);
+	abstract.destroy('twilio', id, callback);
 }
 
 exports.list = function (callback) {
@@ -53,6 +44,7 @@ exports.count = function(callback) {
 // Returns a callback that ensures the all sessions are removed when called
 // THIS IS FOR TESTING PURPOSES
 // ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
+// except for in twilio
 exports.destroyAll = function(callback) {	
-	abstract.destroyAll('twilio').then(() => callback()).catch(err => callback(err));
+	abstract.destroyAll('twilio').then(() => callback(null)).catch(err => callback(err));
 }

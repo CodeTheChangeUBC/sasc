@@ -59,7 +59,7 @@ exports.comparePassword = function(password, hash, callback) {
 // Destroy model
 // - model is name of model (string)
 // - id is the id of the model to be destroyed
-exports.destroy = function(model, id, res, callback) {
+exports.destroy = function(model, id, callback) {
 	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
 		[id], 
 		function(err) {
@@ -73,12 +73,21 @@ exports.destroy = function(model, id, res, callback) {
 // - values is ordered set of values to update (should include model id last)
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
-exports.update = function(model, values, id, res, callback) {
-	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			if (err) { callback(err); }
-			else { callback(null); }
+exports.update = function(model, values, id, callback) {
+	console.log(values);
+	db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
+			if (err) { callback(err, null, null); }
+			else { callback(null, results, fields); }
 	});
 }
+
+exports.updateByUniqueKey = function(model, values, key, value, callback) {
+	console.log(values);
+	db.get().query('UPDATE '+model+' SET ? WHERE '+key+'=?', [values, value], function(err, results, fields) {
+			if (err) { callback(err, null, null); }
+			else { callback(null, results, fields); }
+	});
+};
 
 // Lookup model to pass to other functions
 // - model is name of model (string)
@@ -151,13 +160,6 @@ exports.count = function(model) {
 	});
 }
 
-exports.countCallbackVer = function(model, callback) {	
-	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
-		if (err) { callback(err, null); }
-		else { callback(null, results[0].count); }
-	});
-}
-
 // Destroy all models
 // Returns a promise that ensures the all models are removed when fulfilled
 // THIS IS FOR TESTING PURPOSES
@@ -165,9 +167,9 @@ exports.countCallbackVer = function(model, callback) {
 // - model is name of model (string)
 exports.destroyAll = function(model) {
 	return new Promise(function(fulfill, reject) {
-		db.get().query('DELETE FROM '+model, function(err,result) {
+		db.get().query('DELETE FROM '+model+';', function(err,result) {
 			if (err) { reject(err); }
-			fulfill();
+			fulfill(null);
 		});
 	});
 }
