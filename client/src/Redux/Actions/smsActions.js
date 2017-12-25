@@ -1,22 +1,59 @@
+// Types
+export const GET_SMS_SETTINGS = "get_sms_settings";
+export const SET_SMS_SETTINGS = "set_sms_settings";
+export const REMOVE_SMS_SETTINGS = "remove_sms_settings";
+export const SMS_ERROR = "sms_error";
+export const REMOVE_ERROR = "remove_error";
+
+// Actions
 import axios from 'axios';
 import { config } from './../../Config';
 
 const ROOT_URL = config.api;
+export const BASE_URL = "/twilio";
 
-export function getSMSDetails({ email }) {
+function smsError(error) {
+    return {
+        type: SMS_ERROR,
+        payload: error
+    };
+}
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
+
+export function getSMSDetails() {
     return function(dispatch) {        
-        axios.get(`${ROOT_URL}/getSMSDetails`);
+        axios.get(`${ROOT_URL + BASE_URL}/getSMSDetails`)
+            .then(dispatch({
+                type: GET_SMS_SETTINGS,
+                data: response.data
+            }))
+            .catch(function () {
+                dispatch(smsError(error.response.data.error));
+            });
     };
 }
 
 export function setSMSDetails({ email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken }) {
     return function(dispatch) {
-        axios.post(`${ROOT_URL}/postSMSDetails`);
+        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`)
+            .then(dispatch({type: SET_SMS_SETTINGS}))
+            .catch(function () {
+                dispatch(smsError(error.response.data.error));
+            });
     };
 }
 
-export function deleteSMSDetails({ email }) {
+export function removeSMSDetails() {
     return function(dispatch) {
-        axios.delete(`${ROOT_URL}/deleteSMSDetails`);
+        axios.delete(`${ROOT_URL + BASE_URL}/removeSMSDetails`)
+            .then(dispatch({type: REMOVE_SMS_SETTINGS}))
+            .catch(function () {
+                dispatch(smsError(error.response.data.error));
+            });
     };
 }

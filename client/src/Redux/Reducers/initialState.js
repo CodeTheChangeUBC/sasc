@@ -31,8 +31,8 @@ export default {
   smssettings: {
     email: "",
     twilioPhoneNumber: "",
-    accountSid: "",
-    authToken: ""
+    twilioAccountSid: "",
+    twilioAuthToken: ""
   }
 
 };
