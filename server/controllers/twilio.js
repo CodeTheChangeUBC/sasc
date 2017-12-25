@@ -23,7 +23,7 @@ exports.getAllTwilioAccountInfo = function (req, res) {
             return res.status(422).send({error: "Failed to retrieve twilio account information."});
         }
 
-        if (!results) {
+        if (!results || results === []) {
             return res.status(422).send({error: "There is no existing twilio account information yet."});
         }
 
@@ -41,6 +41,14 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
         accountSid: req.body.twilioAccountSid,
         authToken: req.body.twilioAuthToken
     };
+
+    if (isNaN(values.twilioPhoneNumber)) {
+        return res.status(422).send({error: "Twilio phone number must be a number."});
+    } else {
+        // E.164 format for phone numbers. Canadian extension only
+        values.twilioPhoneNumber = "+1" + values.twilioPhoneNumber.toString();
+    }
+
     twilioModel.update(id, values, function (err, results, fields) {
         if (err) {
             return res.status(422).send({error: "Failed to update twilio account information."});

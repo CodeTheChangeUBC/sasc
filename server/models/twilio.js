@@ -22,7 +22,6 @@ exports.retrieveByID = function(id, callback) {
 
 // Update twilio
 exports.update = function(id, values, callback) {
-	values.twilioPhoneNumber = values.twilioPhoneNumber.toString();
 	abstract.update('twilio', values, id, callback);
 };
 
