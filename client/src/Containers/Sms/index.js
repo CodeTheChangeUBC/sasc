@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as smsActions from '../../Redux/Actions/smsActions';
-import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -25,6 +24,7 @@ class Sms extends Component {
 
   componentWillMount() {
     this.props.removeError();
+    this.props.getSMSDetails();
   }
 
   handleOnChange(event) {
@@ -42,7 +42,7 @@ class Sms extends Component {
 
     const { history } = this.props;
 
-    this.props.setSMSDetails(this.state, history);
+    this.props.setSMSDetails(this.state);
   }
 
   render() {
@@ -82,7 +82,12 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setSMSDetails: smsActions.setSMSDetails, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    getSMSDetails: smsActions.getSMSDetails,
+    setSMSDetails: smsActions.setSMSDetails,
+    removeSMSDetails: smsActions.removeSMSDetails,
+    removeError: smsActions.removeError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sms);

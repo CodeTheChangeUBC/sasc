@@ -23,8 +23,17 @@ exports.getAllTwilioAccountInfo = function (req, res) {
             return res.status(422).send({error: "Failed to retrieve twilio account information."});
         }
 
-        if (!results || results === []) {
-            return res.status(422).send({error: "There is no existing twilio account information yet."});
+        // If no existing information is in database, return an object of empty strings in a list
+        if (results === []) {
+            var twilio = {
+                email: "",
+                twilioPhoneNumber: "",
+                accountSid: "",
+                authToken: "",
+            };
+            results = [];
+            results.push(twilio);
+            //return res.status(422).send({error: "There is no existing twilio account information yet."});
         }
 
         return res.status(200).json(results);
