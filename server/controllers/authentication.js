@@ -91,8 +91,13 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 };
 
 exports.decodeTokenToCheckRole = function (req, res) {
-    const role = jwt.decode(req.body.token, config.secret).role;
-    res.send({role: role});
+    try {
+        const tokenContents = jwt.decode(req.body.token, config.secret);
+        const role = tokenContents.role;
+        res.send({role: role});
+    } catch (e) {
+        res.send({role: "none"});
+    }
 }
 
 exports.signup = function (req, res) {

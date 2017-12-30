@@ -8,7 +8,8 @@ import {
     ROOT_URL,
     BASE_URL,
     AUTH_USER,
-    AUTH_COUNSELLOR } from './src/Redux/Actions/authActions';
+    AUTH_COUNSELLOR,
+    UNAUTH_USER } from './src/Redux/Actions/authActions';
 import axios from "axios";
 
 const store = configureStore();
@@ -22,6 +23,8 @@ if (token) {
                 store.dispatch({type: AUTH_COUNSELLOR});
             } else if (response.data.role === "user") {
                 store.dispatch({type: AUTH_USER});
+            } else if (response.data.role === "none") {
+                store.dispatch({type: UNAUTH_USER});
             }
         })
         .catch(error => {
