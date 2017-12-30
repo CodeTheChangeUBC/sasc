@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Entry that show a student inside counsellor bar
@@ -13,5 +14,9 @@ const CounsellorBarEntry = ({
         <p>{student.phone}</p>
     </div>
 );
+
+CounsellorBarEntry.propTypes = {
+    student: PropTypes.object
+};
 
 export default CounsellorBarEntry;

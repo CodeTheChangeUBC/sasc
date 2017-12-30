@@ -29,7 +29,7 @@ class CounsellorBar extends React.Component {
             students: mockStudents
         };
 
-        this.renderCounsellorHeader = this.renderCounsellorHeader.bind(this)
+        this.renderCounsellorHeader = this.renderCounsellorHeader.bind(this);
     }
 
     /**
@@ -40,7 +40,7 @@ class CounsellorBar extends React.Component {
     renderCounsellorHeader() {
         return (
             <div className="counsellor-bar-header">
-                <h2 class="counsellor-bar-header-welcome">Hello {this.state.counsellor.firstName} {this.state.counsellor.lastName}! This is the counsellor bar.</h2>
+                <h2 className="counsellor-bar-header-welcome">Hello {this.state.counsellor.firstName} {this.state.counsellor.lastName}! This is the counsellor bar.</h2>
             </div>
         );
     }
