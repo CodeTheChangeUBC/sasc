@@ -26,9 +26,6 @@ if (token) {
             } else if (response.data.role === "none") {
                 store.dispatch({type: UNAUTH_USER});
             }
-        })
-        .catch(error => {
-            console.log(error);
         });
 }
 
