@@ -4,7 +4,7 @@ const abstract = require('./abstract.js')
 // - m is a dictionary containing message values
 // - 	valueNames, but without ID
 exports.create = function(m, callback) {
-	abstract.create('message', m, null, callback)
+	abstract.createCallbackVer('message', m, callback);
 }
 
 // counts number of message

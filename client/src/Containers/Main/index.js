@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Home from './../Home';
-import Chat from './../Chat';
+import Chat from './../Chat/ChatApp';
 import Login from './../Login';
 import LoginCounsellor  from './../LoginCounsellor';
 import RegisterCounsellor  from './../RegisterCounsellor';

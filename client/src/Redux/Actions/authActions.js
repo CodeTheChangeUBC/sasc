@@ -7,8 +7,9 @@ export const REMOVE_ERROR = "remove_error";
 
 // Actions
 import axios from "axios";
+import { config } from './../../Config';
 
-export const ROOT_URL = "http://localhost:3000";
+export const ROOT_URL = config.api;
 
 function authError(error) {
     return {
@@ -50,8 +51,8 @@ export function signupCounsellor({firstName, lastName, email, password}, history
         axios.post(`${ROOT_URL}/signupcounsellor`, data, header)
             .then(response => {
                 dispatch({type: AUTH_COUNSELLOR});
-                localStorage.setItem('token', response.data.token);
-                history.push('/');
+                localStorage.setItem("token", response.data.token);
+                history.push("/");
             })
             .catch(error => {
                 dispatch(authError(error.response.data.error));
@@ -78,8 +79,8 @@ export function signupUser({username, age, gender, phoneNumber, email, password}
         axios.post(`${ROOT_URL}/signup`, {username, age, gender, phoneNumber, email, password})
             .then(response => {
                 dispatch({ type: AUTH_USER });
-                localStorage.setItem('token', response.data.token);
-                history.push('/');
+                localStorage.setItem("token", response.data.token);
+                history.push("/");
             })
             .catch(error => {
                 dispatch(authError(error.response.data.error));

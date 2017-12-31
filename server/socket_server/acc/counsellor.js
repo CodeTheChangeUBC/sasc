@@ -1,9 +1,9 @@
 var uuid = require('uuid')
 var User = require('./user')
 
-class Counselor extends User {
+class Counsellor extends User {
   constructor (socket) {
-    super(socket, 'Counselor', this)
+    super(socket, 'Counsellor', this)
 
     this._socket = socket
     this.id = socket.id
@@ -34,4 +34,4 @@ class Counselor extends User {
 
 
 
-module.exports = Counselor
+module.exports = Counsellor

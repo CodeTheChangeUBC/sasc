@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../../app');
 var debug = require('debug')('sasc:server');
 var http = require('http');
 var socket = require('socket.io');
@@ -22,25 +22,25 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-var io = require('socket.io')(server);
+const io = require('socket.io')(server);
 
 io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('subscribe', (data) => {
-    room = data.room;
-    socket.join(room);
-    console.log('joined room', room); 
-  });
+    console.log('a user connected');
+    socket.on('subscribe', (data) => {
+      room = data.room;
+      socket.join(room);
+      console.log('joined room', room); 
+    });
 
-  socket.on('chat message', function(msg) {
-    console.log('sending message to', msg.room)
-    console.log('this message', msg)
-    io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
-  })
+    socket.on('chat message', function(msg) {
+      console.log('sending message to', msg.room)
+      console.log('this message', msg)
+      io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
+    });
 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+    socket.on('disconnect', function(){
+      console.log('user disconnected');
+    });
 });
 
 /**

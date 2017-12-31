@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const Abstract = require("../models/abstract");
-const User = require("../models/user");
-const Counsellor = require("../models/counsellor");
+const userModel = require("../models/user");
+const counsellorModel = require("../models/counsellor");
 const config = require("../config");
 
 function tokenForUser(user, role) {
@@ -88,7 +88,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
         });
 
     });
-}
+};
 
 exports.decodeTokenToCheckRole = function (req, res) {
     const role = jwt.decode(req.body.token, config.secret).role;
@@ -97,21 +97,22 @@ exports.decodeTokenToCheckRole = function (req, res) {
 
 exports.signup = function (req, res) {
     var user = {
-        username: req.body.username,
+        username: req.body.username.trim(),
         password: req.body.password,
-        age: req.body.age,
+        age: req.body.age.trim(),
         gender: req.body.gender,
-        phoneNumber: req.body.phoneNumber,
-        email: req.body.email
+        phoneNumber: req.body.phoneNumber.trim(),
+        email: req.body.email.trim(),
+        registered: 1
     };
 
     var requiredCredentials = {
-        username: req.body.username,
+        username: req.body.username.trim(),
         password: req.body.password,
-        email: req.body.email
+        email: req.body.email.trim()
     };
 
-    abstractSignup(user, requiredCredentials, "user", res, User.lookupByUsername, Abstract.process, User.create);
+    abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.create);
 };
 
 exports.signin = function (req, res) {
@@ -125,16 +126,16 @@ exports.signinCounsellor = function (req, res) {
 
 exports.signupCounsellor = function (req, res) {
     var counsellor = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
+        firstName: req.body.firstName.trim(),
+        lastName: req.body.lastName.trim(),
+        email: req.body.email.trim(),
         password: req.body.password
     };
 
     var requiredCredentials = {
-        email: req.body.email,
+        email: req.body.email.trim(),
         password: req.body.password
     };
 
-    abstractSignup(counsellor, requiredCredentials, "counsellor", res, Counsellor.lookupByEmail, Abstract.process, Counsellor.create);
+    abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel.lookupByEmail, Abstract.process, counsellorModel.create);
 };

@@ -17,11 +17,11 @@ class Student extends User {
       return
     }
 
-    this.convo.counselor.emit('msg', data)
+    this.convo.counsellor.emit('msg', data)
   }
 
   connect () {
-    var counselor = super.find(this)
+    var counsellor = super.find(this)
   }
 
   listen () {
