@@ -6,13 +6,14 @@ const config = require("../config");
 
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
-    const expiry = (Date.now() + 60 * 60 * 1000) / 1000;    // An hour from now (in seconds)
+    const expiry = (Date.now() + 60.0 * 60.0 * 1000.0) / 1000.0;    // An hour from now (in seconds)
     return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret);
 }
 
 function convertToSentence(listOfNouns) {
     const len = listOfNouns.length;
     var str = "";
+
     listOfNouns.forEach(function (ignore, i) {
         if (i === 1) {
             // First word
@@ -31,7 +32,6 @@ function convertToSentence(listOfNouns) {
 }
 
 function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryptPassword, create) {
-
     var error = false;
     var missingCredentials = [];
 
@@ -48,8 +48,6 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
     var usernameCredential = requiredCredentials[Object.keys(requiredCredentials)[0]];
 
-    // Welcome to callback hell :D
-    // I think promises might be better
     // Check if user with their corresponding identifier already exists
     lookupUser(usernameCredential, function (err, users) {
 
@@ -59,7 +57,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
         // If a user with the identifier already exists, return an error
         if (users[0] !== undefined && users[0] !== null) {
-            return res.status(422).send({error: usernameCredential.charAt(0).toUpperCase() + " is in use."});
+            return res.status(422).send({error: usernameCredential + " is in use."});
         }
 
         encryptPassword(user, function (result) {
@@ -78,7 +76,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
                     // If there aren't any users, send error
                     if (users[0] === undefined || users[0] === null) {
-                        return res.status(422).send({error: role.charAt(0).toUpperCase() + " does not exist."});
+                        return res.status(422).send({error: role.charAt(0).toUpperCase() + role.slice(1) + " does not exist."});
                     }
 
                     // Send token back to client
@@ -90,6 +88,11 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
         });
 
     });
+}
+
+exports.decodeTokenToCheckRole = function (req, res) {
+    const role = jwt.decode(req.body.token, config.secret).role;
+    res.send({role: role});
 }
 
 exports.signup = function (req, res) {
@@ -121,7 +124,6 @@ exports.signinCounsellor = function (req, res) {
 };
 
 exports.signupCounsellor = function (req, res) {
-
     var counsellor = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -135,5 +137,4 @@ exports.signupCounsellor = function (req, res) {
     };
 
     abstractSignup(counsellor, requiredCredentials, "counsellor", res, Counsellor.lookupByEmail, Abstract.process, Counsellor.create);
-
 };

@@ -62,7 +62,7 @@ To run all tests:
 npm test
 ```
 
-To test a specific feature (where tests for this feature are under ./test/<feature-name>/*):
+To test a specific feature (where tests for this feature are under `./test/<feature-name>/*`):
 ```
 npm run-script test-<feature-name>
 ```

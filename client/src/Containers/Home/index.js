@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 class Home extends Component {
@@ -10,5 +11,6 @@ class Home extends Component {
     );
   }
 }
+
 
 export default Home;

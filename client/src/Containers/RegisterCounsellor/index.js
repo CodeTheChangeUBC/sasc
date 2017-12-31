@@ -1,17 +1,3 @@
-/*
-
-Registers using payload:
-
-ID int NOT NULL AUTO_INCREMENT,
-    age int,
-    gender VARCHAR(24),
-    phoneNumber VARCHAR(15) NOT NULL ,
-    password VARCHAR(30) NOT NULL,
-
-for gender we have the following options (radio buttons): male, female, non-binary, transgender male, transgender female, other: _______
-
-*/
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -21,18 +7,15 @@ import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-class Register extends Component {
+class RegisterCounsellor extends Component {
 
   constructor(props) {
     super(props);
     this.state = { 
-      username: null,
-      age: null,
-      gender: null,
-      phoneNumber: null,
+      firstName: null,
+      lastName: null,
       email: null,
-      password: null,
-      error: null
+      password: null
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -42,6 +25,16 @@ class Register extends Component {
     this.props.removeError();
   }
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div>
+            {this.props.errorMessage}
+        </div>
+      );
+    }
+  }
+
   handleOnChange(event) {
     const target = event.target;
     const value = target.value;
@@ -49,15 +42,9 @@ class Register extends Component {
 
     this.setState({
       [name]: value
-    }); 
+    });
   }
 
-  /**
-   * once form is submitted, add the user to the database and switch to chat view
-   *
-   * TODO: if successful registration of user, update view layer
-   * TODO: if unsuccessful, show flash message
-   */
   handleOnSubmit(ev) {
     ev.preventDefault();
     
@@ -69,22 +56,11 @@ class Register extends Component {
       this.setState({error: null});
       const { history } = this.props;
 
-      this.props.signupUser(this.state, history);
+      this.props.signupCounsellor(this.state, history);
     } else {
       this.setState({error: "Passwords must match."});
     }
-    
   }
-
-  renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div>
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
-    }
 
   renderPasswordCheckAlert() {
       if (this.state.error) {
@@ -96,18 +72,15 @@ class Register extends Component {
       }
   }
 
+  // TODO: Form validation
   render() {
-    // TODO: style this form so it looks better
-
     return (
-      <div className="Register">
-        <h2>Register</h2>
+      <div className="RegisterCounsellor">
+        <h2>Register Counsellor</h2>
         <Form
-          username
-          age
-          gender
+          firstName
+          lastName
           email
-          phoneNumber
           password
           passwordConfirm
           onSubmit={this.handleOnSubmit}
@@ -121,13 +94,11 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-    const { username, age, gender, email, phoneNumber, password } = state;
+  const { firstName, lastName, email, password } = state;
     state.form = {
-      username,
-      age,
-      gender,
+      firstName,
+      lastName,
       email,
-      phoneNumber,
       password
     };
     return {
@@ -136,16 +107,16 @@ function mapStateToProps(state) {
     };
 }
 
-Register.propTypes = {
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, removeError: authActions.removeError }, dispatch);
+}
+
+RegisterCounsellor.propTypes = {
     dispatch: PropTypes.func,
     history: PropTypes.object,
-    signupUser: PropTypes.func,
+    signupCounsellor: PropTypes.func,
     errorMessage: PropTypes.string,
     removeError: PropTypes.func
 };
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupUser: authActions.signupUser, removeError: authActions.removeError }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterCounsellor);

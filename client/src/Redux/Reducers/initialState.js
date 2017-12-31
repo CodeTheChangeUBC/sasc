@@ -1,4 +1,6 @@
 export default {
+  auth: {},
+
   messages: [
     { user: 'ChatBot',
       message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'
@@ -24,6 +26,13 @@ export default {
     title: 'Music is Life',
     messages: [ { user: 'ChatBot', message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', message: 'Wait, what are these words?'}]
 
+  },
+
+  smssettings: {
+    email: "",
+    twilioPhoneNumber: "",
+    accountSid: "",
+    authToken: ""
   }
 
 };

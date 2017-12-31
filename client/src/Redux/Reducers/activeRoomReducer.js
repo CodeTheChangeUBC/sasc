@@ -15,4 +15,5 @@ export default function activeRoomReducer(state = initialState.activeRoom, actio
     default:
      return state; 
   }
+
 }
