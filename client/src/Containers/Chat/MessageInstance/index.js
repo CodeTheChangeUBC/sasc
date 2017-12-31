@@ -21,7 +21,8 @@ class MessageInstance extends Component {
 
 MessageInstance.propTypes = {
     user: PropTypes.string,
-    message: PropTypes.string
+    message: PropTypes.string,
+    fromMe: PropTypes.bool
 };
 
 MessageInstance.defaultProps = {

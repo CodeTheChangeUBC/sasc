@@ -28,7 +28,7 @@ class RegisterCounsellor extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div>
+        <div className="error">
             {this.props.errorMessage}
         </div>
       );

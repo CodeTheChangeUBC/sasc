@@ -8,7 +8,6 @@ import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-
 class Login extends Component {
 
   constructor(props) {
@@ -47,7 +46,7 @@ class Login extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
         return (
-            <div>
+            <div className="error">
                 {this.props.errorMessage}
             </div>
         );
@@ -69,7 +68,7 @@ class Login extends Component {
         {this.renderAlert()}
         <div>
           <p>
-            Are you a member of the SASC? Login <Link className="nav-link" to="/signincounsellor">here</Link> as a counsellor.
+            Are you a member of the SASC? Login <Link to="/signincounsellor">here</Link> as a counsellor.
            </p>
         </div>
       </div>

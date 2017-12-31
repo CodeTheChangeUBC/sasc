@@ -45,7 +45,7 @@ class LoginCounsellor extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
         return (
-            <div>
+            <div className="error">
                 {this.props.errorMessage}
             </div>
         );
@@ -55,7 +55,7 @@ class LoginCounsellor extends Component {
   render() {
     return (
       <div className="LoginCounsellor">
-        <h2>Login</h2>
+        <h2>Counsellor Login</h2>
         <Form
           email
           password
