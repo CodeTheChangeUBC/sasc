@@ -74,7 +74,6 @@ exports.destroy = function(model, id, callback) {
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
 exports.update = function(model, values, id, callback) {
-	console.log(values);
 	db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
 			if (err) { callback(err, null, null); }
 			else { callback(null, results, fields); }
@@ -82,7 +81,6 @@ exports.update = function(model, values, id, callback) {
 }
 
 exports.updateByUniqueKey = function(model, values, key, value, callback) {
-	console.log(values);
 	db.get().query('UPDATE '+model+' SET ? WHERE '+key+'=?', [values, value], function(err, results, fields) {
 			if (err) { callback(err, null, null); }
 			else { callback(null, results, fields); }
