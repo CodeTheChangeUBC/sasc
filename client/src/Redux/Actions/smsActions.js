@@ -27,7 +27,14 @@ export function removeError() {
 
 export function getSMSDetails() {
     return function (dispatch) {
-        axios.get(`${ROOT_URL + BASE_URL}/getSMSDetails`)
+        const token = localStorage.getItem("token");
+        const header = { 
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        };
+        axios.get(`${ROOT_URL + BASE_URL}/getSMSDetails`, header)
             .then(function (response) {
                 dispatch({
                     type: GET_SMS_SETTINGS,
@@ -42,15 +49,15 @@ export function getSMSDetails() {
 
 export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken}) {
     return function (dispatch) {
-        /*const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
         const header = { 
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
             }
-        };*/
+        };
         const data = {email, twilioPhoneNumber, accountSid, authToken};
-        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`, {email, twilioPhoneNumber, accountSid, authToken})
+        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`, data, header)
             .then(function () {
                 dispatch({
                     type: SET_SMS_SETTINGS,
@@ -65,7 +72,14 @@ export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken})
 
 export function removeSMSDetails() {
     return function (dispatch) {
-        axios.delete(`${ROOT_URL + BASE_URL}/removeSMSDetails`)
+        const token = localStorage.getItem("token");
+        const header = { 
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        };
+        axios.delete(`${ROOT_URL + BASE_URL}/removeSMSDetails`, header)
             .then(function () {
                 dispatch({type: REMOVE_SMS_SETTINGS});
             })

@@ -24,7 +24,7 @@ class Main extends Component {
           <Route path="/signupcounsellor" component={RegisterCounsellor}/>
           <Route path="/signout" component={Signout} />
           <Route path="/register" component={Register}/>
-          <Route path="/sms" component={requireAuthCounsellor(SMSSettings)}/>
+          <Route path="/sms" component={SMSSettings}/>
         </Switch>
       </div>
     );

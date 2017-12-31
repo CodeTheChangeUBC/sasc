@@ -57,7 +57,7 @@ class Sms extends Component {
     return (
       <div className="Sms">
         <h2>SMS Settings</h2>
-        <div>
+        <div className="smsBox">
           <h4>Current Settings</h4>
           <div>
             <p>Email: {this.props.sms.email}</p>
@@ -83,8 +83,8 @@ class Sms extends Component {
             onChange={this.handleOnChange}
           />
           {this.renderAlert()}
-          <div id="smsDelete" onClick={this.props.removeSMSDetails}>
-            Remove Settings
+          <div>
+            <button id="smsDelete" onClick={this.props.removeSMSDetails}>Remove Settings</button>
           </div>
         </div>
       </div>
