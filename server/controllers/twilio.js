@@ -5,8 +5,8 @@ exports.addTwilioAccountInfo = function (req, res) {
         ID: 1,
         email: req.body.email,
         twilioPhoneNumber: req.body.twilioPhoneNumber,
-        accountSid: req.body.twilioAccountSid,
-        authToken: req.body.twilioAuthToken
+        accountSid: req.body.accountSid,
+        authToken: req.body.authToken
     };
     twilioModel.create(twilio, function (err) {
         if (err) {
@@ -24,7 +24,7 @@ exports.getAllTwilioAccountInfo = function (req, res) {
         }
 
         // If no existing information is in database, return an object of empty strings in a list
-        if (results === []) {
+        if (results.length === 0) {
             var twilio = {
                 email: "",
                 twilioPhoneNumber: "",
@@ -33,10 +33,16 @@ exports.getAllTwilioAccountInfo = function (req, res) {
             };
             results = [];
             results.push(twilio);
-            //return res.status(422).send({error: "There is no existing twilio account information yet."});
         }
 
-        return res.status(200).json(results);
+        var twilio = results[0];
+
+        // Remove the "+1" at the beginning of the phone number if there is a number saved
+        if (twilio.twilioPhoneNumber !== "") {
+            twilio.twilioPhoneNumber = parseInt(twilio.twilioPhoneNumber.substring(2));
+        }
+
+        return res.status(200).json(twilio);
     });
 };
 
@@ -47,12 +53,14 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
         ID: id,
         email: req.body.email,
         twilioPhoneNumber: req.body.twilioPhoneNumber,
-        accountSid: req.body.twilioAccountSid,
-        authToken: req.body.twilioAuthToken
+        accountSid: req.body.accountSid,
+        authToken: req.body.authToken
     };
 
     if (isNaN(values.twilioPhoneNumber)) {
         return res.status(422).send({error: "Twilio phone number must be a number."});
+    } else if (values.twilioPhoneNumber.toString().length !== 10) {
+        return res.status(422).send({error: "Twilio phone number must be ten digits long."});
     } else {
         // E.164 format for phone numbers. Canadian extension only
         values.twilioPhoneNumber = "+1" + values.twilioPhoneNumber.toString();
@@ -61,7 +69,7 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
     twilioModel.update(id, values, function (err, results, fields) {
         if (err) {
             return res.status(422).send({error: "Failed to update twilio account information."});
-        } else if (results.changedRows === 0) {
+        } else if (results.affectedRows === 0 && results.changedRows === 0) {
             // There is no such entry so we'll create one
             twilioModel.create(values, function (err) {
                 if (err) {

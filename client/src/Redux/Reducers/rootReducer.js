@@ -4,7 +4,7 @@ import rooms from './roomsReducer';
 import activeRoom from './activeRoomReducer';
 import auth from './authReducer';
 import form from './formReducer';
-import sms from './smsReducer';
+import smssettings from './smsReducer';
 
 const rootReducer = combineReducers({
   messages,
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   activeRoom,
   auth,
   form,
-  sms
+  smssettings
 });
 
 export default rootReducer;

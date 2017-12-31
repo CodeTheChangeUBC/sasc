@@ -29,10 +29,13 @@ export default {
   },
 
   smssettings: {
-    email: "",
-    twilioPhoneNumber: "",
-    twilioAccountSid: "",
-    twilioAuthToken: ""
+    sms: {
+      email: "",
+      twilioPhoneNumber: "",
+      accountSid: "",
+      authToken: ""
+    },
+    error: ""
   }
 
 };

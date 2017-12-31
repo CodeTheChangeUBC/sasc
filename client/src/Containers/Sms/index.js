@@ -12,11 +12,11 @@ class Sms extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      email: null,
-      twilioPhoneNumber: null,
-      twilioAccountSid: null,
-      twilioAuthToken: null
+    this.state = {
+      email: "",
+      twilioPhoneNumber: "",
+      accountSid: "",
+      authToken: ""
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -40,45 +40,73 @@ class Sms extends Component {
   handleOnSubmit(ev) {
     ev.preventDefault();
 
-    const { history } = this.props;
-
     this.props.setSMSDetails(this.state);
+  }
+
+  renderAlert() {
+    if (this.props.errorMessage) {
+        return (
+            <div className="error">
+                {this.props.errorMessage}
+            </div>
+        );
+    }
   }
 
   render() {
     return (
       <div className="Sms">
         <h2>SMS Settings</h2>
-        <Form
-          email
-          twilioPhoneNumber
-          twilioAccountSid
-          twilioAuthToken
-          onSubmit={this.handleOnSubmit}
-          onChange={this.handleOnChange}
-        />
+        <div>
+          <h4>Current Settings</h4>
+          <div>
+            <p>Email: {this.props.sms.email}</p>
+          </div>
+          <div>
+            <p>Twilio Phone Number: {this.props.sms.twilioPhoneNumber}</p>
+          </div>
+          <div>
+            <p>Twilio Account SID: {this.props.sms.accountSid}</p>
+          </div>
+          <div>
+            <p>Twilio Auth Token: {this.props.sms.authToken}</p>
+          </div>
+        </div>
+        <div>
+          <h4>Change Twilio Account Info</h4>
+          <Form
+            twilioEmail
+            twilioPhoneNumber
+            accountSid
+            authToken
+            onSubmit={this.handleOnSubmit}
+            onChange={this.handleOnChange}
+          />
+          {this.renderAlert()}
+          <div id="smsDelete" onClick={this.props.removeSMSDetails}>
+            Remove Settings
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 Sms.propTypes = {
+    getSMSDetails: PropTypes.func,
     setSMSDetails: PropTypes.func,
+    removeSMSDetails: PropTypes.func,
     history: PropTypes.object,
-    removeError: PropTypes.func
+    removeError: PropTypes.func,
+    sms: PropTypes.object,
+    errorMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    const { email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken } = state;
-    state.form = {
-      email,
-      twilioPhoneNumber,
-      twilioAccountSid,
-      twilioAuthToken
-    };
-    return {
-      form: state.form
-    };
+  return {
+    sms: state.smssettings.sms,
+    errorMessage: state.smssettings.error
+  };
 }
 
 function mapDispatchToProps(dispatch) {

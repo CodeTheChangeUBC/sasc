@@ -40,11 +40,22 @@ export function getSMSDetails() {
     };
 }
 
-export function setSMSDetails({email, twilioPhoneNumber, twilioAccountSid, twilioAuthToken}) {
+export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken}) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`)
+        /*const token = localStorage.getItem("token");
+        const header = { 
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        };*/
+        const data = {email, twilioPhoneNumber, accountSid, authToken};
+        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`, {email, twilioPhoneNumber, accountSid, authToken})
             .then(function () {
-                dispatch({type: SET_SMS_SETTINGS});
+                dispatch({
+                    type: SET_SMS_SETTINGS,
+                    data: data
+                });
             })
             .catch(function (error) {
                 dispatch(smsError(error.response.data.error));
