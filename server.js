@@ -13,7 +13,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const apiRouter = require('./server/api/index');
 
 const config = require('./webpack.config.dev');
 const webpack = require('webpack');
@@ -61,13 +60,10 @@ exports.server = function(database, databaseMode) {
   app.use(serveStatic(staticPath));
 
   app.use('/', router);
-  app.use('/auth', auth);
-  app.use('/users', users);
-  app.use('/counsellors', counsellors);
-  app.use('/twilio', twilio);
-
-  // adding apiRouter for login and registration
-  app.use('/api', apiRouter);
+  app.use('/api/auth', auth);
+  app.use('/api/users', users);
+  app.use('/api/counsellors', counsellors);
+  app.use('/api/twilio', twilio);
 
   app.get('*', function(req, res) {  
    //console.log('get route caught this');

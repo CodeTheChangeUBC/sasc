@@ -17,7 +17,7 @@ const store = configureStore();
 const token = localStorage.getItem('token');
 
 if (token) {
-    axios.post(`${ROOT_URL + BASE_URL}/checkrole`, {token: token})
+    axios.post(`${ROOT_URL + BASE_URL}/roles`, {token: token})
         .then(response => {
             if (response.data.role === "counsellor") {
                 store.dispatch({type: AUTH_COUNSELLOR});

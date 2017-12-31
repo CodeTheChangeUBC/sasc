@@ -34,7 +34,7 @@ export function getSMSDetails() {
                 "Authorization": token
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}/getSMSDetails`, header)
+        axios.get(`${ROOT_URL + BASE_URL}/settings`, header)
             .then(function (response) {
                 dispatch({
                     type: GET_SMS_SETTINGS,
@@ -57,7 +57,7 @@ export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken})
             }
         };
         const data = {email, twilioPhoneNumber, accountSid, authToken};
-        axios.post(`${ROOT_URL + BASE_URL}/setSMSDetails`, data, header)
+        axios.post(`${ROOT_URL + BASE_URL}/settings`, data, header)
             .then(function () {
                 dispatch({
                     type: SET_SMS_SETTINGS,
@@ -79,7 +79,7 @@ export function removeSMSDetails() {
                 "Authorization": token
             }
         };
-        axios.delete(`${ROOT_URL + BASE_URL}/removeSMSDetails`, header)
+        axios.delete(`${ROOT_URL + BASE_URL}/settings`, header)
             .then(function () {
                 dispatch({type: REMOVE_SMS_SETTINGS});
             })

@@ -27,7 +27,7 @@ export function removeError() {
 
 export function signinCounsellor({email, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/signincounsellor`, {email, password})
+        axios.post(`${ROOT_URL + BASE_URL}/tokens/counsellors`, {email, password})
             .then(function (response) {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem("token", response.data.token);
@@ -49,7 +49,7 @@ export function signupCounsellor({firstName, lastName, email, password}, history
             }
         };
         const data = {firstName, lastName, email, password};
-        axios.post(`${ROOT_URL + BASE_URL}/signupcounsellor`, data, header)
+        axios.post(`${ROOT_URL + BASE_URL}/counsellors`, data, header)
             .then(response => {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem("token", response.data.token);
@@ -63,7 +63,7 @@ export function signupCounsellor({firstName, lastName, email, password}, history
 
 export function signinUser({username, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/signin`, {username, password})
+        axios.post(`${ROOT_URL + BASE_URL}/tokens/users`, {username, password})
             .then(function (response) {
                 dispatch({type: AUTH_USER});
                 localStorage.setItem("token", response.data.token);
@@ -77,7 +77,7 @@ export function signinUser({username, password}, history) {
 
 export function signupUser({username, age, gender, phoneNumber, email, password}, history) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/signup`, {username, age, gender, phoneNumber, email, password})
+        axios.post(`${ROOT_URL + BASE_URL}/users`, {username, age, gender, phoneNumber, email, password})
             .then(response => {
                 dispatch({ type: AUTH_USER });
                 localStorage.setItem("token", response.data.token);

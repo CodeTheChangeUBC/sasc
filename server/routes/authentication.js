@@ -10,11 +10,11 @@ const requireAuthCounsellor = passport.authenticate('jwt-counsellor', {session: 
 const requireSigninUser = passport.authenticate('local-user', {session: false});
 const requireSigninCounsellor = passport.authenticate('local-counsellor', {session: false});
 
-router.post('/signincounsellor', requireSigninCounsellor, authentication.signinCounsellor);
-router.post('/signin', requireSigninUser, authentication.signin);
-router.post('/signup', authentication.signup);
-router.post('/signupcounsellor', authentication.signupCounsellor);
-router.post('/checkrole', authentication.decodeTokenToCheckRole);
+router.post('/tokens/counsellors', requireSigninCounsellor, authentication.signinCounsellor);
+router.post('/tokens/users', requireSigninUser, authentication.signin);
+router.post('/users', authentication.signup);
+router.post('/counsellors', authentication.signupCounsellor);
+router.post('/roles', authentication.decodeTokenToCheckRole);
 
 // For testing purposes only
 router.get('/counselloronly', requireAuthCounsellor, function(req, res) {
