@@ -5,8 +5,10 @@
     "plugin:import/warnings"
   ],
   "plugins": [
+    "babel",
     "react"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -65,6 +67,7 @@
     "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 1
+    "react/wrap-multilines": 1,
+    "strict": 0
   }
 }

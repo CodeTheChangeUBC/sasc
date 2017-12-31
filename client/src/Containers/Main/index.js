@@ -8,7 +8,6 @@ import RegisterCounsellor  from './../RegisterCounsellor';
 import Logout from './../Logout';
 import Register from './../Register';
 import SMSSettings from './../Sms';
-import requireAuthCounsellor from './../../Components/Auth/requireAuthCounsellor';
 import './styles.css';
 import CounsellorBar from "../../Components/Counsellor/CounsellorBar";
 

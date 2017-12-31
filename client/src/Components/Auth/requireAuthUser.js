@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 export default function(ComposedComponent) {
   class AuthenticationForUser extends Component {
@@ -20,13 +21,17 @@ export default function(ComposedComponent) {
     }
 
     render() {
-      return <ComposedComponent {...this.props} />
+      return <ComposedComponent {...this.props} />;
     }
   }
 
   function mapStateToProps(state) {
     return { authenticatedCounsellor: state.auth.authenticated };
   }
+
+  AuthenticationForUser.propTypes = {
+    authenticated: PropTypes.bool
+  };
 
   return connect(mapStateToProps)(AuthenticationForUser);
 }
