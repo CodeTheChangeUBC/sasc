@@ -5,7 +5,7 @@ import Chat from './../Chat/ChatApp';
 import Login from './../Login';
 import LoginCounsellor  from './../LoginCounsellor';
 import RegisterCounsellor  from './../RegisterCounsellor';
-import Signout from './../Signout';
+import Logout from './../Logout';
 import Register from './../Register';
 import SMSSettings from './../Sms';
 import requireAuthCounsellor from './../../Components/Auth/requireAuthCounsellor';
@@ -22,7 +22,7 @@ class Main extends Component {
           <Route path="/login" component={Login}/>
           <Route path="/signincounsellor" component={LoginCounsellor}/>
           <Route path="/signupcounsellor" component={RegisterCounsellor}/>
-          <Route path="/signout" component={Signout} />
+          <Route path="/logout" component={Logout} />
           <Route path="/register" component={Register}/>
           <Route path="/sms" component={SMSSettings}/>
         </Switch>

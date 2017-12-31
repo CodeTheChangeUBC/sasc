@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../../Redux/Actions/authActions';
 import PropTypes from 'prop-types';
 
-class Signout extends Component {
+class Logout extends Component {
     componentWillMount() {
         this.props.signoutUser();
     }
@@ -21,8 +21,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ signoutUser: authActions.signoutUser }, dispatch);
 }
 
-Signout.propTypes = {
+Logout.propTypes = {
     signoutUser: PropTypes.func
 };
 
-export default connect(null, mapDispatchToProps)(Signout);
+export default connect(null, mapDispatchToProps)(Logout);
