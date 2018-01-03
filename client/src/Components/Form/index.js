@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const Form = ({ 
   username,
+  nickname,
   firstName,
   lastName,
   age, 
@@ -25,6 +26,14 @@ const Form = ({
       <div>
         <label>Username:
           <input type="text" name="username" onChange={onChange} required />
+        </label>
+      </div>
+    }
+    {
+      nickname &&
+      <div>
+        <label>Nickname:
+          <input type="text" name="nickname" onChange={onChange} required />
         </label>
       </div>
     }
@@ -149,6 +158,7 @@ const Form = ({
 
 Form.propTypes = {
     username: PropTypes.bool,
+    nickname: PropTypes.bool,
     firstName: PropTypes.bool,
     lastName: PropTypes.bool,
     age: PropTypes.bool,

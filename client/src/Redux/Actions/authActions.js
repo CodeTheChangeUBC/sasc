@@ -79,7 +79,7 @@ export function signupUser({username, age, gender, phoneNumber, email, password}
     return function (dispatch) {
         axios.post(`${ROOT_URL + BASE_URL}/users`, {username, age, gender, phoneNumber, email, password})
             .then(response => {
-                dispatch({ type: AUTH_USER });
+                dispatch({type: AUTH_USER});
                 localStorage.setItem("token", response.data.token);
                 history.push("/");
             })
@@ -93,4 +93,17 @@ export function signoutUser() {
     localStorage.removeItem('token');
     
     return { type: UNAUTH_USER };
+}
+
+export function submitSurvey({nickname, age, gender, email}) {
+    return function (dispatch) {
+        axios.post(`${ROOT_URL}/users/surveys`, {nickname, age, gender, email})
+            .then(response => {
+                dispatch({type: "JOIN_ROOM"});
+                history.push("/chat");
+            })
+            .catch(error => {
+                dispatch(authError(error.response.data.error));
+            });
+    };
 }

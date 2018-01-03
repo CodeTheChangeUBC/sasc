@@ -14,9 +14,6 @@ class Header extends Component {
         return [
             (<li className="nav-item" key={1}>
                 <Link className="nav-link" to="/login">Login</Link>
-            </li>),
-            (<li className="nav-item" key={2}>
-                <Link className="nav-link" to="/register">Register</Link>
             </li>)
         ];
         
@@ -36,30 +33,41 @@ class Header extends Component {
     }
   }
 
+  renderLinkChatConnected() {
+    if (this.props.chatConnected) {
+      return [
+        (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>),
+        (<li className="nav-item" key={2}><Link className="nav-link" to="/register">Register</Link></li>)
+      ];
+    }
+  }
+
   render() {
     return (
       <div className="Header">
         <h1>Sasc</h1>
         <nav className="Navigation">
           <ul>
-            <li><Link to="/">Home</Link></li>
             <li><Link to="/chat">Chat</Link></li>
+            <li><Link to="/">Home</Link></li>
             {this.renderLinks()}
             {this.renderLinksCounsellor()}
           </ul>
-        </nav>        
+        </nav>
       </div>
     );
   }
 }
 
 Header.propTypes = {
+    chatConnected: PropTypes.bool,
     authenticated: PropTypes.bool,
     authenticatedCounsellor: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
+        chatConnected: state.rooms.room,
         authenticated: state.auth.authenticated,
         authenticatedCounsellor: state.auth.authenticatedCounsellor
     };

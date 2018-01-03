@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
-import MessageBox from './../MessageBox';
-import * as messageActions from '../../../Redux/Actions/messageActions';
-import { config } from '../../../Config';
+import MessageBox from './../../Components/Chat/MessageBox';
+import * as messageActions from '../../Redux/Actions/messageActions';
+import { config } from '../../Config';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const socket = io(config.api);
+const socket = io(config.localhost);
 
-class ChatApp extends Component {
+class Chat extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       input : '',
       messages: props.messages,
       connected: false
@@ -26,7 +26,7 @@ class ChatApp extends Component {
   }
 
   componentWillMount() {
-      if(!(this.state.connected)){ 
+      if(!(this.state.connected)){
         socket.emit('subscribe', {room: this.props.room.title});
         this.setState({connected: true});
      }
@@ -53,19 +53,24 @@ class ChatApp extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    socket.emit('chat message', {message: this.state.input, room: this.props.room.title});
-    // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
-    this.setState({ input: '' });
+    if (this.state.input) {
+      socket.emit('chat message', {message: this.state.input, room: this.props.room.title});
+      // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
+      this.setState({ input: '' });
+    }
   }
 
   render() {
     //console.log('messages is...', this.props.messages);
     return (
       <div className="Chat">
-        <MessageBox msgs={this.props.messages} />
-        <form onSubmit={this.handleOnSubmit}>
-          <input type="text" onChange={this.handleOnChange} value={this.state.input} />
-          <input type="submit" value="Submit" />
+        <div className="chatTitle"><h3>Scott Mescudi</h3></div>
+        <div className="outerMessageBox">
+          <MessageBox msgs={this.props.messages} />
+        </div>
+        <form className="chatInput" onSubmit={this.handleOnSubmit}>
+            <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
+            <input id="sendMessage" type="submit" value="Send" />
         </form>
       </div>
     );
@@ -80,11 +85,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch);
 }
 
-ChatApp.defaultProps = {
-  username: 'Anonymous'
-};
-
-ChatApp.propTypes = {
+Chat.propTypes = {
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,
@@ -94,4 +95,4 @@ ChatApp.propTypes = {
     message: PropTypes.string
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatApp);
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

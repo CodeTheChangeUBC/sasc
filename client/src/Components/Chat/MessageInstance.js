@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './styles.css';
+import './../../Containers/Chat/styles.css';
 
 class MessageInstance extends Component {
   render() {
-    const fromMe = this.props.fromMe ? 'from-me' : '';
 
     return(
-        <div className={`messageInstance ${fromMe}`}>
-            <div>
+        <div className="messageInstance">
+            <div className="messageUser">
               {this.props.user}
             </div>
-            <div>
+            <div className="messageBody">
               {this.props.message}
             </div>
         </div>

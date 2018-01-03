@@ -10,13 +10,13 @@ export default function(ComposedComponent) {
 
     componentWillMount() {
       if (!this.props.authenticatedCounsellor) {
-        this.context.router.history.push('/signincounsellor');
+        this.context.router.history.push('/');
       }
     }
 
     componentWillUpdate(nextProps) {
       if (!nextProps.authenticatedCounsellor) {
-        this.context.router.history.push('/signincounsellor');
+        this.context.router.history.push('/');
       }
     }
 
