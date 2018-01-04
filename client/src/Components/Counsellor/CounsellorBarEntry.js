@@ -10,7 +10,7 @@ const CounsellorBarEntry = ({
     student
 }) => (
     <div className="counsellor-bar-entry">
-        <h2>{student.name}</h2>
+        <h4>{student.name}</h4>
         <p>{student.phone}</p>
     </div>
 );

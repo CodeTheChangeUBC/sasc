@@ -28,6 +28,8 @@ export default {
 
   },
 
+  user: {},
+
   smssettings: {
     sms: {
       email: "",

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
-import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -16,7 +16,6 @@ class PreChatSurvey extends Component {
       nickname: null,
       age: null,
       gender: null,
-      phoneNumber: null,
       email: null,
       error: null
     };
@@ -40,11 +39,10 @@ class PreChatSurvey extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    
+
     const { history } = this.props;
 
     this.props.submitSurvey(this.state, history);
-    
   }
 
   renderAlert() {
@@ -99,7 +97,7 @@ PreChatSurvey.propTypes = {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ submitSurvey: authActions.submitSurvey, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({ submitSurvey: userActions.submitSurvey, removeError: userActions.removeError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreChatSurvey);

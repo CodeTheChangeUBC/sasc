@@ -94,16 +94,3 @@ export function signoutUser() {
     
     return { type: UNAUTH_USER };
 }
-
-export function submitSurvey({nickname, age, gender, email}) {
-    return function (dispatch) {
-        axios.post(`${ROOT_URL}/users/surveys`, {nickname, age, gender, email})
-            .then(response => {
-                dispatch({type: "JOIN_ROOM"});
-                history.push("/chat");
-            })
-            .catch(error => {
-                dispatch(authError(error.response.data.error));
-            });
-    };
-}

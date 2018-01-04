@@ -40,7 +40,7 @@ class CounsellorBar extends React.Component {
     renderCounsellorHeader() {
         return (
             <div className="counsellor-bar-header">
-                <h2 className="counsellor-bar-header-welcome">Hello {this.state.counsellor.firstName} {this.state.counsellor.lastName}! This is the counsellor bar.</h2>
+                <h4 className="counsellor-bar-header-welcome">Hello {this.state.counsellor.firstName} {this.state.counsellor.lastName}! This is the counsellor bar.</h4>
             </div>
         );
     }

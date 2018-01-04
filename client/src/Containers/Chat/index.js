@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import MessageBox from './../../Components/Chat/MessageBox';
+import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import * as messageActions from '../../Redux/Actions/messageActions';
 import { config } from '../../Config';
 import PropTypes from 'prop-types';
@@ -62,23 +63,50 @@ class Chat extends Component {
 
   render() {
     //console.log('messages is...', this.props.messages);
-    return (
-      <div className="Chat">
-        <div className="chatTitle"><h3>Scott Mescudi</h3></div>
-        <div className="outerMessageBox">
-          <MessageBox msgs={this.props.messages} />
+    if (this.props.authenticatedCounsellor) {
+      return (
+        <div className="Chat">
+          <div className="outerCounsellorBar">
+            <CounsellorBar />
+          </div>
+          <div className="containerForTitleAndMessageBox">
+            <div className="chatTitle">
+              <h3>Scott Mescudi</h3>
+            </div>
+            <MessageBox msgs={this.props.messages} />
+            <form className="chatInput" onSubmit={this.handleOnSubmit}>
+                <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
+                <input id="sendMessage" type="submit" value="Send" />
+            </form>
+          </div>
         </div>
-        <form className="chatInput" onSubmit={this.handleOnSubmit}>
-            <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
-            <input id="sendMessage" type="submit" value="Send" />
-        </form>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="Chat">
+          <div className="containerForTitleAndMessageBox">
+            <div className="chatTitle">
+              <h3>Scott Mescudi</h3>
+            </div>
+            <MessageBox msgs={this.props.messages} />
+            <form className="chatInput" onSubmit={this.handleOnSubmit}>
+                <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
+                <input id="sendMessage" type="submit" value="Send" />
+            </form>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  return { username: state.activeRoom.username, messages: state.activeRoom.messages, room: state.activeRoom };
+  return {
+    username: state.activeRoom.username,
+    messages: state.activeRoom.messages,
+    room: state.activeRoom,
+    authenticatedCounsellor: state.auth.authenticatedCounsellor
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -86,6 +114,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 Chat.propTypes = {
+    authenticatedCounsellor: PropTypes.bool,
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,

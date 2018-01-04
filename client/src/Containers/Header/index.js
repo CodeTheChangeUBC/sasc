@@ -16,7 +16,6 @@ class Header extends Component {
                 <Link className="nav-link" to="/login">Login</Link>
             </li>)
         ];
-        
     }
   }
 
