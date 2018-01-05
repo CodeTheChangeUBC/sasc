@@ -1,10 +1,16 @@
 .Header {
   height: 60px;
   line-height: 60px;
-  background-color: grey;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   padding: 0 20px;
+  font-family: georgia, sans-serif;
+  border-bottom: 1px solid grey;
+}
+
+.HeaderTitle {
+  color: pink;
 }
 
 ul {

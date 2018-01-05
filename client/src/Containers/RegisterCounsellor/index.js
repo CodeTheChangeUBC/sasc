@@ -83,6 +83,7 @@ class RegisterCounsellor extends Component {
           email
           password
           passwordConfirm
+          button="Register"
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

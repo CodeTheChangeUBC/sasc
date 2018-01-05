@@ -5,7 +5,7 @@ import './styles.css';
 
 class Home extends Component {
   render() {
-    if (this.props.chatConnected) {
+    if (this.props.chatConnected || this.props.authenticatedCounsellor) {
       return (
         <div className="Home">
           <h2>Home</h2>
@@ -21,9 +21,7 @@ class Home extends Component {
         <div className="Home">
           <h2>Home</h2>
           <div className="connectToChat">
-            <p>
-              <Link to="/chat">Launch Chat</Link>
-             </p>
+            <Link className="launchChat" to="/chat">Launch Chat</Link>
           </div>
         </div>
       );
@@ -32,9 +30,7 @@ class Home extends Component {
         <div className="Home">
           <h2>Home</h2>
           <div className="connectToChat">
-            <p>
-              <Link to="/prechatsurvey">Launch Chat</Link>
-             </p>
+            <Link className="launchChat" to="/prechatsurvey">Launch Chat</Link>
           </div>
         </div>
       );
@@ -46,6 +42,7 @@ function mapStateToProps(state) {
     return {
         chatConnected: state.rooms.room,
         authenticated: state.auth.authenticated,
+        authenticatedCounsellor: state.auth.authenticatedCounsellor
     };
 }
 

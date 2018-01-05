@@ -110,6 +110,7 @@ class Register extends Component {
           phoneNumber
           password
           passwordConfirm
+          button="Register"
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

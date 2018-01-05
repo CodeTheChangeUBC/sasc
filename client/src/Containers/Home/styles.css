@@ -1,0 +1,25 @@
+.connectToChat {
+    background-color: grey;
+    width: 6.5rem;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.connectToChat:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.launchChat {
+    color: black;
+}
+
+.launchChat:hover {
+    color: black;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+}

@@ -62,6 +62,7 @@ class Login extends Component {
         <Form
           username
           password
+          button="Login"
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

@@ -79,6 +79,7 @@ class Sms extends Component {
             twilioPhoneNumber
             accountSid
             authToken
+            button="Update"
             onSubmit={this.handleOnSubmit}
             onChange={this.handleOnChange}
           />

@@ -65,6 +65,7 @@ class PreChatSurvey extends Component {
           age
           gender
           email
+          button="Submit"
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

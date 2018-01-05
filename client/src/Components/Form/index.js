@@ -15,6 +15,7 @@ const Form = ({
   passwordConfirm,
   onSubmit,
   onChange,
+  button,
   twilioEmail,
   twilioPhoneNumber,
   accountSid,
@@ -151,7 +152,7 @@ const Form = ({
       </div>
     }
     <div>
-      <input type="submit" value="Submit" />
+      <input type="submit" value={button} />
     </div>
   </form>
 );

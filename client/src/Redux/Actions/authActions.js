@@ -33,8 +33,12 @@ export function signinCounsellor({email, password}, history) {
                 localStorage.setItem("token", response.data.token);
                 history.push("/");
             })
-            .catch(function () {
-                dispatch(authError("Email or password is incorrect."));
+            .catch(function (error) {
+                if (error.response.data === "Unauthorized") {
+                    dispatch(authError("Email or password is incorrect."));
+                } else {
+                    dispatch(authError(error.response.data));
+                }
             });
     };
 }
@@ -69,8 +73,12 @@ export function signinUser({username, password}, history) {
                 localStorage.setItem("token", response.data.token);
                 history.push("/");
             })
-            .catch(function () {
-                dispatch(authError("Username or password is incorrect."));
+            .catch(function (error) {
+                if (error.response.data === "Unauthorized") {
+                    dispatch(authError("Username or password is incorrect."));
+                } else {
+                    dispatch(authError(error.response.data));
+                }
             });
     };
 }

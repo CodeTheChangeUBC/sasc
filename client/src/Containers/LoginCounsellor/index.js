@@ -59,6 +59,7 @@ class LoginCounsellor extends Component {
         <Form
           email
           password
+          button="Login"
           onSubmit={this.handleOnSubmit}
           onChange={this.handleOnChange}
         />

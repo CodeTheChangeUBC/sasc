@@ -12,12 +12,12 @@ h1,h2 {
 }
 
 a {
-  color: orange;
+  color: grey;
   text-decoration: none;
 }
 
 a:hover {
-  color: red;
+  color: pink;
 }
 
 .App {
