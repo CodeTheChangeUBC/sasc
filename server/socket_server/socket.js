@@ -8,25 +8,32 @@
 
 var Counsellor = require('./acc/counsellor')
 var Student = require('./acc/student')
+//var users = require('./acc/users') 
 
 var util = require('./../../config')
 var jwt = require('jsonwebtoken')
 
-function Handler (io) {
-  // Middleware to verify the token.
+module.exports = io => {
+
+  // Check and accept/reject connection based on token.
   io.use((socket, next) => {
-    jwt.verify(socket.request.query.t, util.secret, (err, data) => {
-      if (err) {
-        next(new Error('Auth Error: Invalid Token'))
-        return
+    var token = socket.request.query.t
+    var secret = util.secret
+
+    // Verify and decode the token.
+    jwt.verify(token, secret, (error, data) => {
+      if (error) {
+        next(error)
+      } else {
+        socket.data = data
+        next()
       }
-      socket.payload = data
-      next()
     })
   })
 
 
-  // On a connection, create the appropriate user object.
+  // Create a user for this socket.
+  // Set up listeners for this socket.
   io.on('connection', socket => {
     switch (socket.payload.type) {
       case 'COUNSELLOR':
@@ -38,8 +45,12 @@ function Handler (io) {
         new Student(socket)
       break
     }
+    
+    //var user = users.create(socket)
+
+    // Sends the msg, to the appropriate user.
+    // i.e.
+    //  Counsellor <-> Student
+    //socket.on('msg', data => (user.relay(data))
   })
 }
-
-
-module.exports = Handler
