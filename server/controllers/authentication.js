@@ -2,12 +2,12 @@ const jwt = require("jwt-simple");
 const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
 const counsellorModel = require("../models/counsellor");
-const config = require("../config");
+const config = require("../../config");
 
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
     const expiry = (Date.now() + 60.0 * 60.0 * 1000.0) / 1000.0;    // An hour from now (in seconds)
-    return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret);
+    return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret2);
 }
 
 function convertToSentence(listOfNouns) {
@@ -92,7 +92,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
 exports.decodeTokenToCheckRole = function (req, res) {
     try {
-        const tokenContents = jwt.decode(req.body.token, config.secret);
+        const tokenContents = jwt.decode(req.body.token, config.secret2);
         const role = tokenContents.role;
         res.send({role: role});
     } catch (e) {

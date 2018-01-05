@@ -5,7 +5,7 @@ export const REMOVE_ERROR = "remove_error";
 
 // Actions
 import axios from "axios";
-import { config } from './../../Config';
+import { config } from './../../config';
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/users";

@@ -9,7 +9,7 @@
 var Counsellor = require('./acc/counsellor')
 var Student = require('./acc/student')
 
-var util = require('./secrets')
+var util = require('./../../config')
 var jwt = require('jsonwebtoken')
 
 function Handler (io) {

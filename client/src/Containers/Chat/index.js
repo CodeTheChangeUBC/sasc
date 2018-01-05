@@ -5,11 +5,11 @@ import io from 'socket.io-client';
 import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import * as messageActions from '../../Redux/Actions/messageActions';
-import { config } from '../../Config';
+import { config } from './../../config';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const socket = io(config.localhost);
+const socket = io(config.host);
 
 class Chat extends Component {
 

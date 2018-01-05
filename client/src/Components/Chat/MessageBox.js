@@ -6,7 +6,7 @@ import './../../Containers/Chat/styles.css';
 
 class MessageBox extends Component {
   componentDidUpdate() {
-    const objDiv = document.getElementById('messageBox');
+    const objDiv = document.getElementById('message-box');
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
