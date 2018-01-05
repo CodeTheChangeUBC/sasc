@@ -20,8 +20,8 @@ class Home extends Component {
       return (
         <div className="Home">
           <h2>Home</h2>
-          <div className="connectToChat">
-            <Link className="launchChat" to="/chat">Launch Chat</Link>
+          <div className="connect-to-chat">
+            <Link className="launch-chat" to="/chat">Launch Chat</Link>
           </div>
         </div>
       );
@@ -29,8 +29,8 @@ class Home extends Component {
       return (
         <div className="Home">
           <h2>Home</h2>
-          <div className="connectToChat">
-            <Link className="launchChat" to="/prechatsurvey">Launch Chat</Link>
+          <div className="connect-to-chat">
+            <Link className="launch-chat" to="/prechatsurvey">Launch Chat</Link>
           </div>
         </div>
       );
@@ -48,7 +48,8 @@ function mapStateToProps(state) {
 
 Home.propTypes = {
     chatConnected: PropTypes.bool,
-    authenticated: PropTypes.bool
+    authenticated: PropTypes.bool,
+    authenticatedCounsellor: PropTypes.bool
 };
 
 

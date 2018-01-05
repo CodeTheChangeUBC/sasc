@@ -7,14 +7,14 @@
 
 /* Nested Layer 1 */
 
-.outerCounsellorBar {
+.outer-counsellor-bar {
   overflow-y: scroll;
   flex-grow: 1;
   max-width: 25%;
   height: calc(100vh - 3.85rem);
 }
 
-.containerForTitleAndMessageBox {
+.container-for-title-and-message-box {
   flex-direction: column;
   flex-grow: 1;
   flex-wrap: nowrap;
@@ -28,7 +28,7 @@
 
 /* Nested Layer 2 */
 
-.chatTitle {
+.chat-title {
   text-align: center;
   margin: 0;
   padding-top: 0.5rem;
@@ -37,7 +37,7 @@
   background-color: #eee;
 }
 
-.messageBox {
+.message-box {
   flex-grow: 1;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -45,7 +45,7 @@
   height: 100%;
 }
 
-.chatInput {
+.chat-input {
   position: relative;
   overflow: hidden;
   padding: 0;
@@ -55,7 +55,7 @@
 
 /* Nested Layer 3 */
 
-#chatInputBox {
+#chat-input-box {
     border-width: 1px;
     border-style: solid;
     border-color: #ddd;
@@ -64,7 +64,7 @@
     padding: 0 1em;
 }
 
-#sendMessage {
+#send-message {
     visibility: hidden;
     float: clear;
     width: 3.5em;
@@ -72,20 +72,20 @@
 
 /* Nested Layer 4 */
 
-.messageInstance {
+.message-instance {
   margin-bottom: 20px;
 }
 
 /* Nested Layer 5 */
 
-.messageUser {
+.message-user {
   font-weight: bold;
   font-size: 0.9rem;
   color: #999;
   margin-bottom: 5px;
 }
 
-.messageBody {
+.message-body {
   max-width: 55%;
   display: inline-block;
   padding: 7px 10px;

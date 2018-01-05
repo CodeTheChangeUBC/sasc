@@ -1,4 +1,4 @@
-.connectToChat {
+.connect-to-chat {
     background-color: grey;
     width: 6.5rem;
     padding: 15px;
@@ -6,16 +6,16 @@
     text-align: center;
 }
 
-.connectToChat:hover {
+.connect-to-chat:hover {
     background-color: #ddd;
     cursor: pointer;
 }
 
-.launchChat {
+.launch-chat {
     color: black;
 }
 
-.launchChat:hover {
+.launch-chat:hover {
     color: black;
 }
 

@@ -12,7 +12,7 @@ class MessageBox extends Component {
 
   render() {
     return(
-      <div className="messageBox" id="messageBox">
+      <div className="message-box" id="message-box">
         {this.props.msgs.map(({message,user}) => 
           <div key={uuid.v4()}>
             <MessageInstance

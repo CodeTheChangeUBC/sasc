@@ -170,6 +170,7 @@ Form.propTypes = {
     passwordConfirm: PropTypes.bool,
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
+    button: PropTypes.bool,
     twilioEmail: PropTypes.bool,
     twilioPhoneNumber: PropTypes.bool,
     accountSid: PropTypes.bool,

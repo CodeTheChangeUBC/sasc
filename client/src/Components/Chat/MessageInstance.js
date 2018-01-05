@@ -6,11 +6,11 @@ class MessageInstance extends Component {
   render() {
 
     return(
-        <div className="messageInstance">
-            <div className="messageUser">
+        <div className="message-instance">
+            <div className="message-user">
               {this.props.user}
             </div>
-            <div className="messageBody">
+            <div className="message-body">
               {this.props.message}
             </div>
         </div>

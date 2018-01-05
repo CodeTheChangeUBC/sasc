@@ -66,17 +66,17 @@ class Chat extends Component {
     if (this.props.authenticatedCounsellor) {
       return (
         <div className="Chat">
-          <div className="outerCounsellorBar">
+          <div className="outer-counsellor-bar">
             <CounsellorBar />
           </div>
-          <div className="containerForTitleAndMessageBox">
-            <div className="chatTitle">
+          <div className="container-for-title-and-message-box">
+            <div className="chat-title">
               <h3>Scott Mescudi</h3>
             </div>
             <MessageBox msgs={this.props.messages} />
-            <form className="chatInput" onSubmit={this.handleOnSubmit}>
-                <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
-                <input id="sendMessage" type="submit" value="Send" />
+            <form className="chat-input" onSubmit={this.handleOnSubmit}>
+                <input id="chat-input-box" type="text" onChange={this.handleOnChange} value={this.state.input} />
+                <input id="send-message" type="submit" value="Send" />
             </form>
           </div>
         </div>
@@ -84,14 +84,14 @@ class Chat extends Component {
     } else {
       return (
         <div className="Chat">
-          <div className="containerForTitleAndMessageBox">
-            <div className="chatTitle">
+          <div className="container-for-title-and-message-box">
+            <div className="chat-title">
               <h3>Scott Mescudi</h3>
             </div>
             <MessageBox msgs={this.props.messages} />
-            <form className="chatInput" onSubmit={this.handleOnSubmit}>
-                <input id="chatInputBox" type="text" onChange={this.handleOnChange} value={this.state.input} />
-                <input id="sendMessage" type="submit" value="Send" />
+            <form className="chat-input" onSubmit={this.handleOnSubmit}>
+                <input id="chat-input-box" type="text" onChange={this.handleOnChange} value={this.state.input} />
+                <input id="send-message" type="submit" value="Send" />
             </form>
           </div>
         </div>
