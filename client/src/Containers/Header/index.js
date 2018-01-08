@@ -50,7 +50,6 @@ class Header extends Component {
         <h1 className="header-title">SASC</h1>
         <nav className="Navigation">
           <ul>
-            <li><Link to="/chat">Chat</Link></li>
             <li><Link to="/">Home</Link></li>
             {this.renderLinks()}
             {this.renderLinksCounsellor()}
