@@ -55,7 +55,7 @@ Now use the database:
 ```
 use sasc_dev_db
 ```
-Now pull the tables from scripts.sql into the application:
+Pull the tables from scripts.sql into the application:
 ```
 source scripts.sql
 ```
