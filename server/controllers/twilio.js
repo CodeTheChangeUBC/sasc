@@ -8,7 +8,7 @@ exports.addTwilioAccountInfo = function (req, res) {
         accountSid: req.body.accountSid,
         authToken: req.body.authToken
     };
-    twilioModel.create(twilio, function (err) {
+    twilioModel.create(twilio, function (err, ignore) {
         if (err) {
             return res.status(422).send({error: "Failed to add twilio account information."});
         } else {
@@ -67,11 +67,12 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
     }
 
     twilioModel.update(id, values, function (err, results, fields) {
+        console.log(results, fields);
         if (err) {
             return res.status(422).send({error: "Failed to update twilio account information."});
         } else if (results.affectedRows === 0 && results.changedRows === 0) {
             // There is no such entry so we'll create one
-            twilioModel.create(values, function (err) {
+            twilioModel.create(values, function (err, ignore) {
                 if (err) {
                     return res.status(422).send({error: "Failed to add twilio account information."});
                 } else {

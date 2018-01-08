@@ -28,7 +28,21 @@ export default {
 
   },
 
-  user: {},
+  user: {
+    user: {
+      ID: "",
+      firstName: "",
+      lastName: "",
+      username: "",
+      age: 0,
+      email: "",
+      gender: "",
+      nickname: "",
+      phoneNumber: "",
+      registered: 0,
+    },
+    error: ""
+  },
 
   smssettings: {
     sms: {

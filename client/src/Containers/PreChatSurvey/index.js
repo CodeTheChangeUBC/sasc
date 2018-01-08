@@ -76,15 +76,7 @@ class PreChatSurvey extends Component {
 }
 
 function mapStateToProps(state) {
-    const { nickname, age, gender, email } = state;
-    state.form = {
-      nickname,
-      age,
-      gender,
-      email
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }

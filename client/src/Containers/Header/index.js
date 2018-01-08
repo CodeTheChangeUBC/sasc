@@ -14,6 +14,9 @@ class Header extends Component {
         return [
             (<li className="nav-item" key={1}>
                 <Link className="nav-link" to="/login">Login</Link>
+            </li>),
+            (<li className="nav-item" key={2}>
+                <Link className="nav-link" to="/register">Register</Link>
             </li>)
         ];
     }
@@ -47,7 +50,6 @@ class Header extends Component {
         <h1 className="header-title">SASC</h1>
         <nav className="Navigation">
           <ul>
-            <li><Link to="/chat">Chat</Link></li>
             <li><Link to="/">Home</Link></li>
             {this.renderLinks()}
             {this.renderLinksCounsellor()}

@@ -10,9 +10,9 @@ import initialState from './initialState';
 export default function(state = initialState.auth, action) {
     switch(action.type) {
         case AUTH_USER:
-            return {...state, error: '', authenticated: true, role: "user"};
+            return {...state, error: '', authenticated: true, authenticatedCounsellor: false, role: "user"};
         case AUTH_COUNSELLOR:
-            return {...state, error: '', authenticatedCounsellor: true, role: "counsellor"};
+            return {...state, error: '', authenticated: false, authenticatedCounsellor: true, role: "counsellor"};
         case UNAUTH_USER:
             return {...state, authenticated: false, authenticatedCounsellor: false, role: ""};
         case AUTH_ERROR:

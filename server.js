@@ -21,9 +21,9 @@ const serveStatic = require('serve-static');
 const compiler = webpack(config);
 
 const router = require('./server/routes/index');
-const users = require('./server/routes/users');
+const users = require('./server/routes/user');
 const twilio = require('./server/routes/twilio');
-const counsellors = require('./server/routes/counsellors');
+const counsellors = require('./server/routes/counsellor');
 const auth = require('./server/routes/authentication');
 
 var app = express();

@@ -2,4 +2,7 @@ node_modules/*
 npm-debug.log*
 package-lock.json
 .idea
+.DS_Store
+client/.DS_Store
+client/src/.DS_Store
 server/twilio_server/*

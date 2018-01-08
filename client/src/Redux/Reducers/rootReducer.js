@@ -3,7 +3,7 @@ import messages from './messagesReducer';
 import rooms from './roomsReducer';
 import activeRoom from './activeRoomReducer';
 import auth from './authReducer';
-import form from './formReducer';
+import user from './userReducer';
 import smssettings from './smsReducer';
 
 const rootReducer = combineReducers({
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   rooms,
   activeRoom,
   auth,
-  form,
+  user,
   smssettings
 });
 
