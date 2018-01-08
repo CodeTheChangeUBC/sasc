@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -40,7 +41,7 @@ class Login extends Component {
 
     const { history } = this.props;
 
-    this.props.signinUser(this.state, history);
+    this.props.signinUser(this.state, history, this.props.addUser);
   }
 
   renderAlert() {
@@ -78,10 +79,11 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    signinUser: PropTypes.func,
-    history: PropTypes.object,
-    errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+  addUser: PropTypes.func,
+  signinUser: PropTypes.func,
+  history: PropTypes.object,
+  errorMessage: PropTypes.string,
+  removeError: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -97,7 +99,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser: authActions.signinUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({ signinUser: authActions.signinUser, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

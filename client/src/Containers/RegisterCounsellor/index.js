@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -56,7 +57,7 @@ class RegisterCounsellor extends Component {
       this.setState({error: null});
       const { history } = this.props;
 
-      this.props.signupCounsellor(this.state, history);
+      this.props.signupCounsellor(this.state, history, this.props.addUser);
     } else {
       this.setState({error: "Passwords must match."});
     }
@@ -109,15 +110,16 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
 }
 
 RegisterCounsellor.propTypes = {
-    dispatch: PropTypes.func,
-    history: PropTypes.object,
-    signupCounsellor: PropTypes.func,
-    errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+  addUser: PropTypes.func,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+  signupCounsellor: PropTypes.func,
+  errorMessage: PropTypes.string,
+  removeError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterCounsellor);

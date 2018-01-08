@@ -28,7 +28,7 @@ export function removeError() {
 export function getSMSDetails() {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -50,7 +50,7 @@ export function getSMSDetails() {
 export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -73,7 +73,7 @@ export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken})
 export function removeSMSDetails() {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token

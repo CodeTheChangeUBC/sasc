@@ -14,7 +14,7 @@ router.post('/tokens/counsellors', requireSigninCounsellor, authentication.signi
 router.post('/tokens/users', requireSigninUser, authentication.signin);
 router.post('/users', authentication.signup);
 router.post('/counsellors', authentication.signupCounsellor);
-router.post('/roles', authentication.decodeTokenToCheckRole);
+router.post('/roles', authentication.checkRoleAndGetInfo);
 
 // For testing purposes only
 router.get('/counselloronly', requireAuthCounsellor, function(req, res) {

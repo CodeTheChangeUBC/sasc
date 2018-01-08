@@ -18,6 +18,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -25,8 +26,9 @@ class Register extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       username: null,
+      nickname: null,
       age: null,
       gender: null,
       phoneNumber: null,
@@ -69,7 +71,15 @@ class Register extends Component {
       this.setState({error: null});
       const { history } = this.props;
 
-      this.props.signupUser(this.state, history);
+      var user = this.state;
+      if (this.props.user) {
+        user.ID = this.props.user.ID;
+      } else {
+        user.ID = null;
+      }
+
+      this.props.signupUser(user, history, this.props.addUser);
+
     } else {
       this.setState({error: "Passwords must match."});
     }
@@ -104,6 +114,7 @@ class Register extends Component {
         <h2>Register</h2>
         <Form
           username
+          nickname
           age
           gender
           email
@@ -122,31 +133,25 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-    const { username, age, gender, email, phoneNumber, password } = state;
-    state.form = {
-      username,
-      age,
-      gender,
-      email,
-      phoneNumber,
-      password
-    };
     return {
-      form: state.form,
+      user: state.user,
       errorMessage: state.auth.error
     };
 }
 
 Register.propTypes = {
-    dispatch: PropTypes.func,
-    history: PropTypes.object,
-    signupUser: PropTypes.func,
-    errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+  addUser: PropTypes.func,
+  user: PropTypes.object,
+  "user.ID": PropTypes.number,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+  signupUser: PropTypes.func,
+  errorMessage: PropTypes.string,
+  removeError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupUser: authActions.signupUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({ signupUser: authActions.signupUser, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

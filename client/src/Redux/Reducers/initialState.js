@@ -28,7 +28,10 @@ export default {
 
   },
 
-  user: {},
+  user: {
+    user: {},
+    error: ""
+  },
 
   smssettings: {
     sms: {

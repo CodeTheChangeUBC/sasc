@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import './styles.css';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     if (this.props.chatConnected || this.props.authenticatedCounsellor) {
       return (
@@ -46,11 +53,14 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({}, dispatch);
+}
+
 Home.propTypes = {
     chatConnected: PropTypes.bool,
     authenticated: PropTypes.bool,
     authenticatedCounsellor: PropTypes.bool
 };
 
-
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

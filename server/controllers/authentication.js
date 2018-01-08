@@ -102,11 +102,50 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
     });
 };
 
-exports.decodeTokenToCheckRole = function (req, res) {
+exports.checkRoleAndGetInfo = function (req, res) {
     try {
         const tokenContents = jwt.decode(req.body.token, config.secret);
         const role = tokenContents.role;
-        res.send({role: role});
+        const id = tokenContents.sub;
+
+        if (role === "user") {
+            userModel.lookupById(id, function (err, users) {
+                if (err) {
+                    return res.status(422).send({error: "Unable to lookup user."});
+                }
+
+                if (users.length === 0) {
+                    return res.status(422).send({error: "No such user."});
+                }
+
+                var user = users[0];
+                delete user.password;
+
+                return res.send({
+                    user: user,
+                    role: role
+                });
+            });
+        } else if (role === "counsellor") {
+            counsellorModel.lookupById(id, function (err, user) {
+                if (err) {
+                    return res.status(422).send({error: "Unable to lookup counsellor."});
+                }
+
+                if (user.length === 0) {
+                    return res.status(422).send({error: "No such counsellor."});
+                }
+
+                var user = users[0];
+                delete user.password;
+
+                return res.send({
+                    user: user,
+                    role: role
+                });
+            });
+        }
+
     } catch (e) {
         res.send({role: "none"});
     }
@@ -123,6 +162,7 @@ exports.signup = function (req, res) {
         // Signing up without taking pre-chat survey
         var user = {
             username: req.body.username.trim(),
+            nickname: req.body.nickname.trim(),
             password: req.body.password,
             age: req.body.age,
             gender: req.body.gender,
@@ -137,6 +177,7 @@ exports.signup = function (req, res) {
         var user = {
             ID: req.body.ID,
             username: req.body.username.trim(),
+            nickname: req.body.nickname.trim(),
             password: req.body.password,
             age: req.body.age,
             gender: req.body.gender,
@@ -151,12 +192,20 @@ exports.signup = function (req, res) {
 };
 
 exports.signin = function (req, res) {
-    res.send({token: tokenForUser(req.user, "user")});
+    delete req.user.password;
+    res.send({
+        token: tokenForUser(req.user, "user"),
+        user: req.user
+    });
 };
 
 // Authentication for counsellors
 exports.signinCounsellor = function (req, res) {
-    res.send({token: tokenForUser(req.user, "counsellor")});
+    delete req.user.password;
+    res.send({
+        token: tokenForUser(req.user, "counsellor"),
+        counsellor: req.user
+    });
 };
 
 exports.signupCounsellor = function (req, res) {

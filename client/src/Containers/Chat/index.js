@@ -40,8 +40,9 @@ class Chat extends Component {
    this._handleMessageEvent();  
   }
 
-   _handleMessageEvent(){
+  _handleMessageEvent(){
     //console.log('Wait for it...');
+    console.log(this.props)
     socket.on('chat message', (inboundMessage) => {
       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
       //console.log('received message', inboundMessage);
@@ -63,6 +64,7 @@ class Chat extends Component {
 
   render() {
     //console.log('messages is...', this.props.messages);
+    console.log(this.props)
     if (this.props.authenticatedCounsellor) {
       return (
         <div className="Chat">
@@ -102,10 +104,11 @@ class Chat extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    username: state.activeRoom.username,
     messages: state.activeRoom.messages,
     room: state.activeRoom,
-    authenticatedCounsellor: state.auth.authenticatedCounsellor
+    authenticated: state.auth.authenticated,
+    authenticatedCounsellor: state.auth.authenticatedCounsellor,
+    user: state.user
   };
 }
 
@@ -115,6 +118,7 @@ function mapDispatchToProps(dispatch) {
 
 Chat.propTypes = {
     authenticatedCounsellor: PropTypes.bool,
+    authenticated: PropTypes.bool,
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,
