@@ -7,7 +7,7 @@ const config = require("../../config");
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
     const expiry = (Date.now() + 60.0 * 60.0 * 1000.0) / 1000.0;    // An hour from now (in seconds)
-    return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret2);
+    return jwt.encode({sub: user.ID, iat: timestamp, exp: expiry, role: role}, config.secret);
 }
 
 function convertToSentence(listOfNouns) {
@@ -63,27 +63,39 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
         encryptPassword(user, function (result) {
             user = result;
 
-            create(user, function (err) {
-                if (err) {
-                    return res.status(422).send({error: "Cannot create " + role + "."});
-                }
-
-                // lookup user to get the ID, which is needed to generate a token
-                lookupUser(usernameCredential, function (err, users) {
+            if (user.ID === undefined || user.ID === null) {
+                // Create a new user
+                create(user, function (err, results) {
                     if (err) {
-                        return res.status(422).send({error: "Cannot look up user."});
+                        return res.status(422).send({error: "Cannot create " + role + "."});
                     }
 
-                    // If there aren't any users, send error
-                    if (users[0] === undefined || users[0] === null) {
-                        return res.status(422).send({error: role.charAt(0).toUpperCase() + role.slice(1) + " does not exist."});
+                    if (!results) {
+                        return res.status(422).send({error: "Cannot create " + role + "."});
+                    }
+
+                    user.ID = results.insertId;
+
+                    // Send token back to client
+                    res.json({token: tokenForUser(user, role)});
+
+                });
+            } else {
+                // Update existing user who took the pre-chat survey
+                create(user.ID, user, function (err, results) {
+                    if (err) {
+                        return res.status(422).send({error: "Cannot create " + role + "."});
+                    }
+
+                    if (!results) {
+                        return res.status(422).send({error: "Cannot create " + role + "."});
                     }
 
                     // Send token back to client
                     res.json({token: tokenForUser(user, role)});
-                });
 
-            });
+                });
+            }
 
         });
 
@@ -92,7 +104,7 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
 
 exports.decodeTokenToCheckRole = function (req, res) {
     try {
-        const tokenContents = jwt.decode(req.body.token, config.secret2);
+        const tokenContents = jwt.decode(req.body.token, config.secret);
         const role = tokenContents.role;
         res.send({role: role});
     } catch (e) {
@@ -101,23 +113,41 @@ exports.decodeTokenToCheckRole = function (req, res) {
 }
 
 exports.signup = function (req, res) {
-    var user = {
-        username: req.body.username.trim(),
-        password: req.body.password,
-        age: req.body.age.trim(),
-        gender: req.body.gender,
-        phoneNumber: req.body.phoneNumber.trim(),
-        email: req.body.email.trim(),
-        registered: 1
-    };
-
     var requiredCredentials = {
         username: req.body.username.trim(),
         password: req.body.password,
         email: req.body.email.trim()
     };
 
-    abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.create);
+    if (req.body.ID === undefined || req.body.ID === null) {
+        // Signing up without taking pre-chat survey
+        var user = {
+            username: req.body.username.trim(),
+            password: req.body.password,
+            age: req.body.age,
+            gender: req.body.gender,
+            phoneNumber: req.body.phoneNumber.trim(),
+            email: req.body.email.trim(),
+            registered: 1
+        };
+
+        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.create);
+    } else {
+        // Signing up after taking pre-chat survey
+        var user = {
+            ID: req.body.ID,
+            username: req.body.username.trim(),
+            password: req.body.password,
+            age: req.body.age,
+            gender: req.body.gender,
+            phoneNumber: req.body.phoneNumber.trim(),
+            email: req.body.email.trim(),
+            registered: 1
+        };
+
+        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.updateCallbackVer);
+    }
+
 };
 
 exports.signin = function (req, res) {

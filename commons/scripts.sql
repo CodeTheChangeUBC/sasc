@@ -18,7 +18,7 @@ CREATE TABLE user (
 	gender VARCHAR(24),
 	phoneNumber VARCHAR(15),
 	email VARCHAR(72),
-	password VARCHAR(60) NOT NULL,
+	password VARCHAR(60),
 	registered TINYINT(1) NOT NULL,
 	UNIQUE(username),
 	PRIMARY KEY (ID)

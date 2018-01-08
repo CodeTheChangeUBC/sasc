@@ -74,7 +74,7 @@ const localLoginCounsellor = new LocalStrategy(localOptionsCounsellor, function 
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromHeader("authorization"),
-    secretOrKey: config.secret2
+    secretOrKey: config.secret
 };
 
 const jwtLoginUser = new JwtStrategy(jwtOptions, function (payload, done) {

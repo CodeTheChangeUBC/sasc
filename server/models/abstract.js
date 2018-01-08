@@ -30,10 +30,10 @@ exports.create = function(model, values, res, callback) {
 /// Second version of create
 exports.createCallbackVer = function(model, values, callback) {
 	db.get().query('INSERT INTO '+model+' SET ?', values, 
-		function(err) {
-			if (err) { callback(err); }
+		function(err, results) {
+			if (err) { callback(err, null); }
 
-			else { callback(null); }
+			else { callback(null, results); }
 		});
 }
 
