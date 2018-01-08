@@ -5,7 +5,6 @@ import io from 'socket.io-client';
 import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import ChatInput from './../../Components/Chat/ChatInput';
-import * as messageActions from '../../Redux/Actions/messageActions';
 import { config } from './../../config';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -74,7 +73,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch);
+  return bindActionCreators({}, dispatch);
 }
 
 Chat.propTypes = {
@@ -83,7 +82,6 @@ Chat.propTypes = {
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,
-    newMessage: PropTypes.func,
     msgs: PropTypes.array,
     user: PropTypes.object,
     message: PropTypes.string

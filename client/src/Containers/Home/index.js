@@ -16,7 +16,7 @@ class Home extends Component {
       return (
         <div className="Home">
           <h2>Home</h2>
-            <LaunchChat />
+            <LaunchChat history={this.props.history} />
         </div>
       );
   }
@@ -30,6 +30,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch);
 }
 
-Home.propTypes = {};
+Home.propTypes = {
+  history: PropTypes.object
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

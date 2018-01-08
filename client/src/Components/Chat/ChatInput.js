@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import io from 'socket.io-client';
-import MessageBox from './../../Components/Chat/MessageBox';
-import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import * as messageActions from '../../Redux/Actions/messageActions';
-import { config } from './../../config';
 import PropTypes from 'prop-types';
 
 class ChatInput extends Component {
