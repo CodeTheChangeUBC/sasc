@@ -12,8 +12,6 @@ export default function(state = initialState.user, action) {
         case SUBMIT_SURVEY:
             return {...state, error: ''};
         case ADD_USER:
-            console.log(action.user);
-            console.log("reducer")
             return {...state, error: '', user: action.user};
         case REMOVE_USER:
             return {...state, error: '', user: null};

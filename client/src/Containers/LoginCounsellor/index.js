@@ -79,13 +79,7 @@ LoginCounsellor.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { email, password } = state;
-    state.form = {
-      email,
-      password
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }

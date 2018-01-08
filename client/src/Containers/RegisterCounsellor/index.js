@@ -96,15 +96,7 @@ class RegisterCounsellor extends Component {
 }
 
 function mapStateToProps(state) {
-  const { firstName, lastName, email, password } = state;
-    state.form = {
-      firstName,
-      lastName,
-      email,
-      password
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }

@@ -127,12 +127,12 @@ exports.checkRoleAndGetInfo = function (req, res) {
                 });
             });
         } else if (role === "counsellor") {
-            counsellorModel.lookupById(id, function (err, user) {
+            counsellorModel.lookupById(id, function (err, users) {
                 if (err) {
                     return res.status(422).send({error: "Unable to lookup counsellor."});
                 }
 
-                if (user.length === 0) {
+                if (users.length === 0) {
                     return res.status(422).send({error: "No such counsellor."});
                 }
 

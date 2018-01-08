@@ -31,21 +31,23 @@ class Chat extends Component {
         socket.emit('subscribe', {room: this.props.room.title});
         this.setState({connected: true});
      }
-    // this._handleMessageEvent()
     //console.log('will mount initated');
    }
 
   componentDidMount(){
    //console.log('did mount');
-   this._handleMessageEvent();  
+   this._handleMessageEvent();
   }
 
   _handleMessageEvent(){
     //console.log('Wait for it...');
-    console.log(this.props)
     socket.on('chat message', (inboundMessage) => {
-      this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}); 
-      //console.log('received message', inboundMessage);
+      if (this.props.authenticatedCounsellor) {
+        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.firstName, message: inboundMessage}});
+      } else {
+        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        //console.log('received message', inboundMessage);
+      }
     });
   } 
 
@@ -64,7 +66,6 @@ class Chat extends Component {
 
   render() {
     //console.log('messages is...', this.props.messages);
-    console.log(this.props)
     if (this.props.authenticatedCounsellor) {
       return (
         <div className="Chat">
@@ -108,7 +109,7 @@ function mapStateToProps(state, ownProps) {
     room: state.activeRoom,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor,
-    user: state.user
+    user: state.user.user
   };
 }
 
@@ -124,7 +125,7 @@ Chat.propTypes = {
     "room.title": PropTypes.string,
     newMessage: PropTypes.func,
     msgs: PropTypes.array,
-    user: PropTypes.string,
+    user: PropTypes.object,
     message: PropTypes.string
 };
 

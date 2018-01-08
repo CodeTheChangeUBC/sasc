@@ -49,7 +49,7 @@ function mapStateToProps(state) {
     return {
         chatConnected: state.rooms.room,
         authenticated: state.auth.authenticated,
-        authenticatedCounsellor: state.auth.authenticatedCounsellor
+        authenticatedCounsellor: state.auth.authenticatedCounsellor,
     };
 }
 

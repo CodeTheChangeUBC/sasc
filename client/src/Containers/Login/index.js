@@ -87,13 +87,7 @@ Login.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { username, password } = state;
-    state.form = {
-      username,
-      password
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }
