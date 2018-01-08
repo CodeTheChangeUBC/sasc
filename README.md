@@ -33,7 +33,10 @@ git push origin your-branch-name
 When you are ready to merge your branch with master, please create a pull request so someone can review your code before it gets merged with master.
 
 ### (Local) DB Setup 
-
+From the sasc project root directory, change your working directory to the commons folder:
+```
+cd commons
+```
 Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into mysql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
 ```
 create database sasc_dev_db;
@@ -48,10 +51,13 @@ GRANT ALL PRIVILEGES
 	-> ON sasc_dev_db.*
 	-> TO 'sasc'@'localhost';
 ``` 
-
-Make sure you've run an `npm install` so that sequelize is installed, and then run a migration:
+Now use the database:
 ```
-sequelize db:migrate
+use sasc_dev_db
+```
+Now pull the tables from scripts.sql into the application:
+```
+source scripts.sql
 ```
 You should be good to go!
 
@@ -69,19 +75,4 @@ npm run-script test-<feature-name>
 To run the specific test file `./test/<feature-name>/<test-name>.js`: 
 ``` 
 mocha ./test/<feature-name>/<test-name>.js
-```
-
-### Style Guide
-
-#### If Statements
-
-* When the block that follows an if statement only has one statement, put a curly brace around the statement and keep it on the same line as the boolean condition.
-
-An example:
-```
-if (pet === "cat") { cat(); }
-
-else if (pet === "dog") { dog(); }
-
-else { bird(); }
 ```
