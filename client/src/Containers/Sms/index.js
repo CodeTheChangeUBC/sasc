@@ -54,46 +54,52 @@ class Sms extends Component {
   }
 
   render() {
-    return (
-      <div className="Sms">
-        <h2>SMS Settings</h2>
-        <div className="sms-box">
-          <h4>Current Settings</h4>
-          <div>
-            <p>Email: {this.props.sms.email}</p>
+    if (this.props.authenticatedCounsellor) {
+      return (
+        <div className="Sms">
+          <h2>SMS Settings</h2>
+          <div className="sms-box">
+            <h4>Current Settings</h4>
+            <div>
+              <p>Email: {this.props.sms.email}</p>
+            </div>
+            <div>
+              <p>Twilio Phone Number: {this.props.sms.twilioPhoneNumber}</p>
+            </div>
+            <div>
+              <p>Twilio Account SID: {this.props.sms.accountSid}</p>
+            </div>
+            <div>
+              <p>Twilio Auth Token: {this.props.sms.authToken}</p>
+            </div>
           </div>
-          <div>
-            <p>Twilio Phone Number: {this.props.sms.twilioPhoneNumber}</p>
-          </div>
-          <div>
-            <p>Twilio Account SID: {this.props.sms.accountSid}</p>
-          </div>
-          <div>
-            <p>Twilio Auth Token: {this.props.sms.authToken}</p>
+          <div className="sms-form">
+            <h4>Change Twilio Account Info</h4>
+            <Form
+              twilioEmail
+              twilioPhoneNumber
+              accountSid
+              authToken
+              button="Update"
+              onSubmit={this.handleOnSubmit}
+              onChange={this.handleOnChange}
+            />
+            {this.renderAlert()}
+            <div>
+              <button id="sms-delete" onClick={this.props.removeSMSDetails}>Remove Settings</button>
+            </div>
           </div>
         </div>
-        <div className="sms-form">
-          <h4>Change Twilio Account Info</h4>
-          <Form
-            twilioEmail
-            twilioPhoneNumber
-            accountSid
-            authToken
-            button="Update"
-            onSubmit={this.handleOnSubmit}
-            onChange={this.handleOnChange}
-          />
-          {this.renderAlert()}
-          <div>
-            <button id="sms-delete" onClick={this.props.removeSMSDetails}>Remove Settings</button>
-          </div>
-        </div>
-      </div>
-    );
+      );
+    } else {
+      return (<div className="Sms">Unauthorized</div>);
+    }
+    
   }
 }
 
 Sms.propTypes = {
+    authenticatedCounsellor: PropTypes.bool,
     getSMSDetails: PropTypes.func,
     setSMSDetails: PropTypes.func,
     removeSMSDetails: PropTypes.func,
@@ -106,7 +112,8 @@ Sms.propTypes = {
 function mapStateToProps(state) {
   return {
     sms: state.smssettings.sms,
-    errorMessage: state.smssettings.error
+    errorMessage: state.smssettings.error,
+    authenticatedCounsellor: state.auth.authenticatedCounsellor
   };
 }
 

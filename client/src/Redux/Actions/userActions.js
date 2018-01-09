@@ -5,7 +5,8 @@ import {
     UPDATE_USER,
     REMOVE_USER,
     USER_ERROR,
-    REMOVE_ERROR
+    REMOVE_ERROR,
+    PASSWORD_CHANGE
 } from './../Types/userTypes';
 import axios from "axios";
 import {config} from "./../../config";
@@ -17,6 +18,15 @@ function userError(error) {
     return {
         type: USER_ERROR,
         payload: error
+    };
+}
+
+export function renderUserError(error) {
+    return function (dispatch) {
+        dispatch({
+            type: USER_ERROR,
+            payload: error
+        });
     };
 }
 
@@ -105,15 +115,47 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
             user: data
         });
         /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
-            .then(function () {
+            .then(function (response) {
                 dispatch({
                     type: UPDATE_USER,
-                    user: data
+                    user: data,
+                    success: response.data.success
                 });
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
             });*/
+    };
+}
+
+export function changePassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+    return function (dispatch) {
+        const token = localStorage.getItem("token");
+        const header = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            params: {
+                userId: ID
+            }
+        };
+        const data = {ID, oldPassword, newPassword, newPasswordConfirm};
+        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+            .then(function (response) {
+                dispatch({
+                    type: PASSWORD_CHANGE,
+                    success: response.data.success
+                });
+            })
+            .catch(function (error) {
+                dispatch(userError(error.response.data.error));
+            });
+        */
+        dispatch({
+            type: PASSWORD_CHANGE,
+            success: "Password did not change because this is unimplemented."
+        });
     };
 }
 

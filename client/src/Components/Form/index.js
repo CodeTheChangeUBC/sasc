@@ -13,6 +13,9 @@ const Form = ({
   phoneNumber,
   password,
   passwordConfirm,
+  oldPassword,
+  newPassword,
+  newPasswordConfirm,
   onSubmit,
   onChange,
   button,
@@ -125,6 +128,33 @@ const Form = ({
       </div>
     }
     {
+      oldPassword &&
+      <div>
+        <label>
+          Old Password:
+          <input type="password" name="oldPassword" onChange={onChange} required />
+        </label>
+      </div>
+    }
+    {
+      newPassword &&
+      <div>
+        <label>
+          New Password:
+          <input type="password" name="newPassword" onChange={onChange} required />
+        </label>
+      </div>
+    }
+    {
+      newPasswordConfirm &&
+      <div>
+        <label>
+          New Password Confirm:
+          <input type="password" name="newPasswordConfirm" onChange={onChange} required />
+        </label>
+      </div>
+    }
+    {
       twilioPhoneNumber &&
       <div className="twilioPhoneNumber">
         <label>
@@ -168,6 +198,9 @@ Form.propTypes = {
     phoneNumber: PropTypes.bool,
     password: PropTypes.bool,
     passwordConfirm: PropTypes.bool,
+    newPassword: PropTypes.bool,
+    newPasswordConfirm: PropTypes.bool,
+    oldPassword: PropTypes.bool,
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
     button: PropTypes.string,

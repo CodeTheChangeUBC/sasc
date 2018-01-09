@@ -20,7 +20,11 @@ class Account extends Component {
       phoneNumber: null,
       password: null,
       passwordConfirm: null,
-      error: null
+      oldPassword: null,
+      newPassword: null,
+      newPasswordConfirm: null,
+      error: null,
+      success: null
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -50,8 +54,7 @@ class Account extends Component {
     const pwcheck = (password === passwordConfirm) ? true : false;
 
     if (pwcheck) {
-      this.setState({error: null});
-      const { history } = this.props;
+      this.props.removeError();
 
       var user = this.state;
       if (this.props.user) {
@@ -63,7 +66,7 @@ class Account extends Component {
       this.props.updateUser(user);
 
     } else {
-      this.setState({error: "Passwords must match."});
+      this.props.renderUserError("Passwords must match.");
     }
   }
 
@@ -72,6 +75,12 @@ class Account extends Component {
         return (
             <div className="error">
                 {this.props.errorMessage}
+            </div>
+        );
+    } else if (this.props.successMessage) {
+      return (
+            <div className="success">
+                {this.props.successMessage}
             </div>
         );
     }
@@ -116,6 +125,7 @@ class Account extends Component {
             />
             {this.renderAlert()}
           </div>
+          <div className="change-your-password-here"><p>Change your password <Link to="/changepassword">here</Link>.</p></div>
         </div>
       );
     } else if (this.props.authenticatedCounsellor) {
@@ -148,6 +158,7 @@ class Account extends Component {
             />
             {this.renderAlert()}
           </div>
+          <div className="change-your-password-here"><p>Change your password <Link to="/changepassword">here</Link>.</p></div>
         </div>
       );
     } else {
@@ -162,7 +173,9 @@ function mapStateToProps(state) {
     return {
       authenticated: state.auth.authenticated,
       authenticatedCounsellor: state.auth.authenticatedCounsellor,
-      user: state.user.user
+      user: state.user.user,
+      errorMessage: state.user.error,
+      successMessage: state.user.success
     };
 }
 
@@ -170,7 +183,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getUser: userActions.getUser,
     updateUser: userActions.updateUser,
-    removeError: userActions.removeError
+    changePassword: userActions.changePassword,
+    removeError: userActions.removeError,
+    renderUserError: userActions.renderUserError
   }, dispatch);
 }
 
@@ -187,7 +202,8 @@ Account.propTypes = {
   "user.email": PropTypes.string,
   "user.phoneNumber": PropTypes.number,
   errorMessage: PropTypes.string,
-  history: PropTypes.object,
+  successMessage: PropTypes.string,
+  renderUserError: PropTypes.func,
   addUser: PropTypes.func,
   getUser: PropTypes.func,
   updateUser: PropTypes.func,
