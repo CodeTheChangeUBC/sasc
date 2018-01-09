@@ -4,7 +4,7 @@ import {
     REMOVE_USER,
     USER_ERROR,
     REMOVE_ERROR
-} from './../Actions/userActions';
+} from './../Types/userTypes';
 import initialState from './initialState';
 
 export default function(state = initialState.user, action) {

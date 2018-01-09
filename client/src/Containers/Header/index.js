@@ -7,9 +7,14 @@ import './styles.css';
 class Header extends Component {
   renderLinks() {
     if (this.props.authenticated || this.props.authenticatedCounsellor) {
-        return (<li className="nav-item">
-            <Link className="nav-link" to="/logout">Logout</Link>
-        </li>);
+        return [
+          (<li className="nav-item" key={1}>
+              <Link className="nav-link" to="/account">Account</Link>
+          </li>),
+          (<li className="nav-item" key={2}>
+              <Link className="nav-link" to="/logout">Logout</Link>
+          </li>)
+        ];
     } else {
         return [
             (<li className="nav-item" key={1}>

@@ -1,3 +1,4 @@
+import { N } from './../Types/messageTypes';
 import initialState from './initialState';
 
 export default function messagesReducer(state = initialState.messages, action) {

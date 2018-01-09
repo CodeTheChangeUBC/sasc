@@ -4,7 +4,7 @@ import {
     UNAUTH_USER,
     AUTH_ERROR,
     REMOVE_ERROR
-} from './../Actions/authActions';
+} from './../Types/authTypes';
 import initialState from './initialState';
 
 export default function(state = initialState.auth, action) {

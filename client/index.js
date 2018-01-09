@@ -6,11 +6,12 @@ import configureStore from './src/Redux/Store/configureStore';
 import { Provider } from 'react-redux';
 import {
     ROOT_URL,
-    BASE_URL,
+    BASE_URL } from './src/Redux/Actions/authActions';
+import {
     AUTH_USER,
     AUTH_COUNSELLOR,
-    UNAUTH_USER } from './src/Redux/Actions/authActions';
-import { ADD_USER } from './src/Redux/Actions/userActions';
+    UNAUTH_USER } from './src/Redux/Types/authTypes';
+import { ADD_USER } from './src/Redux/Types/userTypes';
 import axios from "axios";
 
 const store = configureStore();

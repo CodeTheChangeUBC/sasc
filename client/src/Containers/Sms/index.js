@@ -57,7 +57,7 @@ class Sms extends Component {
     return (
       <div className="Sms">
         <h2>SMS Settings</h2>
-        <div className="smsBox">
+        <div className="sms-box">
           <h4>Current Settings</h4>
           <div>
             <p>Email: {this.props.sms.email}</p>
@@ -72,7 +72,7 @@ class Sms extends Component {
             <p>Twilio Auth Token: {this.props.sms.authToken}</p>
           </div>
         </div>
-        <div>
+        <div className="sms-form">
           <h4>Change Twilio Account Info</h4>
           <Form
             twilioEmail
@@ -85,7 +85,7 @@ class Sms extends Component {
           />
           {this.renderAlert()}
           <div>
-            <button id="smsDelete" onClick={this.props.removeSMSDetails}>Remove Settings</button>
+            <button id="sms-delete" onClick={this.props.removeSMSDetails}>Remove Settings</button>
           </div>
         </div>
       </div>

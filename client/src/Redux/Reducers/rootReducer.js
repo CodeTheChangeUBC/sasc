@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import messages from './messagesReducer';
-import rooms from './roomsReducer';
+import messages from './messageReducer';
+import rooms from './roomReducer';
 import activeRoom from './activeRoomReducer';
 import auth from './authReducer';
 import user from './userReducer';

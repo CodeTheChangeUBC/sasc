@@ -1,11 +1,12 @@
-// Types
-export const SUBMIT_SURVEY = "submit_survey";
-export const ADD_USER = "add_user";
-export const REMOVE_USER = "remove_user";
-export const USER_ERROR = "user_error";
-export const REMOVE_ERROR = "remove_error";
-
-// Actions
+import {
+    SUBMIT_SURVEY,
+    ADD_USER,
+    GET_USER,
+    UPDATE_USER,
+    REMOVE_USER,
+    USER_ERROR,
+    REMOVE_ERROR
+} from './../Types/userTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
@@ -53,6 +54,22 @@ export function addUser(user) {
         dispatch({
             type: ADD_USER,
             user: user
+        });
+    };
+}
+
+export function getUser(id) {
+    return function (dispatch) {
+        dispatch({
+            type: GET_USER
+        });
+    };
+}
+
+export function updateUser(id) {
+    return function (dispatch) {
+        dispatch({
+            type: UPDATE_USER
         });
     };
 }
