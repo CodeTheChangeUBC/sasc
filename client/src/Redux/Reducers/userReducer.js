@@ -1,6 +1,8 @@
 import {
     SUBMIT_SURVEY,
     ADD_USER,
+    GET_USER,
+    UPDATE_USER,
     REMOVE_USER,
     USER_ERROR,
     REMOVE_ERROR
@@ -12,6 +14,10 @@ export default function(state = initialState.user, action) {
         case SUBMIT_SURVEY:
             return {...state, error: ''};
         case ADD_USER:
+            return {...state, error: '', user: action.user};
+        case GET_USER:
+            return {...state, error: '', user: action.user};
+        case UPDATE_USER:
             return {...state, error: '', user: action.user};
         case REMOVE_USER:
             return {...state, error: '', user: null};

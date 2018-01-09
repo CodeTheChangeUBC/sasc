@@ -60,17 +60,60 @@ export function addUser(user) {
 
 export function getUser(id) {
     return function (dispatch) {
-        dispatch({
-            type: GET_USER
-        });
+        const token = localStorage.getItem("token");
+        const header = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            params: {
+                userId: id
+            }
+        };
+        axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
+            .then(function (response) {
+                if (response.data.length !== 0) {
+                    dispatch({
+                        type: GET_USER,
+                        user: response.data[0]
+                    });
+                }
+            })
+            .catch(function (error) {
+                dispatch(userError(error.response.data.error));
+            });
+        
     };
 }
 
-export function updateUser(id) {
+export function updateUser({ID, username, nickname, age, gender, email, phoneNumber, password}) {
     return function (dispatch) {
+        const token = localStorage.getItem("token");
+        const header = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            },
+            params: {
+                userId: ID
+            }
+        };
+        const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
+        // This is what it does temporarily
         dispatch({
-            type: UPDATE_USER
+            type: UPDATE_USER,
+            user: data
         });
+        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+            .then(function () {
+                dispatch({
+                    type: UPDATE_USER,
+                    user: data
+                });
+            })
+            .catch(function (error) {
+                dispatch(userError(error.response.data.error));
+            });*/
     };
 }
 

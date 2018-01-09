@@ -29,7 +29,7 @@ class Account extends Component {
 
   componentWillMount() {
     this.props.removeError();
-    this.props.getUser();
+    this.props.getUser(this.props.user.ID);
   }
 
   handleOnChange(event) {
@@ -60,7 +60,7 @@ class Account extends Component {
         user.ID = null;
       }
 
-      this.props.updateUser(user, history, this.props.addUser);
+      this.props.updateUser(user);
 
     } else {
       this.setState({error: "Passwords must match."});

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
+import './styles.css';
 
 class Logout extends Component {
     constructor(props) {
@@ -18,7 +19,9 @@ class Logout extends Component {
     
     render() {
         return (
-            <div>Bye! Click <Link className="nav-link" to="/">here</Link> to go back to the homepage.</div>
+            <div className="Logout">
+                Bye! Click <Link className="nav-link" to="/">here</Link> to go back to the homepage.
+            </div>
         );
     }
 }

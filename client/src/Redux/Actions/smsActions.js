@@ -4,7 +4,7 @@ import {
     REMOVE_SMS_SETTINGS,
     SMS_ERROR,
     REMOVE_ERROR
-} from './../Actions/smsActions';
+} from './../Types/smsTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
