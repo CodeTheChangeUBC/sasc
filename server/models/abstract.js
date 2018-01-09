@@ -47,6 +47,16 @@ exports.process = function(values, callback) {
 	} else { callback(values); }
 }
 
+exports.hashOne = function (password, callback) {
+	bcrypt.hash(password, SALT_ROUNDS, function (err, hash) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, hash);
+		}
+	});
+}
+
 // compare password
 exports.comparePassword = function(password, hash, callback) {
  	bcrypt.compare(password, hash, function(err, res) {

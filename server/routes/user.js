@@ -3,6 +3,9 @@ var router = express.Router();
 const userModel = require('./../models').user;
 const userController = require("./../controllers/user");
 
+const requireAuthUser = passport.authenticate('jwt-user', {session: false});
+const requireAuthCounsellor = passport.authenticate('jwt-counsellor', {session: false});
+
 // Requests for /users 
 router.get('/', userModel.list);
 router.post('/', userModel.create);
@@ -16,5 +19,7 @@ router.delete('/:userId', userModel.lookup, userModel.destroy);
 router.delete('/', userModel.destroyAll);
 
 router.post('/surveys', userController.submitSurvey);
+
+router.put('/password/:userId', requireAuthUser, userController.changePassword);
 
 module.exports = router;
