@@ -30,7 +30,7 @@ export function renderUserError(error) {
     };
 }
 
-export function removeError() {
+export function removeUserError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };
@@ -61,6 +61,9 @@ export function submitSurvey({nickname, age, gender, email}, history) {
 
 export function addUser(user) {
     return function (dispatch) {
+        if (user.password) {
+            delete user.password;
+        }
         dispatch({
             type: ADD_USER,
             user: user
@@ -83,9 +86,13 @@ export function getUser(id) {
         axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
             .then(function (response) {
                 if (response.data.length !== 0) {
+                    var user = response.data[0];
+                    if (user.password) {
+                        delete user.password;
+                    }
                     dispatch({
                         type: GET_USER,
-                        user: response.data[0]
+                        user: user
                     });
                 }
             })
@@ -110,6 +117,9 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
         };
         const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
         // This is what it does temporarily
+        if (data.password) {
+            delete data.password;
+        }
         dispatch({
             type: UPDATE_USER,
             user: data

@@ -27,7 +27,7 @@ class ChatInput extends Component {
     //console.log('Wait for it...');
     this.props.socket.on('chat message', (inboundMessage) => {
       if (this.props.authenticatedCounsellor) {
-        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.firstName, message: inboundMessage}});
+        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
         this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
@@ -42,7 +42,12 @@ class ChatInput extends Component {
   handleOnSubmit(ev) {
     ev.preventDefault();
     if (this.state.input) {
-      this.props.socket.emit('chat message', {message: this.state.input, room: this.props.room.title});
+      if (this.props.authenticatedCounsellor) {
+        this.props.socket.emit('chat message', {user: this.props.counsellor.email, message: this.state.input, room: this.props.room.title});
+      } else {
+        this.props.socket.emit('chat message', {user: this.props.user.username, message: this.state.input, room: this.props.room.title});
+      }
+      
       // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
       this.setState({ input: '' });
     }
@@ -63,7 +68,8 @@ function mapStateToProps(state, ownProps) {
     room: state.activeRoom,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor,
-    user: state.user.user
+    user: state.user.user,
+    counsellor: state.counsellor.counsellor
   };
 }
 
@@ -79,6 +85,7 @@ ChatInput.propTypes = {
     "room.title": PropTypes.string,
     newMessage: PropTypes.func,
     user: PropTypes.object,
+    counsellor: PropTypes.object,
     message: PropTypes.string,
     socket: PropTypes.object,
     "socket.on": PropTypes.func,

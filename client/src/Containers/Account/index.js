@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as userActions from '../../Redux/Actions/userActions';
+import * as counsellorActions from '../../Redux/Actions/counsellorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -32,8 +33,13 @@ class Account extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
-    this.props.getUser(this.props.user.ID);
+    this.props.removeUserError();
+    this.props.removeCounsellorError();
+    if (this.props.authenticated) {
+      this.props.getUser(this.props.user.ID);
+    } else if (this.props.authenticatedCounsellor) {
+      this.props.getCounsellor(this.props.counsellor.ID);
+    }
   }
 
   handleOnChange(event) {
@@ -135,13 +141,13 @@ class Account extends Component {
           <div className="current-account">
             <h4>Current Account Settings</h4>
             <div>
-              <p>Email: {this.props.user.email}</p>
+              <p>Email: {this.props.counsellor.email}</p>
             </div>
             <div>
-              <p>First Name: {this.props.user.firstName}</p>
+              <p>First Name: {this.props.counsellor.firstName}</p>
             </div>
             <div>
-              <p>Last Name: {this.props.user.lastName}</p>
+              <p>Last Name: {this.props.counsellor.lastName}</p>
             </div>
           </div>
           <div className="account-form">
@@ -174,6 +180,7 @@ function mapStateToProps(state) {
       authenticated: state.auth.authenticated,
       authenticatedCounsellor: state.auth.authenticatedCounsellor,
       user: state.user.user,
+      counsellor: state.counsellor.counsellor,
       errorMessage: state.user.error,
       successMessage: state.user.success
     };
@@ -183,9 +190,12 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getUser: userActions.getUser,
     updateUser: userActions.updateUser,
-    changePassword: userActions.changePassword,
-    removeError: userActions.removeError,
-    renderUserError: userActions.renderUserError
+    getCounsellor: counsellorActions.getCounsellor,
+    updateCounsellor: counsellorActions.updateCounsellor,
+    removeUserError: userActions.removeUserError,
+    removeCounsellorError: counsellorActions.removeCounsellorError,
+    renderUserError: userActions.renderUserError,
+    renderCounsellorError: counsellorActions.renderCounsellorError
   }, dispatch);
 }
 
@@ -195,19 +205,23 @@ Account.propTypes = {
   user: PropTypes.object,
   "user.ID": PropTypes.string,
   "user.nickname": PropTypes.string,
-  "user.firstName": PropTypes.string,
-  "user.lastName": PropTypes.string,
+  "counsellor.firstName": PropTypes.string,
+  "counsellor.lastName": PropTypes.string,
   "user.age": PropTypes.number,
   "user.gender": PropTypes.string,
   "user.email": PropTypes.string,
   "user.phoneNumber": PropTypes.number,
+  counsellor: PropTypes.object,
+  "counsellor.email": PropTypes.string,
   errorMessage: PropTypes.string,
   successMessage: PropTypes.string,
   renderUserError: PropTypes.func,
+  renderCounsellorError: PropTypes.func,
   addUser: PropTypes.func,
   getUser: PropTypes.func,
   updateUser: PropTypes.func,
-  removeError: PropTypes.func
+  removeUserError: PropTypes.func,
+  removeCounsellorError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

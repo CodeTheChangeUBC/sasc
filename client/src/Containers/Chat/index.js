@@ -67,8 +67,7 @@ function mapStateToProps(state, ownProps) {
     messages: state.activeRoom.messages,
     room: state.activeRoom,
     authenticated: state.auth.authenticated,
-    authenticatedCounsellor: state.auth.authenticatedCounsellor,
-    user: state.user.user
+    authenticatedCounsellor: state.auth.authenticatedCounsellor
   };
 }
 
@@ -83,7 +82,6 @@ Chat.propTypes = {
     room: PropTypes.object,
     "room.title": PropTypes.string,
     msgs: PropTypes.array,
-    user: PropTypes.object,
     message: PropTypes.string
 };
 

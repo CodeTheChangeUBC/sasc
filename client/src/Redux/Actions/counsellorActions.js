@@ -29,7 +29,7 @@ export function renderCounsellorError(error) {
     };
 }
 
-export function removeError() {
+export function removeCounsellorError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };
@@ -37,6 +37,9 @@ export function removeError() {
 
 export function addCounsellor(counsellor) {
     return function (dispatch) {
+        if (counsellor.password) {
+            delete counsellor.password;
+        }
         dispatch({
             type: ADD_COUNSELLOR,
             counsellor: counsellor
@@ -59,9 +62,13 @@ export function getCounsellor(id) {
         axios.get(`${ROOT_URL + BASE_URL}/:counsellorId`, header)
             .then(function (response) {
                 if (response.data.length !== 0) {
+                    var counsellor = response.data[0];
+                    if (counsellor.password) {
+                        delete counsellor.password;
+                    }
                     dispatch({
                         type: GET_COUNSELLOR,
-                        counsellor: response.data[0]
+                        counsellor: counsellor
                     });
                 }
             })
@@ -72,7 +79,7 @@ export function getCounsellor(id) {
     };
 }
 
-export function updateCounsellor({ID, username, nickname, age, gender, email, phoneNumber, password}) {
+export function updateCounsellor({ID, email, firstName, lastName, password}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -84,14 +91,18 @@ export function updateCounsellor({ID, username, nickname, age, gender, email, ph
                 counsellorId: ID
             }
         };
-        const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
+        const data = {ID, email, firstName, lastName, password};
         // This is what it does temporarily
+        if (data.password) {
+            delete data.password;
+        }
         dispatch({
             type: UPDATE_COUNSELLOR,
             counsellor: data
         });
         /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
             .then(function (response) {
+                delete data.password;
                 dispatch({
                     type: UPDATE_COUNSELLOR,
                     counsellor: data,
