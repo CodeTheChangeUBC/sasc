@@ -10,7 +10,9 @@ import {
 import {
     AUTH_USER,
     AUTH_COUNSELLOR,
-    UNAUTH_USER } from './src/Redux/Types/authTypes';
+    UNAUTH_USER,
+    UNAUTH_COUNSELLOR
+} from './src/Redux/Types/authTypes';
 import { ADD_USER } from './src/Redux/Types/userTypes';
 import axios from "axios";
 
@@ -35,6 +37,7 @@ if (token) {
                 });
             } else if (response.data.role === "none") {
                 store.dispatch({type: UNAUTH_USER});
+                store.dispatch({type: UNAUTH_COUNSELLOR});
             }
         });
 }

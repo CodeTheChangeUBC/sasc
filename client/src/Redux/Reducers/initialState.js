@@ -28,6 +28,22 @@ export default {
 
   },
 
+  counsellor: {
+    counsellor: {
+      ID: "153",
+      firstName: "Shilo",
+      lastName: "St. Cyr",
+      email: "admin@ams.ubc.ca"
+    },
+    students: [
+      {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
+      {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },
+      {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" },
+      {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" },
+      {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" }
+    ]
+  },
+
   user: {
     user: {
       ID: "",

@@ -31,9 +31,12 @@ class Header extends Component {
     if (this.props.authenticatedCounsellor) {
         return [
             (<li className="nav-item" key={1}>
-                <Link to="/sms">SMS Settings</Link>
+                <Link to="/chat">Chat</Link>
             </li>),
             (<li className="nav-item" key={2}>
+                <Link to="/sms">SMS Settings</Link>
+            </li>),
+            (<li className="nav-item" key={3}>
                 <Link className="nav-link" to="/signupcounsellor">Register a Counsellor</Link>
             </li>)
         ];
@@ -41,7 +44,7 @@ class Header extends Component {
   }
 
   renderLinkChatConnected() {
-    if (this.props.chatConnected) {
+    if (this.props.chatConnected && !this.props.authenticatedCounsellor) {
       return [
         (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>),
         (<li className="nav-item" key={2}><Link className="nav-link" to="/register">Register</Link></li>)
@@ -56,8 +59,8 @@ class Header extends Component {
         <nav className="Navigation">
           <ul>
             <li><Link to="/">Home</Link></li>
-            {this.renderLinks()}
             {this.renderLinksCounsellor()}
+            {this.renderLinks()}
           </ul>
         </nav>
       </div>

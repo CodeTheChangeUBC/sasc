@@ -2,6 +2,7 @@ import {
     AUTH_USER,
     AUTH_COUNSELLOR,
     UNAUTH_USER,
+    UNAUTH_COUNSELLOR,
     AUTH_ERROR,
     REMOVE_ERROR
 } from "./../Types/authTypes";
@@ -92,10 +93,12 @@ export function signupUser({ID, username, nickname, age, gender, phoneNumber, em
     };
 }
 
-export function signoutUser(callback) {
+export function signout(callback1, callback2) {
     return function (dispatch) {
         localStorage.removeItem("token");
         dispatch({type: UNAUTH_USER});
-        callback();
+        dispatch({type: UNAUTH_COUNSELLOR});
+        callback1();
+        callback2();
     };
 }
