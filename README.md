@@ -1,5 +1,7 @@
 # sasc
-Development repo for the SASC project. 
+Development repo for the SASC project.
+
+The tech stack for this project is node.js, express, react, and MySQL.
 
 How to get the project running:
 
