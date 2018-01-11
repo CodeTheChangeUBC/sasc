@@ -21,15 +21,13 @@ class Account extends Component {
       phoneNumber: null,
       password: null,
       passwordConfirm: null,
-      oldPassword: null,
-      newPassword: null,
-      newPasswordConfirm: null,
       error: null,
       success: null
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
@@ -52,42 +50,117 @@ class Account extends Component {
     });
   }
 
-  handleOnSubmit(ev) {
-    ev.preventDefault();
-    
+  validateForm(fields, renderError, removeError) {
     const { password, passwordConfirm } = this.state;
 
-    const pwcheck = (password === passwordConfirm) ? true : false;
+    if (password !== passwordConfirm) {
+      renderError("Passwords must match.");
+      return false;
+    }
 
-    if (pwcheck) {
-      this.props.removeUserError();
-      this.props.removeCounsellorError();
-
-      var user = this.state;
-      if (this.props.user) {
-        user.ID = this.props.user.ID;
-      } else {
-        user.ID = null;
+    if (this.props.role === "user") {
+      const { nickname, age, gender, email, phoneNumber } = fields;
+      if (!nickname || !age || !gender || !email || !phoneNumber || !password || !passwordConfirm) {
+        renderError("You must not leave any field blank.");
+        return false;
       }
+    } else if (this.props.role === "counsellor") {
+      const { email, firstName, lastName, password } = fields;
+      if (!email || !firstName || !lastName || !password || !passwordConfirm) {
+        renderError("You must not leave any field blank.");
+        return false;
+      }
+    }
 
-      this.props.updateUser(user);
+    // TODO: Add regex check for email here.
 
-    } else {
-      this.props.renderUserError("Passwords must match.");
+    if (this.props.role === "user") {
+      fields.ID = this.props.user.ID;
+    } else if (this.props.role === "counsellor") {
+      fields.ID = this.props.counsellor.ID;
+    }
+
+    if (!fields.ID) {
+      renderError("Unable to get user ID.");
+      return false;
+    }
+
+    return fields;
+  }
+
+  handleOnSubmit(ev) {
+    ev.preventDefault();
+    var ID;
+    var fields;
+    var validated = false;
+
+    if (this.props.role === "user") {
+      const {
+        nickname,
+        age,
+        gender,
+        email,
+        phoneNumber,
+        password
+      } = this.state;
+
+      fields = {
+        nickname: nickname.trim(),
+        age: age.trim(),
+        gender: gender.trim(),
+        email: email.trim(),
+        phoneNumber: phoneNumber.trim(),
+        password
+      };
+
+      validated = this.validateForm(fields, this.props.renderUserError, this.props.removeUserError);
+      if (validated) {
+        this.props.updateUser(validated);
+      }
+    } else if (this.props.role === "counsellor") {
+      const {
+        email,
+        firstName,
+        lastName,
+        password
+      } = this.state;
+
+      fields = {
+        email: email.trim(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        password
+      };
+      validated = this.validateForm(fields, this.props.renderCounsellorError, this.props.removeCounsellorError);
+      if (validated) {
+        this.props.updateCounsellor(validated);
+      }
     }
   }
 
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.props.errorMessageCounsellor) {
         return (
             <div className="error">
-                {this.props.errorMessage}
+                {this.props.errorMessageCounsellor}
             </div>
         );
-    } else if (this.props.successMessage) {
+    } else if (this.props.successMessageCounsellor) {
       return (
             <div className="success">
-                {this.props.successMessage}
+                {this.props.successMessageCounsellor}
+            </div>
+        );
+    } else if (this.props.errorMessageUser) {
+        return (
+            <div className="error">
+                {this.props.errorMessageUser}
+            </div>
+        );
+    } else if (this.props.successMessageUser) {
+      return (
+            <div className="success">
+                {this.props.successMessageUser}
             </div>
         );
     }
@@ -182,8 +255,11 @@ function mapStateToProps(state) {
       authenticatedCounsellor: state.auth.authenticatedCounsellor,
       user: state.user.user,
       counsellor: state.counsellor.counsellor,
-      errorMessage: state.user.error,
-      successMessage: state.user.success
+      role: state.auth.role,
+      errorMessageUser: state.user.error,
+      successMessageUser: state.user.success,
+      errorMessageCounsellor: state.counsellor.error,
+      successMessageCounsellor: state.counsellor.success
     };
 }
 
@@ -214,16 +290,21 @@ Account.propTypes = {
   "user.phoneNumber": PropTypes.number,
   counsellor: PropTypes.object,
   "counsellor.email": PropTypes.string,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
+  role: PropTypes.string,
+  errorMessageUser: PropTypes.string,
+  successMessageUser: PropTypes.string,
+  errorMessageCounsellor: PropTypes.string,
+  successMessageCounsellor: PropTypes.string,
   renderUserError: PropTypes.func,
   renderCounsellorError: PropTypes.func,
   addUser: PropTypes.func,
   getUser: PropTypes.func,
   getCounsellor: PropTypes.func,
   updateUser: PropTypes.func,
+  updateCounsellor: PropTypes.func,
   removeUserError: PropTypes.func,
-  removeCounsellorError: PropTypes.func
+  removeCounsellorError: PropTypes.func,
+  renderError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

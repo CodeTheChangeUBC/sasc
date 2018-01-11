@@ -21,7 +21,7 @@ export default function(state = initialState.auth, action) {
         case AUTH_ERROR:
             return {...state, error: action.payload};
         case REMOVE_ERROR:
-            return {...state, error: ''};
+            return {...state, error: '', success: ''};
     }
 
     return state;

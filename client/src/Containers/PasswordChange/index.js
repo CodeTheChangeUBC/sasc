@@ -22,6 +22,7 @@ class PasswordChange extends Component {
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
@@ -39,57 +40,91 @@ class PasswordChange extends Component {
     });
   }
 
+  validateForm(renderError, removeError) {
+    const { oldPassword, newPassword, newPasswordConfirm } = this.state;
+    if (newPassword === oldPassword) {
+        renderError("The new password cannot be the same as the old password.");
+        return false;
+    } 
+
+    if (newPassword !== newPasswordConfirm) {
+      renderError("Passwords must match.");
+      return false;
+    }
+
+    removeError();
+    
+    var ID;
+    if (this.props.role === "counsellor") {
+      ID = this.props.counsellor.ID;
+    } else if (this.props.role === "user") {
+      ID = this.props.user.ID;
+    }
+
+    if (!ID) {
+      renderError("Unable to get user ID.");
+      return false;
+    }
+
+    return true;
+  }
+
   handlePasswordChange(ev) {
     ev.preventDefault();
-    var ID;
-    
     const { oldPassword, newPassword, newPasswordConfirm } = this.state;
+    var validated = false;
     if (this.props.authenticated) {
-      if (newPassword === oldPassword) {
-        this.props.renderUserError("The new password cannot be the same as the old password.");
-      } else if (newPassword === newPasswordConfirm) {
-        this.props.removeUserError();
-
-        ID = this.props.user.ID;
-
-        if (ID) {
-          this.props.changeUserPassword({ ID, oldPassword, newPassword, newPasswordConfirm });
-        } else {
-          this.props.renderUserError("Unable to get user ID.");
-        }
-      } else {
-        this.props.renderUserError("Passwords must match.");
+      validated = this.validateForm(
+        this.props.renderUserError,
+        this.props.removeUserError
+      );
+      if (validated) {
+        this.props.changeUserPassword({
+          ID: this.props.user.ID,
+          oldPassword,
+          newPassword,
+          newPasswordConfirm
+        });
       }
     } else if (this.props.authenticatedCounsellor) {
-      if (newPassword === oldPassword) {
-        this.props.renderCounsellorError("The new password cannot be the same as the old password.");
-      } else if (newPassword === newPasswordConfirm) {
-        this.props.removeCounsellorError();
-
-        ID = this.props.counsellor.ID;
-
-        if (ID) {
-          this.props.changeCounsellorPassword({ ID, oldPassword, newPassword, newPasswordConfirm });
-        } else {
-          this.props.renderCounsellorError("Unable to get user ID.");
-        }
-      } else {
-        this.props.renderCounsellorError("Passwords must match.");
+      validated = this.validateForm(
+        this.props.renderCounsellorError,
+        this.props.removeCounsellorError
+      );
+      if (validated) {
+        this.props.changeCounsellorPassword({
+          ID: this.props.counsellor.ID,
+          oldPassword,
+          newPassword,
+          newPasswordConfirm
+        });
       }
     }
   }
 
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.props.errorMessageCounsellor) {
         return (
             <div className="error">
-                {this.props.errorMessage}
+                {this.props.errorMessageCounsellor}
             </div>
         );
-    } else if (this.props.successMessage) {
+    } else if (this.props.successMessageCounsellor) {
       return (
             <div className="success">
-                {this.props.successMessage}
+                {this.props.successMessageCounsellor}
+            </div>
+        );
+    } else if (this.props.errorMessageUser) {
+        return (
+            <div className="error">
+                {this.props.errorMessageUser}
+            </div>
+        );
+    } else if (this.props.successMessageUser) {
+      return (
+            <div className="success">
+                {this.props.successMessageUser}
             </div>
         );
     }
@@ -120,10 +155,15 @@ class PasswordChange extends Component {
 
 function mapStateToProps(state) {
     return {
+      authenticated: state.auth.authenticated,
+      authenticatedCounsellor: state.auth.authenticatedCounsellor,
       user: state.user.user,
       counsellor: state.counsellor.counsellor,
-      errorMessage: state.user.error,
-      successMessage: state.user.success
+      role: state.auth.role,
+      errorMessageUser: state.user.error,
+      errorMessageCounsellor: state.counsellor.error,
+      successMessageUser: state.user.success,
+      successMessageCounsellor: state.counsellor.success
     };
 }
 
@@ -151,8 +191,11 @@ PasswordChange.propTypes = {
   "user.ID": PropTypes.string,
   counsellor: PropTypes.object,
   "counsellor.ID": PropTypes.string,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
+  role: PropTypes.string,
+  errorMessageUser: PropTypes.string,
+  successMessageUser: PropTypes.string,
+  errorMessageCounsellor: PropTypes.string,
+  successMessageCounsellor: PropTypes.string,
   renderUserError: PropTypes.func,
   renderCounsellorError: PropTypes.func,
   removeUserError: PropTypes.func,

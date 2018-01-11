@@ -38,6 +38,7 @@ class Register extends Component {
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
@@ -54,6 +55,33 @@ class Register extends Component {
     }); 
   }
 
+  validateForm(fields) {
+    const { username, nickname, age, gender, email, phoneNumber } = fields;
+    const { password, passwordConfirm } = this.state;
+
+    if (password !== passwordConfirm) {
+      this.props.renderAuthError("Passwords must match.");
+      return false;
+    }
+
+    if (!username || !nickname || !age || !gender || !email || !phoneNumber) {
+      this.props.renderAuthError("You must not leave any field blank.");
+      return false;
+    }
+
+    // TODO: Add regex check for email here.
+
+    this.props.removeAuthError();
+
+    if (this.props.user) {
+      fields.ID = this.props.user.ID;
+    } else {
+      fields.ID = null;
+    }
+
+    return fields;
+  }
+
   /**
    * once form is submitted, add the user to the database and switch to chat view
    *
@@ -62,45 +90,32 @@ class Register extends Component {
    */
   handleOnSubmit(ev) {
     ev.preventDefault();
-    
-    const { password, passwordConfirm } = this.state;
+    const { username, nickname, age, gender, email, phoneNumber, password } = this.state;
 
-    const pwcheck = (password === passwordConfirm) ? true : false;
+    var fields = {
+      username: username.trim(),
+      nickname: nickname.trim(),
+      age: age.trim(),
+      gender: gender.trim(),
+      email: email.trim(),
+      phoneNumber: phoneNumber.trim(),
+      password
+    };
 
-    if (pwcheck) {
-      this.setState({error: null});
+    var validated = this.validate(fields);
+
+    if (validated) {
       const { history } = this.props;
-
-      var user = this.state;
-      if (this.props.user) {
-        user.ID = this.props.user.ID;
-      } else {
-        user.ID = null;
-      }
-
-      this.props.signupUser(user, history, this.props.addUser);
-
-    } else {
-      this.setState({error: "Passwords must match."});
+      this.props.signupUser(validated, history, this.props.addUser);
     }
-    
+
   }
 
   renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div className="error">
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
-    }
-
-  renderPasswordCheckAlert() {
-      if (this.state.error) {
+      if (this.props.errorMessage) {
           return (
-              <div>
-                  {this.state.error}
+              <div className="error">
+                  {this.props.errorMessage}
               </div>
           );
       }
@@ -126,7 +141,6 @@ class Register extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
-        {this.renderPasswordCheckAlert()}
       </div>
     );
   }
@@ -147,7 +161,8 @@ Register.propTypes = {
   history: PropTypes.object,
   signupUser: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeAuthError: PropTypes.func
+  removeAuthError: PropTypes.func,
+  renderAuthError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {

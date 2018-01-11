@@ -41,7 +41,7 @@ class ChatInput extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    if (this.state.input) {
+    if (this.state.input.trim()) {
       if (this.props.authenticatedCounsellor) {
         this.props.socket.emit('chat message', {user: this.props.counsellor.email, message: this.state.input, room: this.props.room.title});
       } else {

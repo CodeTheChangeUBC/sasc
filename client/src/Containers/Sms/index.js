@@ -20,6 +20,7 @@ class Sms extends Component {
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
@@ -37,10 +38,32 @@ class Sms extends Component {
     });
   }
 
+  validateForm(fields) {
+    const { email, twilioPhoneNumber, accountSid, authToken } = this.state;
+
+    if (!email || !twilioPhoneNumber || !accountSid || !authToken) {
+      this.props.renderSMSError("You must not leave any field blank.");
+      return false;
+    }
+
+    // TODO: Add regex check for email here.
+
+    return true;
+  }
+
   handleOnSubmit(ev) {
     ev.preventDefault();
-
-    this.props.setSMSDetails(this.state);
+    const { email, twilioPhoneNumber, accountSid, authToken } = this.state;
+    var fields = {
+      email: email.trim(),
+      twilioPhoneNumber: twilioPhoneNumber.trim(),
+      accountSid: accountSid.trim(),
+      authToken: authToken.trim()
+    };
+    var validated = this.validateForm(fields);
+    if (validated) {
+      this.props.setSMSDetails(fields);
+    }
   }
 
   renderAlert() {
@@ -105,6 +128,7 @@ Sms.propTypes = {
     removeSMSDetails: PropTypes.func,
     history: PropTypes.object,
     removeSMSError: PropTypes.func,
+    renderSMSError: PropTypes.func,
     sms: PropTypes.object,
     errorMessage: PropTypes.string
 };
@@ -122,6 +146,7 @@ function mapDispatchToProps(dispatch) {
     getSMSDetails: smsActions.getSMSDetails,
     setSMSDetails: smsActions.setSMSDetails,
     removeSMSDetails: smsActions.removeSMSDetails,
+    renderSMSError: smsActions.renderSMSError,
     removeSMSError: smsActions.removeSMSError
   }, dispatch);
 }
