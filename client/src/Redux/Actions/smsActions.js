@@ -18,7 +18,16 @@ function smsError(error) {
     };
 }
 
-export function removeError() {
+export function renderSMSError(error) {
+    return function (dispatch) {
+        dispatch({
+            type: SMS_ERROR,
+            payload: error
+        });
+    };
+}
+
+export function removeSMSError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };

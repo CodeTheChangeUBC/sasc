@@ -24,7 +24,7 @@ class PreChatSurvey extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeUserError();
   }
 
   handleOnChange(event) {
@@ -86,11 +86,14 @@ PreChatSurvey.propTypes = {
     history: PropTypes.object,
     submitSurvey: PropTypes.func,
     errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+    removeUserError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ submitSurvey: userActions.submitSurvey, removeError: userActions.removeError }, dispatch);
+  return bindActionCreators({
+    submitSurvey: userActions.submitSurvey,
+    removeUserError: userActions.removeUserError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreChatSurvey);

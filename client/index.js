@@ -14,6 +14,7 @@ import {
     UNAUTH_COUNSELLOR
 } from './src/Redux/Types/authTypes';
 import { ADD_USER } from './src/Redux/Types/userTypes';
+import { ADD_COUNSELLOR } from './src/Redux/Types/counsellorTypes';
 import axios from "axios";
 
 const store = configureStore();
@@ -26,8 +27,8 @@ if (token) {
             if (response.data.role === "counsellor") {
                 store.dispatch({type: AUTH_COUNSELLOR});
                 store.dispatch({
-                    type: ADD_USER,
-                    user: response.data.user
+                    type: ADD_COUNSELLOR,
+                    counsellor: response.data.user
                 });
             } else if (response.data.role === "user") {
                 store.dispatch({type: AUTH_USER});

@@ -23,7 +23,7 @@ class RegisterCounsellor extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   renderAlert() {
@@ -102,7 +102,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signupCounsellor: authActions.signupCounsellor,
+    addUser: userActions.addUser,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 RegisterCounsellor.propTypes = {
@@ -111,7 +115,7 @@ RegisterCounsellor.propTypes = {
   history: PropTypes.object,
   signupCounsellor: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+  removeAuthError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterCounsellor);

@@ -115,7 +115,7 @@ export function updateCounsellor({ID, email, firstName, lastName, password}) {
     };
 }
 
-export function changePassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeCounsellorPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {

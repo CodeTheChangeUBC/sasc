@@ -138,7 +138,7 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
     };
 }
 
-export function changePassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeUserPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {

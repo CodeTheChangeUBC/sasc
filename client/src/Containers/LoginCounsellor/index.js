@@ -22,7 +22,7 @@ class LoginCounsellor extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -75,7 +75,7 @@ LoginCounsellor.propTypes = {
   signinCounsellor: PropTypes.func,
   history: PropTypes.object,
   errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+  removeAuthError: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -85,7 +85,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinCounsellor: authActions.signinCounsellor, addCounsellor: counsellorActions.addCounsellor, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signinCounsellor: authActions.signinCounsellor,
+    addCounsellor: counsellorActions.addCounsellor,
+    removeAuthError: authActions.removeAuthError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginCounsellor);

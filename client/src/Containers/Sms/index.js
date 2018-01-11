@@ -23,7 +23,7 @@ class Sms extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeSMSError();
     this.props.getSMSDetails();
   }
 
@@ -104,7 +104,7 @@ Sms.propTypes = {
     setSMSDetails: PropTypes.func,
     removeSMSDetails: PropTypes.func,
     history: PropTypes.object,
-    removeError: PropTypes.func,
+    removeSMSError: PropTypes.func,
     sms: PropTypes.object,
     errorMessage: PropTypes.string
 };
@@ -122,7 +122,7 @@ function mapDispatchToProps(dispatch) {
     getSMSDetails: smsActions.getSMSDetails,
     setSMSDetails: smsActions.setSMSDetails,
     removeSMSDetails: smsActions.removeSMSDetails,
-    removeError: smsActions.removeError
+    removeSMSError: smsActions.removeSMSError
   }, dispatch);
 }
 

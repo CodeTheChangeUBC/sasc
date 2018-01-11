@@ -19,7 +19,16 @@ function authError(error) {
     };
 }
 
-export function removeError() {
+export function renderAuthError(error) {
+    return function (dispatch) {
+        dispatch({
+            type: AUTH_ERROR,
+            payload: error
+        });
+    };
+}
+
+export function removeAuthError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };

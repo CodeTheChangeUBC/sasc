@@ -23,7 +23,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -83,7 +83,7 @@ Login.propTypes = {
   signinUser: PropTypes.func,
   history: PropTypes.object,
   errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+  removeAuthError: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -93,7 +93,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser: authActions.signinUser, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signinUser: authActions.signinUser,
+    addUser: userActions.addUser,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

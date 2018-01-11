@@ -41,6 +41,7 @@ class PasswordChange extends Component {
 
   handlePasswordChange(ev) {
     ev.preventDefault();
+    var ID;
     
     const { oldPassword, newPassword, newPasswordConfirm } = this.state;
     if (this.props.authenticated) {
@@ -49,8 +50,7 @@ class PasswordChange extends Component {
       } else if (newPassword === newPasswordConfirm) {
         this.props.removeUserError();
 
-        var ID = this.props.user.ID;
-        console.log(ID);
+        ID = this.props.user.ID;
 
         if (ID) {
           this.props.changeUserPassword({ ID, oldPassword, newPassword, newPasswordConfirm });
@@ -66,7 +66,7 @@ class PasswordChange extends Component {
       } else if (newPassword === newPasswordConfirm) {
         this.props.removeCounsellorError();
 
-        var ID = this.props.counsellor.ID;
+        ID = this.props.counsellor.ID;
 
         if (ID) {
           this.props.changeCounsellorPassword({ ID, oldPassword, newPassword, newPasswordConfirm });
@@ -143,6 +143,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 PasswordChange.propTypes = {
+  authenticated: PropTypes.bool,
+  authenticatedCounsellor: PropTypes.bool,
   changeUserPassword: PropTypes.func,
   changeCounsellorPassword: PropTypes.func,
   user: PropTypes.object,

@@ -41,7 +41,7 @@ class Register extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -147,11 +147,15 @@ Register.propTypes = {
   history: PropTypes.object,
   signupUser: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+  removeAuthError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupUser: authActions.signupUser, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signupUser: authActions.signupUser,
+    addUser: userActions.addUser,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

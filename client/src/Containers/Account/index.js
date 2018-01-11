@@ -60,7 +60,8 @@ class Account extends Component {
     const pwcheck = (password === passwordConfirm) ? true : false;
 
     if (pwcheck) {
-      this.props.removeError();
+      this.props.removeUserError();
+      this.props.removeCounsellorError();
 
       var user = this.state;
       if (this.props.user) {
@@ -219,6 +220,7 @@ Account.propTypes = {
   renderCounsellorError: PropTypes.func,
   addUser: PropTypes.func,
   getUser: PropTypes.func,
+  getCounsellor: PropTypes.func,
   updateUser: PropTypes.func,
   removeUserError: PropTypes.func,
   removeCounsellorError: PropTypes.func
