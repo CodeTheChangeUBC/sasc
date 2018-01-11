@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
-import * as userActions from '../../Redux/Actions/userActions';
+import * as counsellorActions from '../../Redux/Actions/counsellorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -20,10 +20,11 @@ class RegisterCounsellor extends Component {
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   renderAlert() {
@@ -34,6 +35,16 @@ class RegisterCounsellor extends Component {
         </div>
       );
     }
+  }
+
+  validateForm() {
+    const { password, passwordConfirm } = this.state;
+
+    if (password !== passwordConfirm) {
+      this.props.renderAuthError("Passwords must match.");
+    }
+
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -48,29 +59,22 @@ class RegisterCounsellor extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    
-    const { password, passwordConfirm } = this.state;
 
-    const pwcheck = (password === passwordConfirm) ? true : false;
+    const { email, firstName, lastName, password } = this.state;
 
-    if (pwcheck) {
-      this.setState({error: null});
+    var fields = {
+      email: email.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      password
+    };
+
+    var validated = this.validate(fields);
+
+    if (validated) {
       const { history } = this.props;
-
-      this.props.signupCounsellor(this.state, history, this.props.addUser);
-    } else {
-      this.setState({error: "Passwords must match."});
+      this.props.signupCounsellor(this.state, history, this.props.addCounsellor);
     }
-  }
-
-  renderPasswordCheckAlert() {
-      if (this.state.error) {
-          return (
-              <div>
-                  {this.state.error}
-              </div>
-          );
-      }
   }
 
   // TODO: Form validation
@@ -89,7 +93,6 @@ class RegisterCounsellor extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
-        {this.renderPasswordCheckAlert()}
       </div>
     );
   }
@@ -102,16 +105,23 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupCounsellor: authActions.signupCounsellor, addUser: userActions.addUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signupCounsellor: authActions.signupCounsellor,
+    addCounsellor: counsellorActions.addCounsellor,
+    renderAuthError: authActions.renderAuthError,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 RegisterCounsellor.propTypes = {
   addUser: PropTypes.func,
+  addCounsellor: PropTypes.func,
   dispatch: PropTypes.func,
   history: PropTypes.object,
   signupCounsellor: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+  removeAuthError: PropTypes.func,
+  renderAuthError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterCounsellor);

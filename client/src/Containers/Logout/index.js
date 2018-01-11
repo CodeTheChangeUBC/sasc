@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as userActions from '../../Redux/Actions/userActions';
+import * as counsellorActions from '../../Redux/Actions/counsellorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -14,7 +15,7 @@ class Logout extends Component {
     }
 
     componentWillMount() {
-        this.props.signoutUser(this.props.removeUser);
+        this.props.signout(this.props.removeUser, this.props.removeCounsellor);
     }
     
     render() {
@@ -31,12 +32,17 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signoutUser: authActions.signoutUser, removeUser: userActions.removeUser }, dispatch);
+  return bindActionCreators({
+    signout: authActions.signout,
+    removeUser: userActions.removeUser,
+    removeCounsellor: counsellorActions.removeCounsellor
+}, dispatch);
 }
 
 Logout.propTypes = {
     removeUser: PropTypes.func,
-    signoutUser: PropTypes.func
+    removeCounsellor: PropTypes.func,
+    signout: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);

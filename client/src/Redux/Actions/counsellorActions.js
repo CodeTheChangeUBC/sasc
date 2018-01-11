@@ -1,77 +1,53 @@
 import {
-    SUBMIT_SURVEY,
-    ADD_USER,
-    GET_USER,
-    UPDATE_USER,
-    REMOVE_USER,
-    USER_ERROR,
+    ADD_COUNSELLOR,
+    GET_COUNSELLOR,
+    UPDATE_COUNSELLOR,
+    REMOVE_COUNSELLOR,
+    COUNSELLOR_ERROR,
     REMOVE_ERROR,
     PASSWORD_CHANGE
-} from './../Types/userTypes';
+} from './../Types/counsellorTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
-export const BASE_URL = "/users";
+export const BASE_URL = "/counsellors";
 
-function userError(error) {
+function counsellorError(error) {
     return {
-        type: USER_ERROR,
+        type: COUNSELLOR_ERROR,
         payload: error
     };
 }
 
-export function renderUserError(error) {
+export function renderCounsellorError(error) {
     return function (dispatch) {
         dispatch({
-            type: USER_ERROR,
+            type: COUNSELLOR_ERROR,
             payload: error
         });
     };
 }
 
-export function removeUserError() {
+export function removeCounsellorError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };
 }
 
-export function submitSurvey({nickname, age, gender, email}, history) {
+export function addCounsellor(counsellor) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/surveys`, {nickname, age, gender, email})
-            .then(function () {
-                dispatch({type: SUBMIT_SURVEY});
-                // add user information from pre-chat survey to store
-                dispatch({
-                    type: ADD_USER,
-                    user: {
-                        nickname,
-                        age,
-                        gender,
-                        email
-                    }
-                });
-                history.push("/chat");
-            })
-            .catch(function (error) {
-                dispatch(userError(error.response.data.error));
-            });
-    };
-}
-
-export function addUser(user) {
-    return function (dispatch) {
-        if (user.password) {
-            delete user.password;
+        if (counsellor.password) {
+            delete counsellor.password;
         }
         dispatch({
-            type: ADD_USER,
-            user: user
+            type: ADD_COUNSELLOR,
+            counsellor: counsellor
         });
     };
 }
 
-export function getUser(id) {
+export function getCounsellor(id) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -80,30 +56,30 @@ export function getUser(id) {
                 "Authorization": token
             },
             params: {
-                userId: id
+                counsellorId: id
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
+        axios.get(`${ROOT_URL + BASE_URL}/:counsellorId`, header)
             .then(function (response) {
                 if (response.data.length !== 0) {
-                    var user = response.data[0];
-                    if (user.password) {
-                        delete user.password;
+                    var counsellor = response.data[0];
+                    if (counsellor.password) {
+                        delete counsellor.password;
                     }
                     dispatch({
-                        type: GET_USER,
-                        user: user
+                        type: GET_COUNSELLOR,
+                        counsellor: counsellor
                     });
                 }
             })
             .catch(function (error) {
-                dispatch(userError(error.response.data.error));
+                dispatch(counsellorError(error.response.data.error));
             });
         
     };
 }
 
-export function updateUser({ID, username, nickname, age, gender, email, phoneNumber, password}) {
+export function updateCounsellor({ID, email, firstName, lastName, password}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -112,33 +88,34 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
                 "Authorization": token
             },
             params: {
-                userId: ID
+                counsellorId: ID
             }
         };
-        const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
+        const data = {ID, email, firstName, lastName, password};
         // This is what it does temporarily
         if (data.password) {
             delete data.password;
         }
         dispatch({
-            type: UPDATE_USER,
-            user: data
+            type: UPDATE_COUNSELLOR,
+            counsellor: data
         });
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
             .then(function (response) {
+                delete data.password;
                 dispatch({
-                    type: UPDATE_USER,
-                    user: data,
+                    type: UPDATE_COUNSELLOR,
+                    counsellor: data,
                     success: response.data.success
                 });
             })
             .catch(function (error) {
-                dispatch(userError(error.response.data.error));
+                dispatch(counsellorError(error.response.data.error));
             });*/
     };
 }
 
-export function changeUserPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeCounsellorPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -147,11 +124,11 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
                 "Authorization": token
             },
             params: {
-                userId: ID
+                counsellorId: ID
             }
         };
         const data = {ID, oldPassword, newPassword, newPasswordConfirm};
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
             .then(function (response) {
                 dispatch({
                     type: PASSWORD_CHANGE,
@@ -159,7 +136,7 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
                 });
             })
             .catch(function (error) {
-                dispatch(userError(error.response.data.error));
+                dispatch(counsellorError(error.response.data.error));
             });
         */
         dispatch({
@@ -169,10 +146,10 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
     };
 }
 
-export function removeUser() {
+export function removeCounsellor() {
     return function (dispatch) {
         dispatch({
-            type: REMOVE_USER
+            type: REMOVE_COUNSELLOR
         });
     };
 }

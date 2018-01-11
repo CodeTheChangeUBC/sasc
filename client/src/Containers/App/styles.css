@@ -27,3 +27,11 @@ a:hover {
 #root {
     flex-grow: 1;
 }
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
