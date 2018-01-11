@@ -10,6 +10,9 @@ VALUES (3, "vegetable", 18, "non-binary", "379009", "vegetable@example.com", "ch
 INSERT INTO user (ID, username, age, gender, phoneNumber, email, password, registered)
 VALUES (4, "potato", 18, "trans woman", "004008", "tomato@example.com", "tomato", 1);
 
+INSERT INTO user (ID, username, nickname, age, gender, phoneNumber, email, password, registered)
+VALUES (5, "qtip", "Q-tip", 18, "non-binary", "004009", "qtip@example.com", "password", 1);
+
 INSERT INTO user (nickname, age, gender, email, registered)
 VALUES ("Bean", 0, "cis-woman", "beantdonethat@example.com", 0);
 

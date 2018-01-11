@@ -15,17 +15,75 @@ export default {
   
   rooms: [
     { title: 'Music is Life', 
-     messages: [ { user: 'ChatBot', message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user:'Scott Mescudi', message: 'Wait, what are these words?'} ]
+     messages: [
+     {
+      ID: 1,
+      sessionID: 1,
+      messageTime: 100,
+      counsellorID: 1,
+      userID: 1,
+      messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
+      fromCounsellor: 1,
+      fromTwilio: 0
      },
-    { title: 'Come share your feelings',
-     messages: [ {user: 'Scott Mescudi', message: 'Someone explain Sockets to me Please'}, {user: 'Q-Tip', message: 'I have no idea'}] 
+     {
+      ID: 2,
+      sessionID: 2,
+      messageTime: 200,
+      counsellorID: 1,
+      userID: 1,
+      messageContent: 'Wait, what are these words?',
+      fromCounsellor: 0,
+      fromTwilio: 0
+     }
+    ] },
+    {
+      title: 'Come share your feelings',
+     messages: [
+     {
+      ID: 3,
+      sessionID: 3,
+      messageTime: 100,
+      counsellorID: 1,
+      userID: 2,
+     messageContent: 'Someone explain Sockets to me Please',
+     fromCounsellor: 1,
+     fromTwilio: 0
+   },
+   {
+    user: 'Q-Tip',
+    message: 'I have no idea'
+  }] 
     }
   ],
 
   activeRoom: {
     title: 'Music is Life',
-    messages: [ { user: 'ChatBot', message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', message: 'Wait, what are these words?'}]
-
+    messages: [ { user: 'ChatBot', messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', messageContent: 'Wait, what are these words?'}]
+    /*messages: [
+    {
+      ID: 1,
+      sessionID: 1,
+      messageTime: 100,
+      counsellorID: 1,
+      userID: 1,
+      messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
+      fromCounsellor: 1,
+      fromTwilio: 0,
+      firstName: "ChatBot"
+    },
+    {
+      ID: 2,
+      sessionID: 2,
+      messageTime: 200,
+      counsellorID: 1,
+      userID: 1,
+      messageContent: 'Wait, what are these words?',
+      fromCounsellor: 0,
+      fromTwilio: 0,
+      nickname: "Scott Mescudi"
+     }
+    ]*/
   },
 
   counsellor: {
