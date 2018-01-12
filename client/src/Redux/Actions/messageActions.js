@@ -5,3 +5,15 @@ export function newMessage(data) {
 
   return { type: NEW_MESSAGE, payload };
 }
+
+export function transformMessageFromDbToChat(messageFromDb) {
+    return function (dispatch) {
+
+    };
+}
+
+export function transformMessageFromChatToDb(messageFromChat) {
+    return function (dispatch) {
+
+    };
+}

@@ -1,6 +1,10 @@
 export default {
   auth: {},
 
+  chat: {
+    connected: false
+  },
+
   messages: [
     { user: 'ChatBot',
       message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'
@@ -59,31 +63,31 @@ export default {
 
   activeRoom: {
     title: 'Music is Life',
-    messages: [ { user: 'ChatBot', messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', messageContent: 'Wait, what are these words?'}]
-    /*messages: [
+    //messages: [ { user: 'ChatBot', messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', messageContent: 'Wait, what are these words?'}]
+    messages: [
     {
       ID: 1,
       sessionID: 1,
       messageTime: 100,
       counsellorID: 1,
-      userID: 1,
-      messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
+      userID: 11,
+      message: 'Hi Bean.',
       fromCounsellor: 1,
       fromTwilio: 0,
-      firstName: "ChatBot"
+      user: "Meanie"
     },
     {
       ID: 2,
-      sessionID: 2,
+      sessionID: 1,
       messageTime: 200,
       counsellorID: 1,
-      userID: 1,
-      messageContent: 'Wait, what are these words?',
+      userID: 11,
+      message: 'Hi Meanie Blue.',
       fromCounsellor: 0,
       fromTwilio: 0,
-      nickname: "Scott Mescudi"
+      user: "Bean"
      }
-    ]*/
+    ]
   },
 
   counsellor: {

@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import ChatInput from './../../Components/Chat/ChatInput';
+import * as chatActions from './../../Redux/Actions/chatActions';
 import { config } from './../../config';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -22,12 +23,12 @@ class Chat extends Component {
   }
 
   componentWillMount() {
-      if(!(this.state.connected)){
+      if(!(this.props.connected)){
         socket.emit('subscribe', {room: this.props.room.title});
-        this.setState({connected: true});
-     }
+        this.props.connectToChat();
+    }
     //console.log('will mount initated');
-   }
+  }
 
   render() {
     //console.log('messages is...', this.props.messages);
@@ -64,6 +65,7 @@ class Chat extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    chat: state.chat.connected,
     messages: state.activeRoom.messages,
     room: state.activeRoom,
     authenticated: state.auth.authenticated,
@@ -72,7 +74,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators({
+    connectToChat: chatActions.connectToChat,
+    disconnectFromChat: chatActions.disconnectFromChat
+  }, dispatch);
 }
 
 Chat.propTypes = {
@@ -82,7 +87,9 @@ Chat.propTypes = {
     room: PropTypes.object,
     "room.title": PropTypes.string,
     msgs: PropTypes.array,
-    message: PropTypes.string
+    message: PropTypes.string,
+    connectToChat: PropTypes.func,
+    disconnectFromChat: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

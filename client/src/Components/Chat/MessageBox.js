@@ -13,11 +13,11 @@ class MessageBox extends Component {
   render() {
     return(
       <div className="message-box" id="message-box">
-        {this.props.msgs.map(({messageContent,user}) => 
+        {this.props.msgs.map(({message,user}) => 
           <div key={uuid.v4()}>
             <MessageInstance
               user={user}
-              message={messageContent}
+              message={message}
             />
           </div>
         )}

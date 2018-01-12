@@ -36,7 +36,7 @@ class ChatInput extends Component {
   }
 
   handleOnChange(ev) {
-   this.setState({ input: ev.target.value});
+   this.setState({ input: ev.target.value });
   }
 
   handleOnSubmit(ev) {
@@ -47,8 +47,8 @@ class ChatInput extends Component {
       } else {
         this.props.socket.emit('chat message', {user: this.props.user.username, message: this.state.input, room: this.props.room.title});
       }
-      
-      // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
+
+      //this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
       this.setState({ input: '' });
     }
   }
