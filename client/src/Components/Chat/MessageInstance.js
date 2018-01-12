@@ -5,8 +5,10 @@ import './../../Containers/Chat/styles.css';
 class MessageInstance extends Component {
   render() {
 
+    const fromMe = this.props.fromMe ? 'from-me' : '';
+
     return(
-        <div className="message-instance">
+        <div className={`${fromMe} message-instance`}>
             <div className="message-user">
               {this.props.user}
             </div>

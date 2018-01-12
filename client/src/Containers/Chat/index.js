@@ -17,9 +17,11 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.messages,
+      messages: props.room.messages,
       connected: false
     };
+
+    this.renderChatBox = this.renderChatBox.bind(this);
   }
 
   componentWillMount() {
@@ -30,6 +32,20 @@ class Chat extends Component {
     //console.log('will mount initated');
   }
 
+  renderChatBox() {
+    if (Object.keys(this.props.room).length !== 0) {
+      return (<div className="container-for-title-and-message-box">
+        <div className="chat-title">
+          <h3>{this.props.room.humans.user.nickname}</h3>
+        </div>
+        <MessageBox msgs={this.props.room.messages} />
+        <ChatInput socket={socket} />
+      </div>);
+    } else {
+      return (<div className="container-for-title-and-message-box"></div>);
+    }
+  }
+
   render() {
     //console.log('messages is...', this.props.messages);
     if (this.props.authenticatedCounsellor) {
@@ -38,27 +54,23 @@ class Chat extends Component {
           <div className="outer-counsellor-bar">
             <CounsellorBar />
           </div>
+          {this.renderChatBox()}
+        </div>
+      );
+    } else if (this.props.authenticated || this.props.connected) {
+      return (
+        <div className="Chat">
           <div className="container-for-title-and-message-box">
             <div className="chat-title">
-              <h3>Scott Mescudi</h3>
+              <h3>{this.props.room.humans.counsellor.firstName}</h3>
             </div>
-            <MessageBox msgs={this.props.messages} />
+            <MessageBox msgs={this.props.room.messages} />
             <ChatInput socket={socket} />
           </div>
         </div>
       );
     } else {
-      return (
-        <div className="Chat">
-          <div className="container-for-title-and-message-box">
-            <div className="chat-title">
-              <h3>Scott Mescudi</h3>
-            </div>
-            <MessageBox msgs={this.props.messages} />
-            <ChatInput socket={socket} />
-          </div>
-        </div>
-      );
+      return (<div className="Chat"></div>);
     }
   }
 }
@@ -66,8 +78,7 @@ class Chat extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     chat: state.chat.connected,
-    messages: state.activeRoom.messages,
-    room: state.activeRoom,
+    room: state.activeRoom.room,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor
   };
@@ -83,7 +94,7 @@ function mapDispatchToProps(dispatch) {
 Chat.propTypes = {
     authenticatedCounsellor: PropTypes.bool,
     authenticated: PropTypes.bool,
-    messages: PropTypes.array,
+    connected: PropTypes.bool,
     room: PropTypes.object,
     "room.title": PropTypes.string,
     msgs: PropTypes.array,

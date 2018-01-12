@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as messageActions from '../../Redux/Actions/messageActions';
+import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import PropTypes from 'prop-types';
 
 class ChatInput extends Component {
@@ -28,8 +29,10 @@ class ChatInput extends Component {
     this.props.socket.on('chat message', (inboundMessage) => {
       if (this.props.authenticatedCounsellor) {
         this.props.newMessage({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
         this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
     });
@@ -65,7 +68,7 @@ class ChatInput extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    room: state.activeRoom,
+    room: state.activeRoom.room,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor,
     user: state.user.user,
@@ -74,7 +77,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch);
+  return bindActionCreators({
+    newMessage: messageActions.newMessage,
+    addMessageToActiveRoom: activeRoomActions.addMessageToActiveRoom
+  }, dispatch);
 }
 
 ChatInput.propTypes = {
@@ -89,7 +95,8 @@ ChatInput.propTypes = {
     message: PropTypes.string,
     socket: PropTypes.object,
     "socket.on": PropTypes.func,
-    "socket.emit": PropTypes.func
+    "socket.emit": PropTypes.func,
+    addMessageToActiveRoom: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatInput);

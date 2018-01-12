@@ -1,11 +1,7 @@
-/* Top level div */
-
 .Chat {
   display: flex;
   flex-direction: row;
 }
-
-/* Nested Layer 1 */
 
 .outer-counsellor-bar {
   overflow-y: scroll;
@@ -25,8 +21,6 @@
 .counsellor-bar-entry {
   border: 1px solid #ddd;
 }
-
-/* Nested Layer 2 */
 
 .chat-title {
   text-align: center;
@@ -53,8 +47,6 @@
   flex-basis: 0;
 }
 
-/* Nested Layer 3 */
-
 #chat-input-box {
     border-width: 1px;
     border-style: solid;
@@ -70,13 +62,9 @@
     width: 3.5em;
 }
 
-/* Nested Layer 4 */
-
 .message-instance {
   margin-bottom: 20px;
 }
-
-/* Nested Layer 5 */
 
 .message-user {
   font-weight: bold;
