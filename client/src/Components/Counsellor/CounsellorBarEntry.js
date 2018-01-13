@@ -33,7 +33,13 @@ import PropTypes from 'prop-types';
 }
 
 CounsellorBarEntry.propTypes = {
-    student: PropTypes.object
+    student: PropTypes.object,
+    room: PropTypes.object,
+    "room.humans": PropTypes.object,
+    "room.humans.user": PropTypes.object,
+    "room.humans.user.nickname": PropTypes.string,
+    "room.humans.user.username": PropTypes.string,
+    setActiveRoom: PropTypes.func
 };
 
 function mapStateToProps(state, ownProps) {

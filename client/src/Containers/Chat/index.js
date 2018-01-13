@@ -6,6 +6,8 @@ import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import ChatInput from './../../Components/Chat/ChatInput';
 import * as chatActions from './../../Redux/Actions/chatActions';
+import * as messageActions from '../../Redux/Actions/messageActions';
+import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import { config } from './../../config';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -17,19 +19,37 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.room.messages,
+      messages: props.messages,
       connected: false
     };
 
     this.renderChatBox = this.renderChatBox.bind(this);
+    this._handleMessageEvent = this._handleMessageEvent.bind(this);
   }
 
   componentWillMount() {
-      if(!(this.props.connected)){
+      if(!(this.props.connected)) {
         socket.emit('subscribe', {room: this.props.room.title});
         this.props.connectToChat();
     }
     //console.log('will mount initated');
+  }
+
+  componentDidUpdate(){
+   //console.log('did mount');
+   this._handleMessageEvent();
+  }
+
+  _handleMessageEvent(){
+    console.log('Wait for it...');
+    socket.on('chat message', (inboundMessage) => {
+      if (this.props.authenticatedCounsellor) {
+        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+      } else {
+        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        //console.log('received message', inboundMessage);
+      }
+    });
   }
 
   renderChatBox() {
@@ -64,7 +84,7 @@ class Chat extends Component {
             <div className="chat-title">
               <h3>{this.props.room.humans.counsellor.firstName}</h3>
             </div>
-            <MessageBox msgs={this.props.room.messages} />
+            <MessageBox msgs={this.props.messages} />
             <ChatInput socket={socket} />
           </div>
         </div>
@@ -78,6 +98,9 @@ class Chat extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     chat: state.chat.connected,
+    user: state.user.user,
+    counsellor: state.counsellor.counsellor,
+    messages: state.activeRoom.room.messages,
     room: state.activeRoom.room,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor
@@ -86,6 +109,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    addMessageToActiveRoom: activeRoomActions.addMessageToActiveRoom,
     connectToChat: chatActions.connectToChat,
     disconnectFromChat: chatActions.disconnectFromChat
   }, dispatch);
@@ -94,7 +118,10 @@ function mapDispatchToProps(dispatch) {
 Chat.propTypes = {
     authenticatedCounsellor: PropTypes.bool,
     authenticated: PropTypes.bool,
+    addMessageToActiveRoom: PropTypes.func,
     connected: PropTypes.bool,
+    user: PropTypes.object,
+    counsellor: PropTypes.object,
     room: PropTypes.object,
     "room.title": PropTypes.string,
     msgs: PropTypes.array,

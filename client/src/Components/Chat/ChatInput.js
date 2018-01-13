@@ -10,32 +10,11 @@ class ChatInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input : '',
-      messages: props.messages,
+      input : ''
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
-    this._handleMessageEvent = this._handleMessageEvent.bind(this);
-  }
-
-  componentDidMount(){
-   //console.log('did mount');
-   this._handleMessageEvent();
-  }
-
-  _handleMessageEvent(){
-    //console.log('Wait for it...');
-    this.props.socket.on('chat message', (inboundMessage) => {
-      if (this.props.authenticatedCounsellor) {
-        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
-        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
-      } else {
-        this.props.newMessage({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
-        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
-        //console.log('received message', inboundMessage);
-      }
-    });
   }
 
   handleOnChange(ev) {
@@ -44,14 +23,13 @@ class ChatInput extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault();
-    if (this.state.input.trim()) {
+    if (this.state.input.trim() && this.props.connected) {
       if (this.props.authenticatedCounsellor) {
-        this.props.socket.emit('chat message', {user: this.props.counsellor.email, message: this.state.input, room: this.props.room.title});
+        this.props.socket.emit('chat message', {user: this.props.counsellor.firstName, message: this.state.input, room: this.props.room.title});
       } else {
-        this.props.socket.emit('chat message', {user: this.props.user.username, message: this.state.input, room: this.props.room.title});
+        this.props.socket.emit('chat message', {user: this.props.user.nickname, message: this.state.input, room: this.props.room.title});
       }
 
-      //this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
       this.setState({ input: '' });
     }
   }
@@ -68,6 +46,7 @@ class ChatInput extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    connected: state.chat.connected,
     room: state.activeRoom.room,
     authenticated: state.auth.authenticated,
     authenticatedCounsellor: state.auth.authenticatedCounsellor,
@@ -77,10 +56,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    newMessage: messageActions.newMessage,
-    addMessageToActiveRoom: activeRoomActions.addMessageToActiveRoom
-  }, dispatch);
+  return bindActionCreators({}, dispatch);
 }
 
 ChatInput.propTypes = {
@@ -89,14 +65,11 @@ ChatInput.propTypes = {
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,
-    newMessage: PropTypes.func,
     user: PropTypes.object,
     counsellor: PropTypes.object,
     message: PropTypes.string,
     socket: PropTypes.object,
-    "socket.on": PropTypes.func,
-    "socket.emit": PropTypes.func,
-    addMessageToActiveRoom: PropTypes.func
+    "socket.emit": PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatInput);

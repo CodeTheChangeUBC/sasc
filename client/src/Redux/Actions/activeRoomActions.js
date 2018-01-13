@@ -4,8 +4,9 @@ import {
   ADD_MESSAGE
 } from "./../Types/activeRoomTypes";
 
-export function addMessageToActiveRoom(message) {
+export function addMessageToActiveRoom(data) {
     return function (dispatch) {
+        var message = JSON.parse(data.newMessage.message);
         dispatch({
             type: ADD_MESSAGE,
             message: message

@@ -17,10 +17,12 @@ export default function activeRoomReducer(state = initialState.activeRoom, actio
         messages: action.room.messages
       });*/
     /*case NEW_MESSAGE: 
-      return {...state, room: { } }
       return Object.assign({}, action.payload.room, { 
         messages: [...action.payload.room.messages, action.payload.newMessage]
       });*/
+    case ADD_MESSAGE:
+      state.room.messages.push(action.message);
+      return {...state};
     case SET_ACTIVE_ROOM:
       return {...state, room: action.room};
     case REMOVE_ACTIVE_ROOM:
