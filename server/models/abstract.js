@@ -140,10 +140,8 @@ exports.lookupId = function(model, identifier, value, callback) {
 
 // List all models
 // - model is name of model (string)
-exports.list = function(model, res) {
-	db.get().query('SELECT * FROM '+model+';', function(err,models) {
-		httpResponse(err, 400, models, 200, res);
-	});
+exports.list = function(model, callback) {
+	db.get().query('SELECT * FROM '+model+';', callback(err, models));
 }
 
 // Counts the number of models
