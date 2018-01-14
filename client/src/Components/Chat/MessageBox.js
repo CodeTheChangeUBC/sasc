@@ -13,10 +13,14 @@ class MessageBox extends Component {
   render() {
     return(
       <div className="message-box" id="message-box">
-        {this.props.msgs.map(({message,user}) => 
+        {this.props.msgs.map(({message,user,ID,userID,counsellorID,fromCounsellor,fromTwilio}) => 
           <div key={uuid.v4()}>
             <MessageInstance
-              user={user}
+              userID={userID}
+              counsellorID={counsellorID}
+              fromCounsellor={fromCounsellor}
+              fromTwilio={fromTwilio}
+              name={user}
               message={message}
             />
           </div>

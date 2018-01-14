@@ -82,3 +82,13 @@
   border-radius: 15px;
   word-wrap: break-word;
 }
+
+.from-me {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.from-me .message-user {
+  display: none;
+}

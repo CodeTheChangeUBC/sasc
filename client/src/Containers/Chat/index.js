@@ -8,6 +8,7 @@ import ChatInput from './../../Components/Chat/ChatInput';
 import * as chatActions from './../../Redux/Actions/chatActions';
 import * as messageActions from '../../Redux/Actions/messageActions';
 import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
+import * as roomActions from '../../Redux/Actions/roomActions';
 import { config } from './../../config';
 import PropTypes from 'prop-types';
 import './styles.css';
@@ -41,12 +42,14 @@ class Chat extends Component {
   }
 
   _handleMessageEvent(){
-    console.log('Wait for it...');
+    //console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
       if (this.props.authenticatedCounsellor) {
         this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+        //this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
         this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        //this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
       this.forceUpdate();
@@ -111,6 +114,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     addMessageToActiveRoom: activeRoomActions.addMessageToActiveRoom,
+    addMessageToRoom: roomActions.addMessageToRoom,
     connectToChat: chatActions.connectToChat,
     disconnectFromChat: chatActions.disconnectFromChat
   }, dispatch);

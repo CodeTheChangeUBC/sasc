@@ -101,5 +101,5 @@ export function removeSMSDetails() {
 export function resetSMSSettings() {
     return function (dispatch) {
         dispatch({type: RESET_SMS_SETTINGS});
-    }
+    };
 }
