@@ -4,27 +4,15 @@ const abstract = require('./abstract');
 // Create counsellor from post request
 exports.create = function(values, callback) {
 	values['email'] = values['email'].toLowerCase();
-	abstract.createCallbackVer('counsellor', values, callback);
+	abstract.create('counsellor', values, callback);
 }
 
 // Update counsellor
-exports.update = function(values, callback) {
-	// Get counsellor
-	var counsellor = req.model;
-	// Assign params. If updated params not in request, use older params
-	var values = {
-		firstName: req.body.firstName ? req.body.firstName : counsellor.firstName,
-		lastName: req.body.lastName ? req.body.lastName : counsellor.lastName,
-		email: req.body.email ? req.body.email : counsellor.email,
-		
-	}
-	// Add password if there
-	if (req.body.password) { values['password'] = req.body.password; }
-	// then update counsellor
-	abstract.update('counsellor', values, counsellor.ID, callback);
+// values is object countaining values to be updated
+// id is id of counsellor being updated
+exports.update = function(values, id, callback) {
+	abstract.update('counsellor', values, id, callback);
 }
-
-
 
 // list all counsellors
 exports.list = function(values, callback) {
@@ -41,15 +29,14 @@ exports.retrieveByValues = function(values, callback) {
 	abstract.retrieveByValues('counsellor', values, callback);
 }
 
-// Retrieve email and password specified by email in params
-exports.getCounsellorCredentialsByEmail = function(values, callback) {
-	email = values['email'];
+// Retrieve email and password specified by email 
+exports.getCounsellorCredentialsByEmail = function(email, callback) {
 	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
 		[email],
 		callback);
 }
 
-// Retrieve email and password specified by email in req.body
+// Lookup counsellor by email
 exports.lookupByEmail = function(email, callback) {
 	abstract.lookupByValue('counsellor', 'email', email, callback);
 }
@@ -72,12 +59,6 @@ exports.destroy = function(id, callback) {
 // Count number of cousellors in db
 exports.count = function(callback) {
 	abstract.count('counsellor').then(count => callback('',count)).catch(err => callback(err));
-}
-
-// Lookup counsellor to pass to other functions (update and destroy)
-// I think this function is deprecated
-exports.lookup = function(req, res, next) {
-	abstract.lookup('counsellor', req.params.counsellorId, req, res, next);
 }
 
 

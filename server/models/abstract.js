@@ -5,29 +5,6 @@ const db = require('../db.js');
 var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
-// DEPRECATED VERSION
-// Create model 
-// - Values should contain (ordered) values for SQL insert
-// - model is name of model (string)
-// - valueNames is string containing all values needed for creation
-// - should have form: (ID, val1, val2, ...., valn)
-// - if callback is specified, call callback instead of res
-// exports.create = function(model, values, res, callback) {
-// 	exports.count(model).then(lastID => {
-// 		values['ID'] = lastID+1;
-// 		exports.process(values, values => {
-// 			db.get().query('INSERT INTO '+model+' SET ?', values, 
-// 				(err, results) => {
-// 					if (res) { httpResponse(err, 400, results, 201, res); }
-// 					else { noHttpResponse(err, results, callback); }
-// 			});
-// 		});	
-// 	}).catch(error => {
-// 		if (callback) { callback(error); }
-// 		else { httpResponse(error, 400, null, null, res); }
-// 	});
-// }
-
 
 // Create model 
 // - Values is dictionary containing model values
@@ -116,7 +93,7 @@ exports.retrieve = function(model, id, callback) {
 		});
 }
 
-// Retrieve value specified by identifier
+// Retrieve model values, where model is specified by identifier
 exports.lookupByValue = function(model, identifier, value, callback) {
 	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 		[value], 
