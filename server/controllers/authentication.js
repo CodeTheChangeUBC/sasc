@@ -158,6 +158,10 @@ exports.signup = function (req, res) {
         email: req.body.email.trim()
     };
 
+    // TODO: Add email regex check here
+    // If email passes regex check, the function can continue
+    // else, send a response to the frontend.
+
     if (req.body.ID === undefined || req.body.ID === null) {
         // Signing up without taking pre-chat survey
         var user = {
@@ -220,6 +224,10 @@ exports.signupCounsellor = function (req, res) {
         email: req.body.email.trim(),
         password: req.body.password
     };
+
+    // TODO: Add email regex check here
+    // If email passes regex check, the function can continue
+    // else, send a response to the frontend.
 
     abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel.lookupByEmail, Abstract.process, counsellorModel.create);
 };

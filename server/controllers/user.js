@@ -10,6 +10,10 @@ exports.submitSurvey = function (req, res) {
         registered: 0
     };
 
+    // TODO: Add email regex check here
+    // If email passes regex check, the function can continue
+    // else, send a response to the frontend.
+
     userModel.create(user, function (err, results) {
         if (err) {
             return res.status(422).send({error: "Failed to submit survey."});
