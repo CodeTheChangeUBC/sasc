@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Home from './../Home';
+import Account  from './../Account';
+import PasswordChange from './../PasswordChange';
 import Chat from './../Chat';
 import Login from './../Login';
 import LoginCounsellor  from './../LoginCounsellor';
@@ -19,6 +21,8 @@ class Main extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route path="/chat" component={Chat}/>
+          <Route path="/account" component={Account}/>
+          <Route path="/changepassword" component={PasswordChange}/>
           <Route path="/login" component={Login}/>
           <Route path="/signincounsellor" component={LoginCounsellor}/>
           <Route path="/signupcounsellor" component={RegisterCounsellor}/>

@@ -1,13 +1,13 @@
-// Types
-export const AUTH_USER = "auth_user";
-export const AUTH_COUNSELLOR = "auth_counsellor";
-export const UNAUTH_USER = "unauth_user";
-export const AUTH_ERROR = "auth_error";
-export const REMOVE_ERROR = "remove_error";
-
-// Actions
+import {
+    AUTH_USER,
+    AUTH_COUNSELLOR,
+    UNAUTH_USER,
+    UNAUTH_COUNSELLOR,
+    AUTH_ERROR,
+    REMOVE_ERROR
+} from "./../Types/authTypes";
 import axios from "axios";
-import { config } from './../../config';
+import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/auth";
@@ -19,34 +19,40 @@ function authError(error) {
     };
 }
 
-export function removeError() {
+export function renderAuthError(error) {
+    return function (dispatch) {
+        dispatch({
+            type: AUTH_ERROR,
+            payload: error
+        });
+    };
+}
+
+export function removeAuthError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };
 }
 
-export function signinCounsellor({email, password}, history) {
+export function signinCounsellor({email, password}, history, callback) {
     return function (dispatch) {
         axios.post(`${ROOT_URL + BASE_URL}/tokens/counsellors`, {email, password})
             .then(function (response) {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem("token", response.data.token);
+                callback(response.data.counsellor);
                 history.push("/");
             })
             .catch(function (error) {
-                if (error.response.data === "Unauthorized") {
-                    dispatch(authError("Email or password is incorrect."));
-                } else {
-                    dispatch(authError(error.response.data));
-                }
+                dispatch(authError("Email or password is incorrect."));
             });
     };
 }
 
-export function signupCounsellor({firstName, lastName, email, password}, history) {
+export function signupCounsellor({firstName, lastName, email, password}, history, callback) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -54,51 +60,52 @@ export function signupCounsellor({firstName, lastName, email, password}, history
         };
         const data = {firstName, lastName, email, password};
         axios.post(`${ROOT_URL + BASE_URL}/counsellors`, data, header)
-            .then(response => {
+            .then(function (response) {
                 dispatch({type: AUTH_COUNSELLOR});
                 localStorage.setItem("token", response.data.token);
+                callback({firstName, lastName, email});
                 history.push("/");
             })
-            .catch(error => {
+            .catch(function (error) {
                 dispatch(authError(error.response.data.error));
             });
     };
 }
 
-export function signinUser({username, password}, history) {
+export function signinUser({username, password}, history, callback) {
     return function (dispatch) {
         axios.post(`${ROOT_URL + BASE_URL}/tokens/users`, {username, password})
             .then(function (response) {
                 dispatch({type: AUTH_USER});
                 localStorage.setItem("token", response.data.token);
+                callback(response.data.user);
                 history.push("/");
             })
             .catch(function (error) {
-                if (error.response.data === "Unauthorized") {
-                    dispatch(authError("Username or password is incorrect."));
-                } else {
-                    dispatch(authError(error.response.data));
-                }
+                dispatch(authError("Username or password is incorrect."));
             });
     };
 }
 
-export function signupUser({username, age, gender, phoneNumber, email, password}, history) {
+export function signupUser({ID, username, nickname, age, gender, phoneNumber, email, password}, history, callback) {
     return function (dispatch) {
-        axios.post(`${ROOT_URL + BASE_URL}/users`, {username, age, gender, phoneNumber, email, password})
-            .then(response => {
+        axios.post(`${ROOT_URL + BASE_URL}/users`, {ID, username, nickname, age, gender, phoneNumber, email, password})
+            .then(function (response) {
                 dispatch({type: AUTH_USER});
                 localStorage.setItem("token", response.data.token);
+                callback({ID, username, nickname, age, gender, phoneNumber, email});
                 history.push("/");
             })
-            .catch(error => {
+            .catch(function (error) {
                 dispatch(authError(error.response.data.error));
             });
     };
 }
 
-export function signoutUser() {
-    localStorage.removeItem('token');
-    
-    return { type: UNAUTH_USER };
+export function signout() {
+    return function (dispatch) {
+        localStorage.removeItem("token");
+        dispatch({type: UNAUTH_USER});
+        dispatch({type: UNAUTH_COUNSELLOR});
+    };
 }

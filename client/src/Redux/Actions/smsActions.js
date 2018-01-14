@@ -1,11 +1,11 @@
-// Types
-export const GET_SMS_SETTINGS = "get_sms_settings";
-export const SET_SMS_SETTINGS = "set_sms_settings";
-export const REMOVE_SMS_SETTINGS = "remove_sms_settings";
-export const SMS_ERROR = "sms_error";
-export const REMOVE_ERROR = "remove_error";
-
-// Actions
+import {
+    GET_SMS_SETTINGS,
+    SET_SMS_SETTINGS,
+    REMOVE_SMS_SETTINGS,
+    SMS_ERROR,
+    REMOVE_ERROR,
+    RESET_SMS_SETTINGS
+} from './../Types/smsTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
@@ -19,7 +19,16 @@ function smsError(error) {
     };
 }
 
-export function removeError() {
+export function renderSMSError(error) {
+    return function (dispatch) {
+        dispatch({
+            type: SMS_ERROR,
+            payload: error
+        });
+    };
+}
+
+export function removeSMSError() {
     return function (dispatch) {
         dispatch({type: REMOVE_ERROR});
     };
@@ -28,7 +37,7 @@ export function removeError() {
 export function getSMSDetails() {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -50,7 +59,7 @@ export function getSMSDetails() {
 export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -73,7 +82,7 @@ export function setSMSDetails({email, twilioPhoneNumber, accountSid, authToken})
 export function removeSMSDetails() {
     return function (dispatch) {
         const token = localStorage.getItem("token");
-        const header = { 
+        const header = {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -86,5 +95,11 @@ export function removeSMSDetails() {
             .catch(function (error) {
                 dispatch(smsError(error.response.data.error));
             });
+    };
+}
+
+export function resetSMSSettings() {
+    return function (dispatch) {
+        dispatch({type: RESET_SMS_SETTINGS});
     };
 }

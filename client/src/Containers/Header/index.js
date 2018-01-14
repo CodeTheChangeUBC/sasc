@@ -7,13 +7,21 @@ import './styles.css';
 class Header extends Component {
   renderLinks() {
     if (this.props.authenticated || this.props.authenticatedCounsellor) {
-        return (<li className="nav-item">
-            <Link className="nav-link" to="/logout">Logout</Link>
-        </li>);
+        return [
+          (<li className="nav-item" key={1}>
+              <Link className="nav-link" to="/account">Account</Link>
+          </li>),
+          (<li className="nav-item" key={2}>
+              <Link className="nav-link" to="/logout">Logout</Link>
+          </li>)
+        ];
     } else {
         return [
             (<li className="nav-item" key={1}>
                 <Link className="nav-link" to="/login">Login</Link>
+            </li>),
+            (<li className="nav-item" key={2}>
+                <Link className="nav-link" to="/register">Register</Link>
             </li>)
         ];
     }
@@ -23,22 +31,31 @@ class Header extends Component {
     if (this.props.authenticatedCounsellor) {
         return [
             (<li className="nav-item" key={1}>
-                <Link to="/sms">SMS Settings</Link>
+                <Link to="/chat">Chat</Link>
             </li>),
             (<li className="nav-item" key={2}>
+                <Link to="/sms">SMS Settings</Link>
+            </li>),
+            (<li className="nav-item" key={3}>
                 <Link className="nav-link" to="/signupcounsellor">Register a Counsellor</Link>
             </li>)
         ];
     }
   }
 
-  renderLinkChatConnected() {
-    if (this.props.chatConnected) {
+  renderLinkChatUserConnected() {
+    if (this.props.connected && this.props.authenticated && !this.props.authenticatedCounsellor) {
       return [
-        (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>),
-        (<li className="nav-item" key={2}><Link className="nav-link" to="/register">Register</Link></li>)
+        (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>)
       ];
     }
+  }
+
+  renderLinkChatAnonymousConnected() {
+    if (this.props.connected && !this.props.authenticated && !this.props.authenticatedCounsellor)
+      return [
+        (<li className="nav-item" key={1}><Link className="nav-link" to="/register">Register</Link></li>)
+      ];
   }
 
   render() {
@@ -47,10 +64,10 @@ class Header extends Component {
         <h1 className="header-title">SASC</h1>
         <nav className="Navigation">
           <ul>
-            <li><Link to="/chat">Chat</Link></li>
             <li><Link to="/">Home</Link></li>
-            {this.renderLinks()}
+            {this.renderLinkChatUserConnected()}
             {this.renderLinksCounsellor()}
+            {this.renderLinks()}
           </ul>
         </nav>
       </div>
@@ -59,14 +76,14 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    chatConnected: PropTypes.bool,
+    connected: PropTypes.bool,
     authenticated: PropTypes.bool,
     authenticatedCounsellor: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        chatConnected: state.rooms.room,
+        connected: state.chat.connected,
         authenticated: state.auth.authenticated,
         authenticatedCounsellor: state.auth.authenticatedCounsellor
     };

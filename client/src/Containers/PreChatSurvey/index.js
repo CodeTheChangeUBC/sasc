@@ -21,10 +21,11 @@ class PreChatSurvey extends Component {
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeUserError();
   }
 
   handleOnChange(event) {
@@ -37,23 +38,49 @@ class PreChatSurvey extends Component {
     }); 
   }
 
+  validateForm(fields) {
+    const { nickname, age, gender, email } = fields;
+
+    if (!nickname || !age || !gender || !email) {
+      this.props.renderUserError("You must not leave any field blank.");
+      return false;
+    }
+
+    // TODO: add regex check for email here.
+
+    return true;
+  }
+
   handleOnSubmit(ev) {
     ev.preventDefault();
 
-    const { history } = this.props;
+    const { nickname, age, gender, email } = this.state;
 
-    this.props.submitSurvey(this.state, history);
+    var fields = {
+      nickname: nickname.trim(),
+      age: age.trim(),
+      gender: gender.trim(),
+      email: email.trim()
+    };
+
+    var validated = this.validateForm(fields);
+
+    if (validated) {
+      const { history } = this.props;
+
+      this.props.submitSurvey(fields, history);
+    }
   }
 
   renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div className="error">
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
+    if (this.props.errorMessage) {
+      return (
+        <div className="error">
+          {this.props.errorMessage}
+        </div>
+      );
     }
+  }
 
   render() {
     return (
@@ -76,15 +103,7 @@ class PreChatSurvey extends Component {
 }
 
 function mapStateToProps(state) {
-    const { nickname, age, gender, email } = state;
-    state.form = {
-      nickname,
-      age,
-      gender,
-      email
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }
@@ -94,11 +113,16 @@ PreChatSurvey.propTypes = {
     history: PropTypes.object,
     submitSurvey: PropTypes.func,
     errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+    removeUserError: PropTypes.func,
+    renderUserError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ submitSurvey: userActions.submitSurvey, removeError: userActions.removeError }, dispatch);
+  return bindActionCreators({
+    submitSurvey: userActions.submitSurvey,
+    renderUserError: userActions.renderUserError,
+    removeUserError: userActions.removeUserError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreChatSurvey);

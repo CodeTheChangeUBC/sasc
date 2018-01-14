@@ -5,6 +5,7 @@ const db = require('../db.js');
 var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
+// DEPRECATED VERSION
 // Create model 
 // - Values should contain (ordered) values for SQL insert
 // - model is name of model (string)
@@ -27,18 +28,16 @@ const SALT_ROUNDS = 10;
 // 	});
 // }
 
+
 // Create model 
 // - Values is dictionary containing model values
 // - model is name of model (string)
 exports.create = function(model, values, callback) {
 	exports.process(values, values => {
 		db.get().query('INSERT INTO '+model+' SET ?', values, 
-		function(err, results) {
+		(err, results) => {
 			if (err) { callback(err); }
 			else { callback(null); }
-		});
-	});
-}
 
 // Hash password
 exports.process = function(values, callback) {

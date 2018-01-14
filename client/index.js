@@ -6,10 +6,15 @@ import configureStore from './src/Redux/Store/configureStore';
 import { Provider } from 'react-redux';
 import {
     ROOT_URL,
-    BASE_URL,
+    BASE_URL } from './src/Redux/Actions/authActions';
+import {
     AUTH_USER,
     AUTH_COUNSELLOR,
-    UNAUTH_USER } from './src/Redux/Actions/authActions';
+    UNAUTH_USER,
+    UNAUTH_COUNSELLOR
+} from './src/Redux/Types/authTypes';
+import { ADD_USER } from './src/Redux/Types/userTypes';
+import { ADD_COUNSELLOR } from './src/Redux/Types/counsellorTypes';
 import axios from "axios";
 
 const store = configureStore();
@@ -21,10 +26,19 @@ if (token) {
         .then(response => {
             if (response.data.role === "counsellor") {
                 store.dispatch({type: AUTH_COUNSELLOR});
+                store.dispatch({
+                    type: ADD_COUNSELLOR,
+                    counsellor: response.data.user
+                });
             } else if (response.data.role === "user") {
                 store.dispatch({type: AUTH_USER});
+                store.dispatch({
+                    type: ADD_USER,
+                    user: response.data.user
+                });
             } else if (response.data.role === "none") {
                 store.dispatch({type: UNAUTH_USER});
+                store.dispatch({type: UNAUTH_COUNSELLOR});
             }
         });
 }

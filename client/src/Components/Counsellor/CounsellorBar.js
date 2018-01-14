@@ -1,5 +1,8 @@
 import React from 'react';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import CounsellorBarEntry from './CounsellorBarEntry';
 
@@ -12,21 +15,13 @@ class CounsellorBar extends React.Component {
     constructor(props) {
         super(props);
 
-        const mockStudent1 = {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" };
-        const mockStudent2 = {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" };
-        const mockStudent3 = {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" };
-        const mockStudent4 = {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" };
-        const mockStudent5 = {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" };
-        const mockStudents = [mockStudent1, mockStudent2, mockStudent3, mockStudent4, mockStudent5];
-        const mockCounsellor = {ID: "1V5T3O",firstName: "Shilo", lastName: "St. Cyr",email: "admin@ams.ubc.ca"};
-
         /**
          * Currently using mock data to create
          *
          */
         this.state = {
-            counsellor: mockCounsellor,
-            students: mockStudents
+            counsellor: null,
+            students: null
         };
 
         this.renderCounsellorHeader = this.renderCounsellorHeader.bind(this);
@@ -40,9 +35,29 @@ class CounsellorBar extends React.Component {
     renderCounsellorHeader() {
         return (
             <div className="counsellor-bar-header">
-                <h4 className="counsellor-bar-header-welcome">Hello {this.state.counsellor.firstName} {this.state.counsellor.lastName}! This is the counsellor bar.</h4>
+                <h4 className="counsellor-bar-header-welcome">Hello {this.props.counsellor.firstName} {this.props.counsellor.lastName}! This is the counsellor bar.</h4>
             </div>
         );
+    }
+
+    renderStudentEntries() {
+        if (this.props.rooms.length > 0) {
+            return (
+                <div>
+                    {this.props.rooms.map((room) =>
+                            <div key={uuid.v4()}>
+                                <CounsellorBarEntry room={room} />
+                            </div>)}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <div className="counsellor-bar-entry"><p>You have no students.</p>
+                    </div>
+                </div>
+            );
+        }
     }
 
     /**
@@ -56,14 +71,27 @@ class CounsellorBar extends React.Component {
             <div className="counsellor-bar-shell">
                 {this.renderCounsellorHeader()}
                 <div className="counsellor-bar-entries">
-                    {this.state.students.map((student) =>
-                        <div key={uuid.v4()}>
-                            <CounsellorBarEntry student={student} />
-                        </div>)}
+                    {this.renderStudentEntries()}
                 </div>
             </div>
         );
     }
 }
 
-export default CounsellorBar;
+function mapStateToProps(state, ownProps) {
+  return {
+    counsellor: state.counsellor.counsellor,
+    rooms: state.rooms
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({}, dispatch);
+}
+
+CounsellorBar.propTypes = {
+    counsellor: PropTypes.object,
+    rooms: PropTypes.array
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CounsellorBar);

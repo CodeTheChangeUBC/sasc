@@ -18,6 +18,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -25,8 +26,9 @@ class Register extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       username: null,
+      nickname: null,
       age: null,
       gender: null,
       phoneNumber: null,
@@ -36,10 +38,11 @@ class Register extends Component {
     };
      this.handleOnChange = this.handleOnChange.bind(this);
      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -52,6 +55,33 @@ class Register extends Component {
     }); 
   }
 
+  validateForm(fields) {
+    const { username, nickname, age, gender, email, phoneNumber } = fields;
+    const { password, passwordConfirm } = this.state;
+
+    if (password !== passwordConfirm) {
+      this.props.renderAuthError("Passwords must match.");
+      return false;
+    }
+
+    if (!username || !nickname || !age || !gender || !email || !phoneNumber) {
+      this.props.renderAuthError("You must not leave any field blank.");
+      return false;
+    }
+
+    // TODO: Add regex check for email here.
+
+    this.props.removeAuthError();
+
+    if (this.props.user) {
+      fields.ID = this.props.user.ID;
+    } else {
+      fields.ID = null;
+    }
+
+    return fields;
+  }
+
   /**
    * once form is submitted, add the user to the database and switch to chat view
    *
@@ -60,37 +90,32 @@ class Register extends Component {
    */
   handleOnSubmit(ev) {
     ev.preventDefault();
-    
-    const { password, passwordConfirm } = this.state;
+    const { username, nickname, age, gender, email, phoneNumber, password } = this.state;
 
-    const pwcheck = (password === passwordConfirm) ? true : false;
+    var fields = {
+      username: username.trim(),
+      nickname: nickname.trim(),
+      age: age.trim(),
+      gender: gender.trim(),
+      email: email.trim(),
+      phoneNumber: phoneNumber.trim(),
+      password
+    };
 
-    if (pwcheck) {
-      this.setState({error: null});
+    var validated = this.validate(fields);
+
+    if (validated) {
       const { history } = this.props;
-
-      this.props.signupUser(this.state, history);
-    } else {
-      this.setState({error: "Passwords must match."});
+      this.props.signupUser(validated, history, this.props.addUser);
     }
-    
+
   }
 
   renderAlert() {
-        if (this.props.errorMessage) {
-            return (
-                <div className="error">
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
-    }
-
-  renderPasswordCheckAlert() {
-      if (this.state.error) {
+      if (this.props.errorMessage) {
           return (
-              <div>
-                  {this.state.error}
+              <div className="error">
+                  {this.props.errorMessage}
               </div>
           );
       }
@@ -104,6 +129,7 @@ class Register extends Component {
         <h2>Register</h2>
         <Form
           username
+          nickname
           age
           gender
           email
@@ -115,38 +141,36 @@ class Register extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
-        {this.renderPasswordCheckAlert()}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-    const { username, age, gender, email, phoneNumber, password } = state;
-    state.form = {
-      username,
-      age,
-      gender,
-      email,
-      phoneNumber,
-      password
-    };
     return {
-      form: state.form,
+      user: state.user,
       errorMessage: state.auth.error
     };
 }
 
 Register.propTypes = {
-    dispatch: PropTypes.func,
-    history: PropTypes.object,
-    signupUser: PropTypes.func,
-    errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+  addUser: PropTypes.func,
+  user: PropTypes.object,
+  "user.ID": PropTypes.number,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+  signupUser: PropTypes.func,
+  errorMessage: PropTypes.string,
+  removeAuthError: PropTypes.func,
+  renderAuthError: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupUser: authActions.signupUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signupUser: authActions.signupUser,
+    addUser: userActions.addUser,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

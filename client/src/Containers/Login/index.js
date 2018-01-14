@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
+import * as userActions from '../../Redux/Actions/userActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -22,7 +23,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeAuthError();
   }
 
   handleOnChange(event) {
@@ -40,7 +41,7 @@ class Login extends Component {
 
     const { history } = this.props;
 
-    this.props.signinUser(this.state, history);
+    this.props.signinUser(this.state, history, this.props.addUser);
   }
 
   renderAlert() {
@@ -67,7 +68,7 @@ class Login extends Component {
           onChange={this.handleOnChange}
         />
         {this.renderAlert()}
-        <div>
+        <div className="login-as-counsellor">
           <p>
             Are you a member of the SASC? Login <Link to="/signincounsellor">here</Link> as a counsellor.
            </p>
@@ -78,26 +79,25 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    signinUser: PropTypes.func,
-    history: PropTypes.object,
-    errorMessage: PropTypes.string,
-    removeError: PropTypes.func
+  addUser: PropTypes.func,
+  signinUser: PropTypes.func,
+  history: PropTypes.object,
+  errorMessage: PropTypes.string,
+  removeAuthError: PropTypes.func
 };
 
 function mapStateToProps(state) {
-    const { username, password } = state;
-    state.form = {
-      username,
-      password
-    };
     return {
-      form: state.form,
       errorMessage: state.auth.error
     };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser: authActions.signinUser, removeError: authActions.removeError }, dispatch);
+  return bindActionCreators({
+    signinUser: authActions.signinUser,
+    addUser: userActions.addUser,
+    removeAuthError: authActions.removeAuthError
+  }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

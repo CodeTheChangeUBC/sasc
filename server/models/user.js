@@ -4,7 +4,10 @@ const abstract = require('./abstract.js');
 // Create user from post request
 // TODO: Encrypt password
 exports.create = function(values, callback) {
-	values['username'] = values['username'].toLowerCase();
+	if (values['username']) {
+		values['username'] = values['username'].toLowerCase();
+	}
+
 	abstract.createCallbackVer('user', values, callback);
 }
 
@@ -18,7 +21,7 @@ exports.destroy = function(req,res) {
 // THIS IS FOR TESTING PURPOSES
 // ROUTING SHOULD ENSURE THAT THIS CANNOT BE CALLED IN THE APPLICATION
 exports.destroyAll = function(callback) {	
-	abstract.destroyAll('user').then(() => callback()).catch(err => callback(err));
+	abstract.destroyAll('user').then(() => callback(null)).catch(err => callback(err));
 }
 
 // Update user 
@@ -37,6 +40,11 @@ exports.update = function(req, res) {
 	if (req.body.password) { values['password'] = req.body.password; }
 	abstract.update('user', values, user.ID, res);	
 }
+
+// Update callback version
+exports.updateCallbackVer = function(id, values, callback) {
+	abstract.update('user', values, id, callback);
+};
 
 // Lookup user to pass to other functions
 exports.lookup = function(req, res, next) {
