@@ -3,7 +3,8 @@ import {
     SET_SMS_SETTINGS,
     REMOVE_SMS_SETTINGS,
     SMS_ERROR,
-    REMOVE_ERROR
+    REMOVE_ERROR,
+    RESET_SMS_SETTINGS
 } from './../Types/smsTypes';
 import initialState from './initialState';
 
@@ -19,6 +20,8 @@ export default function(state = initialState.smssettings, action) {
             return {...state, error: action.payload};
         case REMOVE_ERROR:
             return {...state, error: '', success: ''};
+        case RESET_SMS_SETTINGS:
+            return {...state, sms: {}};
     }
 
     return state;

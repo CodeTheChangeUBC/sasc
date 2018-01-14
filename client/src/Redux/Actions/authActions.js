@@ -102,12 +102,10 @@ export function signupUser({ID, username, nickname, age, gender, phoneNumber, em
     };
 }
 
-export function signout(callback1, callback2) {
+export function signout() {
     return function (dispatch) {
         localStorage.removeItem("token");
         dispatch({type: UNAUTH_USER});
         dispatch({type: UNAUTH_COUNSELLOR});
-        callback1();
-        callback2();
     };
 }

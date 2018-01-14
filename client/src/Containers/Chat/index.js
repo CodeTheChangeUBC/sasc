@@ -35,7 +35,7 @@ class Chat extends Component {
     //console.log('will mount initated');
   }
 
-  componentDidUpdate(){
+  componentDidMount(){
    //console.log('did mount');
    this._handleMessageEvent();
   }
@@ -49,6 +49,7 @@ class Chat extends Component {
         this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
+      this.forceUpdate();
     });
   }
 
@@ -126,6 +127,7 @@ Chat.propTypes = {
     "room.title": PropTypes.string,
     msgs: PropTypes.array,
     message: PropTypes.string,
+    messages: PropTypes.array,
     connectToChat: PropTypes.func,
     disconnectFromChat: PropTypes.func
 };

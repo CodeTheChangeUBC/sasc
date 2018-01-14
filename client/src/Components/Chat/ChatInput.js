@@ -62,6 +62,7 @@ function mapDispatchToProps(dispatch) {
 ChatInput.propTypes = {
     authenticatedCounsellor: PropTypes.bool,
     authenticated: PropTypes.bool,
+    connected: PropTypes.bool,
     messages: PropTypes.array,
     room: PropTypes.object,
     "room.title": PropTypes.string,

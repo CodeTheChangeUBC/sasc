@@ -3,7 +3,8 @@ import {
     SET_SMS_SETTINGS,
     REMOVE_SMS_SETTINGS,
     SMS_ERROR,
-    REMOVE_ERROR
+    REMOVE_ERROR,
+    RESET_SMS_SETTINGS
 } from './../Types/smsTypes';
 import axios from "axios";
 import {config} from "./../../config";
@@ -95,4 +96,10 @@ export function removeSMSDetails() {
                 dispatch(smsError(error.response.data.error));
             });
     };
+}
+
+export function resetSMSSettings() {
+    return function (dispatch) {
+        dispatch({type: RESET_SMS_SETTINGS});
+    }
 }
