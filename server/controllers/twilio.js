@@ -8,6 +8,11 @@ exports.addTwilioAccountInfo = function (req, res) {
         accountSid: req.body.accountSid,
         authToken: req.body.authToken
     };
+
+    // TODO: Add email regex check here
+    // If email passes regex check, the function can continue
+    // else, send a response to the frontend.
+
     twilioModel.create(twilio, function (err, ignore) {
         if (err) {
             return res.status(422).send({error: "Failed to add twilio account information."});
@@ -56,6 +61,10 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
         accountSid: req.body.accountSid,
         authToken: req.body.authToken
     };
+
+    // TODO: Add email regex check here
+    // If email passes regex check, the function can continue
+    // else, send a response to the frontend.
 
     if (isNaN(values.twilioPhoneNumber)) {
         return res.status(422).send({error: "Twilio phone number must be a number."});

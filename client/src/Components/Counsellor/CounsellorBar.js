@@ -41,12 +41,12 @@ class CounsellorBar extends React.Component {
     }
 
     renderStudentEntries() {
-        if (this.props.students.length > 0) {
+        if (this.props.rooms.length > 0) {
             return (
                 <div>
-                    {this.props.students.map((student) =>
+                    {this.props.rooms.map((room) =>
                             <div key={uuid.v4()}>
-                                <CounsellorBarEntry student={student} />
+                                <CounsellorBarEntry room={room} />
                             </div>)}
                 </div>
             );
@@ -81,7 +81,7 @@ class CounsellorBar extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     counsellor: state.counsellor.counsellor,
-    students: state.counsellor.students
+    rooms: state.rooms
   };
 }
 
@@ -91,7 +91,7 @@ function mapDispatchToProps(dispatch) {
 
 CounsellorBar.propTypes = {
     counsellor: PropTypes.object,
-    students: PropTypes.array
+    rooms: PropTypes.array
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CounsellorBar);

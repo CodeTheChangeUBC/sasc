@@ -43,13 +43,19 @@ class Header extends Component {
     }
   }
 
-  renderLinkChatConnected() {
-    if (this.props.chatConnected && !this.props.authenticatedCounsellor) {
+  renderLinkChatUserConnected() {
+    if (this.props.connected && this.props.authenticated && !this.props.authenticatedCounsellor) {
       return [
-        (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>),
-        (<li className="nav-item" key={2}><Link className="nav-link" to="/register">Register</Link></li>)
+        (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>)
       ];
     }
+  }
+
+  renderLinkChatAnonymousConnected() {
+    if (this.props.connected && !this.props.authenticated && !this.props.authenticatedCounsellor)
+      return [
+        (<li className="nav-item" key={1}><Link className="nav-link" to="/register">Register</Link></li>)
+      ];
   }
 
   render() {
@@ -59,6 +65,7 @@ class Header extends Component {
         <nav className="Navigation">
           <ul>
             <li><Link to="/">Home</Link></li>
+            {this.renderLinkChatUserConnected()}
             {this.renderLinksCounsellor()}
             {this.renderLinks()}
           </ul>
@@ -69,14 +76,14 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    chatConnected: PropTypes.bool,
+    connected: PropTypes.bool,
     authenticated: PropTypes.bool,
     authenticatedCounsellor: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        chatConnected: state.rooms.room,
+        connected: state.chat.connected,
         authenticated: state.auth.authenticated,
         authenticatedCounsellor: state.auth.authenticatedCounsellor
     };

@@ -1,5 +1,4 @@
 import React from 'react';
-import RenderInput from './../RenderInput';
 import PropTypes from 'prop-types';
 
 const Form = ({ 
