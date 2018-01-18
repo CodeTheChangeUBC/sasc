@@ -83,7 +83,7 @@ export function getUser(id) {
                 userId: id
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
+        /*axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
             .then(function (response) {
                 if (response.data.length !== 0) {
                     var user = response.data[0];
@@ -98,7 +98,7 @@ export function getUser(id) {
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
-            });
+            });*/
         
     };
 }

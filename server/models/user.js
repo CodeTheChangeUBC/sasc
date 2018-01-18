@@ -46,11 +46,6 @@ exports.lookupByUsername = function(username, callback) {
 	abstract.lookupByValue('user', 'username', username, callback);
 }
 
-// Retrieve ID by username
-exports.lookupIdByUsername = function(username, callback) {
-	abstract.lookupId('user', 'username', username, callback);
-}
-
 // Retrieve user by id
 exports.lookupById = function(id, callback) {
 	abstract.lookupByValue('user', 'ID', id, callback);
