@@ -44,7 +44,7 @@ exports.getUser = function (req, res) {
 
         var user = results[0];
         return res.status(201).send({user: user});
-    }
+    });
 };
 
 exports.updateUser = function (req, res) {

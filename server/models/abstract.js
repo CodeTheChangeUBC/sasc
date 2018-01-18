@@ -10,11 +10,13 @@ const SALT_ROUNDS = 10;
 // - Values is dictionary containing model values
 // - model is name of model (string)
 exports.create = function(model, values, callback) {
-	exports.process(values, values => {
-		db.get().query('INSERT INTO '+model+' SET ?', values, 
-		(err, results) => {
-			if (err) { callback(err); }
-			else { callback(null); }
+	db.get().query('INSERT INTO '+model+' SET ?', values, 
+		function(err, results) {
+			if (err) { callback(err, null); }
+
+			else { callback(null, results); }
+ 		});
+}
 
 // Hash password
 exports.process = function(values, callback) {
@@ -63,9 +65,9 @@ exports.destroy = function(model, id, callback) {
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
 exports.update = function(model, values, id, callback) {
-	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
+	db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
 			if (err) callback(err);
-			callback(null, results);
+			callback(null, results, fields);
 	});
 }
 
@@ -127,7 +129,13 @@ exports.lookupId = function(model, identifier, value, callback) {
 // List all models
 // - model is name of model (string)
 exports.list = function(model, callback) {
-	db.get().query('SELECT * FROM '+model+';', callback(err, models));
+	db.get().query('SELECT * FROM '+model+';', function (err, models) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, models)
+		}
+	});
 }
 
 // Counts the number of models
@@ -138,13 +146,6 @@ exports.count = function(model) {
 			if (err) { reject(err); }
 			fulfill(results[0].count);
 		});	
-	});
-}
-
-exports.countCallbackVer = function(model, callback) {	
-	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
-		if (err) { callback(err, null); }
-		else { callback(null, results[0].count); }
 	});
 }
 

@@ -76,7 +76,6 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
     }
 
     twilioModel.update(id, values, function (err, results, fields) {
-        console.log(results, fields);
         if (err) {
             return res.status(422).send({error: "Failed to update twilio account information."});
         } else if (results.affectedRows === 0 && results.changedRows === 0) {

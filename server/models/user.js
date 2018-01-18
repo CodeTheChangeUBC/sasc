@@ -6,7 +6,7 @@ exports.create = function(values, callback) {
 	if (values['username']) {
 		values['username'] = values['username'].toLowerCase();
 	}
-	abstract.createCallbackVer('user', values, callback);
+	abstract.create('user', values, callback);
 }
 
 // Destroy user
