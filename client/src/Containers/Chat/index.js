@@ -46,10 +46,10 @@ class Chat extends Component {
     socket.on('chat message', (inboundMessage) => {
       if (this.props.authenticatedCounsellor) {
         this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
-        //this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
         this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
-        //this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
       this.forceUpdate();

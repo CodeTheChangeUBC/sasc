@@ -7,10 +7,12 @@ export function joinRoom(room) {
 export function addMessageToRoom(data) {
     return function (dispatch) {
         var message = JSON.parse(data.newMessage.message);
+        var room = data.room;
         var title = data.room.title;
         dispatch({
             type: ADD_MESSAGE_TO_ROOM,
             title: title,
+            room: room,
             message: message
         });
     };

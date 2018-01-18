@@ -36,6 +36,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 MessageInstance.propTypes = {
+    role: PropTypes.string,
+    fromCounsellor: PropTypes.bool,
     name: PropTypes.string,
     message: PropTypes.string,
     fromMe: PropTypes.bool

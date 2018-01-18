@@ -17,8 +17,25 @@ export default function roomReducer(state = initialState.rooms, action) {
       return [];
     case ADD_MESSAGE_TO_ROOM:
       // TODO: find the right room
+      state.forEach(function (room) {
+        if (room.title === action.title) {
+          const message = createMessage(action.room, action.message, action.fromCounsellor);
+          room.messages.push(message);
+        }
+      });
       return state;
     default:
      return state; 
   }
+}
+
+function createMessage(room, messageContent, fromCounsellor) {
+  var message = {
+    messageTime: Date.now(),
+    counsellorID: room.humans.counsellor.ID,
+    userID: room.humans.user.ID,
+    message: messageContent,
+    fromCounsellor: fromCounsellor,
+    user: '',
+  };
 }
