@@ -29,21 +29,9 @@ exports.retrieveByValues = function(values, callback) {
 	abstract.retrieveByValues('counsellor', values, callback);
 }
 
-// Retrieve email and password specified by email 
-exports.getCounsellorCredentialsByEmail = function(email, callback) {
-	db.get().query('SELECT email, password FROM counsellor WHERE email = '+email+';',
-		[email],
-		callback);
-}
-
 // Lookup counsellor by email
 exports.lookupByEmail = function(email, callback) {
 	abstract.lookupByValue('counsellor', 'email', email, callback);
-}
-
-// Retrieve counsellor ID from email
-exports.lookupIdByEmail = function(email, callback) {
-	abstract.lookupId('counsellor', 'email', email, callback);
 }
 
 // Retrieve user by id
@@ -60,7 +48,6 @@ exports.destroy = function(id, callback) {
 exports.count = function(callback) {
 	abstract.count('counsellor').then(count => callback('',count)).catch(err => callback(err));
 }
-
 
 // Destroy all counsellors
 // Returns a promise that ensures the all counsellors are removed when fulfilled

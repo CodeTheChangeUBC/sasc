@@ -6,7 +6,7 @@ exports.create = function(values, callback) {
 	if (values['username']) {
 		values['username'] = values['username'].toLowerCase();
 	}
-	abstract.createCallbackVer('user', values, callback);
+	abstract.create('user', values, callback);
 }
 
 // Destroy user
@@ -44,11 +44,6 @@ exports.getUserCredentialsByUsername = function(username, callback) {
 // Retrieve username and password specified by username from form field
 exports.lookupByUsername = function(username, callback) {
 	abstract.lookupByValue('user', 'username', username, callback);
-}
-
-// Retrieve ID by username
-exports.lookupIdByUsername = function(username, callback) {
-	abstract.lookupId('user', 'username', username, callback);
 }
 
 // Retrieve user by id

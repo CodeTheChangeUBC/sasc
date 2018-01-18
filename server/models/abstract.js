@@ -10,11 +10,13 @@ const SALT_ROUNDS = 10;
 // - Values is dictionary containing model values
 // - model is name of model (string)
 exports.create = function(model, values, callback) {
-	exports.process(values, values => {
-		db.get().query('INSERT INTO '+model+' SET ?', values, 
-		(err, results) => {
-			if (err) { callback(err); }
-			else { callback(null); }
+	db.get().query('INSERT INTO '+model+' SET ?', values, 
+		function(err, results) {
+			if (err) { callback(err, null); }
+
+			else { callback(null, results); }
+ 		});
+}
 
 // Hash password
 exports.process = function(values, callback) {
@@ -24,6 +26,16 @@ exports.process = function(values, callback) {
 	        callback(values);
 		});
 	} else { callback(values); }
+}
+
+exports.hashOne = function (password, callback) {
+	bcrypt.hash(password, SALT_ROUNDS, function (err, hash) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, hash);
+		}
+	});
 }
 
 // compare password
@@ -53,21 +65,20 @@ exports.destroy = function(model, id, callback) {
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
 exports.update = function(model, values, id, callback) {
-	var query = db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
+	db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
 			if (err) callback(err);
-			callback(null, results);
+			callback(null, results, fields);
 	});
 }
 
 // Lookup model to pass to other functions
 // - model is name of model (string)
 // - id is id of model (int)
-exports.lookup = function(model, id, req, callback) {
+exports.lookup = function(model, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', [id],
 		function(err, results, fields) {
-			if (err) callback(err);
-			req.model = results[0];
-			callback(null);
+			if (err) callback(err, null, null);
+			callback(null, results, fields);
 		});
 }
 
@@ -76,7 +87,6 @@ exports.retrieveByValues = function(model, values, valueNames, callback) {
 	var query = 'SELECT * FROM '+model+' WHERE';
 	query += fieldQueries(valueNames,1);
 	db.get().query(query, values, function(err,results,fields) {
-			console.log('Error: ' + err);
 			if (err) { callback(err); }
 			callback(null, results);
 		});
@@ -89,7 +99,7 @@ exports.retrieve = function(model, id, callback) {
 		[id],
 		function(err, result) {
 			if (err) callback(err);
-			callback(null,result[0])
+			callback(null,result)
 		});
 }
 
@@ -103,21 +113,16 @@ exports.lookupByValue = function(model, identifier, value, callback) {
 	});
 }
 
-// Retrieve ID from email or username
-exports.lookupId = function(model, identifier, value, callback) {
-	db.get().query('SELECT ID FROM ' + model + ' WHERE ' + identifier + ' = ?;',
-		[value],
-		function (err, result) {
-			if (err) { callback(err, null); }
-			else { callback(null, result[0].ID); }
-		});
-}
-
-
 // List all models
 // - model is name of model (string)
 exports.list = function(model, callback) {
-	db.get().query('SELECT * FROM '+model+';', callback(err, models));
+	db.get().query('SELECT * FROM '+model+';', function (err, models) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, models)
+		}
+	});
 }
 
 // Counts the number of models
@@ -126,15 +131,10 @@ exports.count = function(model) {
 	return new Promise(function(fulfill, reject) {
 		db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err,results,fields) {			
 			if (err) { reject(err); }
-			fulfill(results[0].count);
+			if (results.length > 0) {
+				fulfill(results[0].count);
+			}
 		});	
-	});
-}
-
-exports.countCallbackVer = function(model, callback) {	
-	db.get().query('SELECT COUNT(ID) AS count FROM '+model+';', function(err, results) {			
-		if (err) { callback(err, null); }
-		else { callback(null, results[0].count); }
 	});
 }
 
@@ -160,7 +160,7 @@ exports.listByForeignKey = function(model, fk, id, callback) {
 	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
 		function(err, results, fields) {
 			if (err) { callback(err); }
-			callback(null,results);
+			callback(null, results);
 		});
 }
 
@@ -170,7 +170,7 @@ exports.listByForeignKey = function(model, fk, id, callback) {
 // - toCall is function to call
 function noHttpResponse(err,data,toCall) {
 	if (err) { toCall(err); }
-	else { toCall(null,data); }
+	else { toCall(null, data); }
 }
 
 // Function to call when returning data or error in Http response

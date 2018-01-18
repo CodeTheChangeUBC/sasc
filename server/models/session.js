@@ -4,7 +4,7 @@ const abstract = require('./abstract.js')
 // Create session
 // - s is a session
 exports.create = function(s, callback) {
-	abstract.createCallbackVer('session', s, callback)
+	abstract.create('session', s, callback)
 }
 
 // Count the number of session objects
