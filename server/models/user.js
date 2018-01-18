@@ -2,18 +2,16 @@ const db = require('../db.js');
 const abstract = require('./abstract.js');
 
 // Create user from post request
-// TODO: Encrypt password
 exports.create = function(values, callback) {
 	if (values['username']) {
 		values['username'] = values['username'].toLowerCase();
 	}
-
 	abstract.createCallbackVer('user', values, callback);
 }
 
 // Destroy user
-exports.destroy = function(req,res) {
-	abstract.destroy('user', req.model.ID, res);
+exports.destroy = function(id, callback) {
+	abstract.destroy('user', id, callback);
 }
 
 // Destroy all users
@@ -25,49 +23,22 @@ exports.destroyAll = function(callback) {
 }
 
 // Update user 
-exports.update = function(req, res) {
-	// Get user from request
-	var user = req.model;
-	// Assign params. If updated params not in request, use older params
-	var values = {
-		username: req.body.username ? req.body.username : user.username,
-		age: req.body.age ? req.body.age : user.age,
-		gender: req.body.gender ? req.body.gender : user.gender,
-		phoneNumber: req.body.phoneNumber ? req.body.phoneNumber : user.phoneNumber,
-		//password: req.body.password ? req.body.password : user.password,
-	}
-	// Is password being updated?
-	if (req.body.password) { values['password'] = req.body.password; }
-	abstract.update('user', values, user.ID, res);	
+// values should contain object of values to be updated
+// id is id of user being updated
+exports.update = function(values, id, callback) {
+	abstract.update('user', values, id, callback);	
 }
 
-// Update callback version
-exports.updateCallbackVer = function(id, values, callback) {
-	abstract.update('user', values, id, callback);
-};
-
-// Lookup user to pass to other functions
-exports.lookup = function(req, res, next) {
-	abstract.lookup('user', req.params.userId, req, res, next);
-}
-
-// Retrieve user specified by userID in params
-exports.retrieve = function(req, res) {
-	abstract.retrieve('user', req.params.userId, res);
+// Retrieve user specified by id
+exports.retrieve = function(id, callback) {
+	abstract.retrieve('user', id, res);
 }
 
 // Retrieve username and password specified by username in params
-exports.getUserCredentialsByUsername = function(req, res) {
-	username = req.body.username;
+exports.getUserCredentialsByUsername = function(username, callback) {
 	db.get().query('SELECT username, password FROM user WHERE username = '+username+';',
 		[username],
-		function(err, result) {
-			if (err) {
-				res.status(400).send(err);
-				return;
-			}
-			res.status(200).send(result[0]);
-		});
+		callback);
 }
 
 // Retrieve username and password specified by username from form field
@@ -96,14 +67,5 @@ exports.count = function(callback) {
 	abstract.count('user').then(count => callback(count)).catch(err => callback('',err));
 }
 
-// Function to call when returning data or error
-function response(err, errCode, data, dataCode, res) {
-	if (err) {
-		console.log('DB ERROR:: ' + err);
-		res.status(errCode).send(err);
-		return;
-	}
-	res.status(dataCode).send(data);
-}
 
 
