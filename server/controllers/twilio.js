@@ -3,11 +3,23 @@ const twilioModel = require("../models/twilio");
 exports.addTwilioAccountInfo = function (req, res) {
     var twilio = {
         ID: 1,
-        email: req.body.email,
-        twilioPhoneNumber: req.body.twilioPhoneNumber,
-        accountSid: req.body.accountSid,
-        authToken: req.body.authToken
+        email: req.body.email.trim(),
+        twilioPhoneNumber: req.body.twilioPhoneNumber.trim(),
+        accountSid: req.body.accountSid.trim(),
+        authToken: req.body.authToken.trim()
     };
+
+    var requiredFieldsBlankError = false
+
+    Object.keys(user).forEach(function (property) {
+        if (property === null || property === undefined || property === "") {
+            requiredFieldsBlankError = true
+        }
+    });
+
+    if (requiredFieldsBlankError) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // TODO: Add email regex check here
     // If email passes regex check, the function can continue
@@ -56,11 +68,23 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
     const id = 1;
     const values = {
         ID: id,
-        email: req.body.email,
-        twilioPhoneNumber: req.body.twilioPhoneNumber,
-        accountSid: req.body.accountSid,
-        authToken: req.body.authToken
+        email: req.body.email.trim(),
+        twilioPhoneNumber: req.body.twilioPhoneNumber.trim(),
+        accountSid: req.body.accountSid.trim(),
+        authToken: req.body.authToken.trim()
     };
+
+    var requiredFieldsBlankError = false
+
+    Object.keys(user).forEach(function (property) {
+        if (property === null || property === undefined || property === "") {
+            requiredFieldsBlankError = true
+        }
+    });
+
+    if (requiredFieldsBlankError) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // TODO: Add email regex check here
     // If email passes regex check, the function can continue

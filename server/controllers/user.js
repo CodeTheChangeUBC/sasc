@@ -3,12 +3,24 @@ const userModel = require("../models/user");
 
 exports.submitSurvey = function (req, res) {
     var user = {
-        nickname: req.body.nickname,
+        nickname: req.body.nickname.trim(),
         age: req.body.age,
-        gender: req.body.gender,
-        email: req.body.email,
+        gender: req.body.gender.trim(),
+        email: req.body.email.trim(),
         registered: 0
     };
+
+    var requiredFieldsBlankError = false
+
+    Object.keys(user).forEach(function (property) {
+        if (property === null || property === undefined || property === "") {
+            requiredFieldsBlankError = true
+        }
+    });
+
+    if (requiredFieldsBlankError) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // TODO: Add email regex check here
     // If email passes regex check, the function can continue
@@ -51,12 +63,24 @@ exports.updateUser = function (req, res) {
     var id = req.body.ID;
 
     var user = {
-        nickname: req.body.nickname,
+        nickname: req.body.nickname.trim(),
         password: req.body.password,
         age: req.body.age,
-        gender: req.body.gender,
-        email: req.body.email
+        gender: req.body.gender.trim(),
+        email: req.body.email.trim()
     };
+
+    var requiredFieldsBlankError = false
+
+    Object.keys(user).forEach(function (property) {
+        if (property === null || property === undefined || property === "") {
+            requiredFieldsBlankError = true
+        }
+    });
+
+    if (requiredFieldsBlankError) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // Check entered password before updating user information
     Abstract.process(user, function (result) {
