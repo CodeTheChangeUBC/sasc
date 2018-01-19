@@ -1,5 +1,6 @@
 const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
+const helper = require("./helper");
 
 exports.submitSurvey = function (req, res) {
     var user = {
@@ -10,15 +11,7 @@ exports.submitSurvey = function (req, res) {
         registered: 0
     };
 
-    var requiredFieldsBlankError = false
-
-    Object.keys(user).forEach(function (property) {
-        if (property === null || property === undefined || property === "") {
-            requiredFieldsBlankError = true
-        }
-    });
-
-    if (requiredFieldsBlankError) {
+    if (helper.checkBlankRequiredFields(user)) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
@@ -43,7 +36,7 @@ exports.submitSurvey = function (req, res) {
 };
 
 exports.getUser = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
 
     userModel.lookupById(id, function (err, results) {
         if (err) {
@@ -60,25 +53,16 @@ exports.getUser = function (req, res) {
 };
 
 exports.updateUser = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
 
     var user = {
         nickname: req.body.nickname.trim(),
-        password: req.body.password,
         age: req.body.age,
         gender: req.body.gender.trim(),
         email: req.body.email.trim()
     };
 
-    var requiredFieldsBlankError = false
-
-    Object.keys(user).forEach(function (property) {
-        if (property === null || property === undefined || property === "") {
-            requiredFieldsBlankError = true
-        }
-    });
-
-    if (requiredFieldsBlankError) {
+    if (helper.checkBlankRequiredFields(user)) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
@@ -113,7 +97,7 @@ exports.updateUser = function (req, res) {
 };
 
 exports.changePassword = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
     var oldPassword = req.body.oldPassword;
 
     Abstract.hashOne(oldPassword, function (err, oldPasswordHashed) {

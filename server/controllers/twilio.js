@@ -9,15 +9,7 @@ exports.addTwilioAccountInfo = function (req, res) {
         authToken: req.body.authToken.trim()
     };
 
-    var requiredFieldsBlankError = false
-
-    Object.keys(user).forEach(function (property) {
-        if (property === null || property === undefined || property === "") {
-            requiredFieldsBlankError = true
-        }
-    });
-
-    if (requiredFieldsBlankError) {
+    if (helper.checkBlankRequiredFields(twilio)) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
@@ -74,15 +66,7 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
         authToken: req.body.authToken.trim()
     };
 
-    var requiredFieldsBlankError = false
-
-    Object.keys(user).forEach(function (property) {
-        if (property === null || property === undefined || property === "") {
-            requiredFieldsBlankError = true
-        }
-    });
-
-    if (requiredFieldsBlankError) {
+    if (helper.checkBlankRequiredFields(twilio)) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
