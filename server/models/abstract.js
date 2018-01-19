@@ -4,6 +4,7 @@
 const db = require('../db.js');
 var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
+const emailRegex = require('email-regex');
 
 
 // Create model 
@@ -196,6 +197,18 @@ function fieldQueries(fields, and) {
 	}
 	return query;
 }
+
+// Check if email invalid. 
+// If not, send 500 error and error response
+function isEmailValid(email,res) {
+	if (!emailRegex({exact: true}).test(email)) {
+        res.status(500).send({error: 'Please provide a valid email'})
+        return false;
+    }
+    return true;
+}
+
+
 
 exports.noHttpResponse = noHttpResponse;
 exports.httpResponse = httpResponse;

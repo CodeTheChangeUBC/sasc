@@ -1,5 +1,6 @@
 const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
+const isEmailValid = require('../models/abstract').isEmailValid
 
 exports.submitSurvey = function (req, res) {
     var user = {
@@ -10,9 +11,8 @@ exports.submitSurvey = function (req, res) {
         registered: 0
     };
 
-    // TODO: Add email regex check here
-    // If email passes regex check, the function can continue
-    // else, send a response to the frontend.
+    // Check if email is valid
+    if (!isEmailValid(email, res)) return;
 
     userModel.create(user, function (err, results) {
         if (err) {

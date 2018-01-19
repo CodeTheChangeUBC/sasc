@@ -3,6 +3,8 @@ const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
 const counsellorModel = require("../models/counsellor");
 const config = require("../../config");
+const emailRegex = require('email-regex');
+const isEmailValid = require('../models/abstract').isEmailValid
 
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
@@ -158,10 +160,9 @@ exports.signup = function (req, res) {
         email: req.body.email.trim()
     };
 
-    // TODO: Add email regex check here
-    // If email passes regex check, the function can continue
-    // else, send a response to the frontend.
-
+    // If email invalid, send error to frontend and return
+    if (!isEmailValid(email, res)) return;
+    
     if (req.body.ID === undefined || req.body.ID === null) {
         // Signing up without taking pre-chat survey
         var user = {
@@ -225,9 +226,8 @@ exports.signupCounsellor = function (req, res) {
         password: req.body.password
     };
 
-    // TODO: Add email regex check here
-    // If email passes regex check, the function can continue
-    // else, send a response to the frontend.
+    // Check if email valid 
+    if (!isEmailValid(email, res)) return;
 
     abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel.lookupByEmail, Abstract.process, counsellorModel.create);
 };
