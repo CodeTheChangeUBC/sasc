@@ -1,16 +1,16 @@
-var uuid = require('uuid')
-var User = require('./user')
+var uuid = require('uuid');
+var User = require('./user');
 
 class Counsellor extends User {
   constructor (socket) {
-    super(socket, 'Counsellor', this)
+    super(socket, 'Counsellor', this);
 
-    this._socket = socket
-    this.id = socket.id
+    this._socket = socket;
+    this.id = socket.id;
 
-    this.conversations = {}
+    this.conversations = {};
 
-    listen()
+    listen();
   }
 
   /**
@@ -18,20 +18,20 @@ class Counsellor extends User {
    * @param  {JSON} data - contains conversation id and data
    */
   onMessage (data) {
-    this.conversations[data.convoId].socket.emit('msg', data.msg)
+    this.conversations[data.convoId].socket.emit('msg', data.msg);
   }
 
   /**
    * Sets up the listeners for the socket this counselor is connect to.
    */
   listen () {
-    var self = this
-    var socket = this._socket
+    var self = this;
+    var socket = this._socket;
 
-    socket.on('msg', onMessage)
+    socket.on('msg', onMessage);
   }
 }
 
 
 
-module.exports = Counsellor
+module.exports = Counsellor;

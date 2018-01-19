@@ -35,15 +35,15 @@ User.users = {}
 
 module.exports = User*/
 
-var UserMap = {}
+var UserMap = {};
 
-UserMap['Counselor'] = {}
-UserMap['Student'] = {}
+UserMap['Counselor'] = {};
+UserMap['Student'] = {};
 
 
 class User {
   constructor (socket, type, obj) {
-    UserMap[type][socket.id] = obj
+    UserMap[type][socket.id] = obj;
   }
 
   /**
@@ -60,11 +60,11 @@ class User {
     var c_id = Object
     .keys(UserMap.Counselor)
     .sort((a,b) => {
-      UserMap.Counselor[a].convos.length - UserMap.Counselor[b].convos.length
-    })[0]
+      UserMap.Counselor[a].convos.length - UserMap.Counselor[b].convos.length;
+    })[0];
 
-    return UserMap.Counselor[c_id]
+    return UserMap.Counselor[c_id];
   }
 }
 
-module.exports = User
+module.exports = User;

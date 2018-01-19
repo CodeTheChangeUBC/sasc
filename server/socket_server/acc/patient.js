@@ -2,10 +2,10 @@
 
 class Patient {
     constructor (socket) {
-        this.start = Date.now()
-        this.socket = socket
+        this.start = Date.now();
+        this.socket = socket;
 
-        this.partner = this._connect()
+        this.partner = this._connect();
     }
 
     _connect () {
@@ -21,4 +21,4 @@ class Patient {
     }
 }
 
-module.exports = Patient
+module.exports = Patient;
