@@ -5,4 +5,3 @@ package-lock.json
 .DS_Store
 client/.DS_Store
 client/src/.DS_Store
-server/twilio_server/*
