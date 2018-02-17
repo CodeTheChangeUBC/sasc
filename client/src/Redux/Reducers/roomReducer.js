@@ -32,8 +32,8 @@ export default function roomReducer(state = initialState.rooms, action) {
 function createMessage(room, messageContent, fromCounsellor) {
   var message = {
     messageTime: Date.now(),
-    counsellorID: room.humans.counsellor.ID,
-    userID: room.humans.user.ID,
+    counsellorID: room.humans.counsellor,
+    userID: room.humans.user,
     message: messageContent,
     fromCounsellor: fromCounsellor,
     user: '',
