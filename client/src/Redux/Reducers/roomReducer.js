@@ -10,15 +10,18 @@ export default function roomReducer(state = initialState.rooms, action) {
 
   switch(action.type) {
     case NEW_ROOM:
+      // Creates a room
       return [...state, action.room];
     case UPDATE_ROOM:
-      return [...state];  
+      // Updates a room
+      return [...state, action.room];  
     case RESET_ROOM:
+      // Removes all rooms
       return [];
     case ADD_MESSAGE_TO_ROOM:
-      // TODO: find the right room
+      // Find the right room and adds a message to it
       state.forEach(function (room) {
-        if (room.title === action.title) {
+        if (room.roomID === action.roomID) {
           const message = createMessage(action.room, action.message, action.fromCounsellor);
           room.messages.push(message);
         }
@@ -32,10 +35,11 @@ export default function roomReducer(state = initialState.rooms, action) {
 function createMessage(room, messageContent, fromCounsellor) {
   var message = {
     messageTime: Date.now(),
+    sessionID: 0, // TODO: Find out where to pass in session ID
     counsellorID: room.humans.counsellor,
     userID: room.humans.user,
-    message: messageContent,
+    messageContent: messageContent,
     fromCounsellor: fromCounsellor,
-    user: '',
+    fromTwilio: 0
   };
 }

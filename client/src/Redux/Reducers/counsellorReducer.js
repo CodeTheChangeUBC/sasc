@@ -4,27 +4,24 @@ import {
     UPDATE_COUNSELLOR,
     REMOVE_COUNSELLOR,
     COUNSELLOR_ERROR,
-    REMOVE_ERROR,
     PASSWORD_CHANGE
 } from './../Types/counsellorTypes';
 import initialState from './initialState';
 
-export default function(state = initialState.counsellor, action) {
+export default function(state = initialState, action) {
     switch(action.type) {
         case ADD_COUNSELLOR:
-            return {...state, error: '', counsellor: action.counsellor};
+            return {...state, counsellor: action.counsellor, status: { error: "", success: "Successfully added counsellor."}};
         case GET_COUNSELLOR:
-            return {...state, error: '', counsellor: action.counsellor};
+            return {...state, counsellor: action.counsellor, status: { error: "", success: "Successfully retrieved counsellor."}};
         case UPDATE_COUNSELLOR:
-            return {...state, error: '', counsellor: action.counsellor};
+            return {...state, counsellor: action.counsellor, status: { error: "", success: "Successfully updated counsellor."}};
         case PASSWORD_CHANGE:
-            return {...state, error: '', success: action.success};
+            return {...state, status: { error: "", success: action.success}};
         case REMOVE_COUNSELLOR:
-            return {...state, error: '', counsellor: null};
+            return {...state, counsellor: null, status: { error: "", success: "Successfully removed counsellor."}};
         case COUNSELLOR_ERROR:
-            return {...state, error: action.payload};
-        case REMOVE_ERROR:
-            return {...state, error: '', success: ''};
+            return {...state, status: { error: action.payload, success: ""};
     }
 
 

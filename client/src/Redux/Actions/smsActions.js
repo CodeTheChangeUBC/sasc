@@ -3,7 +3,6 @@ import {
     SET_SMS_SETTINGS,
     REMOVE_SMS_SETTINGS,
     SMS_ERROR,
-    REMOVE_ERROR,
     RESET_SMS_SETTINGS
 } from './../Types/smsTypes';
 import axios from "axios";
@@ -25,12 +24,6 @@ export function renderSMSError(error) {
             type: SMS_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeSMSError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 

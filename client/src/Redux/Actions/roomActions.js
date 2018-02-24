@@ -8,10 +8,10 @@ export function addMessageToRoom(data) {
     return function (dispatch) {
         var message = JSON.parse(data.newMessage.message);
         var room = data.room;
-        var title = data.room.title;
+        var roomID = data.room.roomID;
         dispatch({
             type: ADD_MESSAGE_TO_ROOM,
-            title: title,
+            roomID: roomID,
             room: room,
             message: message
         });

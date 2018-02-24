@@ -7,18 +7,16 @@ import {
 } from './../Types/authTypes';
 import initialState from './initialState';
 
-export default function(state = initialState.auth, action) {
+export default function(state = initialState, action) {
     switch(action.type) {
         case AUTH_USER:
-            return {...state, error: "", role: "user", success: "Successfully logged in."};
+            return {...state, auth: "user", status: { error: "", success: "Successfully logged in."}};
         case AUTH_COUNSELLOR:
-            return {...state, error: "", role: "counsellor", success: "Successfully logged in."};
+            return {...state, auth: "counsellor", status: { error: "", success: "Successfully logged in."}};
         case UNAUTH:
-            return {...state, role: "", success: "Successfully logged out."};
+            return {...state, auth: "", status: { error: "", success: "Successfully logged out."}};
         case AUTH_ERROR:
-            return {...state, error: action.payload};
-        case REMOVE_ERROR:
-            return {...state, error: "", success: ""};
+            return {...state, auth: "", status: { error: action.payload, success: ""}};
     }
 
     return state;

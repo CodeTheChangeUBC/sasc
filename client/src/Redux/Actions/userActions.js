@@ -5,7 +5,6 @@ import {
     UPDATE_USER,
     REMOVE_USER,
     USER_ERROR,
-    REMOVE_ERROR,
     PASSWORD_CHANGE
 } from './../Types/userTypes';
 import axios from "axios";
@@ -27,12 +26,6 @@ export function renderUserError(error) {
             type: USER_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeUserError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 

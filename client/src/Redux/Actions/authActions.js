@@ -1,10 +1,8 @@
 import {
     AUTH_USER,
     AUTH_COUNSELLOR,
-    UNAUTH_USER,
-    UNAUTH_COUNSELLOR,
-    AUTH_ERROR,
-    REMOVE_ERROR
+    UNAUTH,
+    AUTH_ERROR
 } from "./../Types/authTypes";
 import axios from "axios";
 import {config} from "./../../config";
@@ -25,12 +23,6 @@ export function renderAuthError(error) {
             type: AUTH_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeAuthError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 
@@ -105,7 +97,6 @@ export function signupUser({ID, username, nickname, age, gender, phoneNumber, em
 export function signout() {
     return function (dispatch) {
         localStorage.removeItem("token");
-        dispatch({type: UNAUTH_USER});
-        dispatch({type: UNAUTH_COUNSELLOR});
+        dispatch({type: UNAUTH});
     };
 }

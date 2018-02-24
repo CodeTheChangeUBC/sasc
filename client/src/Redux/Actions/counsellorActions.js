@@ -4,9 +4,9 @@ import {
     UPDATE_COUNSELLOR,
     REMOVE_COUNSELLOR,
     COUNSELLOR_ERROR,
-    REMOVE_ERROR,
     PASSWORD_CHANGE
 } from './../Types/counsellorTypes';
+import { REMOVE_ERROR } from "./../Types/errorTypes";
 import axios from "axios";
 import {config} from "./../../config";
 
@@ -26,12 +26,6 @@ export function renderCounsellorError(error) {
             type: COUNSELLOR_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeCounsellorError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 
