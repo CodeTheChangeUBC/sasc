@@ -7,12 +7,15 @@ export default {
 
   auth: "",
 
-  chat: {},
+  chat: {
+    connected: false
+  },
 
   activeRoom: 1,
   
   rooms: [
     roomID: 1,
+    sessionID: 0, // Latest session ID
     { humans: {
         counsellor: 1,
         user: 11,
@@ -41,6 +44,7 @@ export default {
     ] },
     {
       roomID: 2,
+      sessionID: 1,
       humans: {
       counsellor: 2,
       user: 12
