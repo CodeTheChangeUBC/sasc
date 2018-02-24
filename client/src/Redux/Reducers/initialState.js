@@ -1,9 +1,7 @@
 export default {
   auth: {},
 
-  chat: {
-    connected: false
-  },
+  chat: {},
 
   messages: [
     { user: 'ChatBot',
@@ -18,22 +16,10 @@ export default {
   ],
   
   rooms: [
-    { title: 'Music is Life', 
-      humans: {
-        counsellor: {
-          ID: 1,
-          email: "meanieblue@example.com",
-          firstName: "Meanie",
-          lastName: "Blue"
-        },
-        user: {
-          ID: 11,
-          username: "beantdonethat",
-          nickname: "Bean",
-          age: 0,
-          email: "beantdonethat@example.com",
-          phoneNumber: 1234567890
-        },
+    roomID: 1,
+    { humans: {
+        counsellor: 1,
+        user: 11,
       },
      messages: [
      {
@@ -42,10 +28,9 @@ export default {
       messageTime: 100,
       counsellorID: 1,
       userID: 1,
-      message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
+      messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
       fromCounsellor: 1,
-      fromTwilio: 0,
-      user: 'ChatBot'
+      fromTwilio: 0
      },
      {
       ID: 2,
@@ -55,27 +40,14 @@ export default {
       userID: 1,
       message: 'Wait, what are these words?',
       fromCounsellor: 0,
-      fromTwilio: 0,
-      user: 'Scott Mescudi'
+      fromTwilio: 0
      }
     ] },
     {
-      title: 'Come share your feelings',
+      roomID: 2,
       humans: {
-      counsellor: {
-        ID: 2,
-        email: "scottmescudi@example.com",
-        firstName: "Scott",
-        lastName: "Mescudi"
-      },
-      user: {
-        ID: 12,
-        username: "fox",
-        nickname: "Q-Tip",
-        age: 0,
-        email: "foxTheQuiet@example.com",
-        phoneNumber: 1234567891
-      }
+      counsellor: 2,
+      user: 12
     },
      messages: [
      {
@@ -84,8 +56,7 @@ export default {
       messageTime: 100,
       counsellorID: 2,
       userID: 12,
-      user: "Scott",
-     message: 'Someone explain Sockets to me Please',
+     messageContent: 'Someone explain Sockets to me Please',
      fromCounsellor: 1,
      fromTwilio: 0
    },
@@ -95,60 +66,14 @@ export default {
     messageTime: 200,
     counsellorID: 2,
     userID: 12,
-    user: 'Q-Tip',
-    message: 'I have no idea',
+    messageContent: 'I have no idea',
     fromCounsellor: 0,
     fromTwilio: 0
   }] 
     }
   ],
 
-  activeRoom: {
-    room: {
-    title: 'Music is Life',
-    humans: {
-      counsellor: {
-        ID: 1,
-        email: "meanieblue@example.com",
-        firstName: "Meanie",
-        lastName: "Blue"
-      },
-      user: {
-        ID: 11,
-        username: "beantdonethat",
-        nickname: "Bean",
-        age: 0,
-        email: "beantdonethat@example.com",
-        phoneNumber: 1234567890
-      }
-    },
-    //messages: [ { user: 'ChatBot', messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', messageContent: 'Wait, what are these words?'}]
-    messages: [
-    {
-      ID: 1,
-      sessionID: 1,
-      messageTime: 100,
-      counsellorID: 1,
-      userID: 11,
-      message: 'Hi Bean.',
-      fromCounsellor: 1,
-      fromTwilio: 0,
-      user: "Meanie"
-    },
-    {
-      ID: 2,
-      sessionID: 1,
-      messageTime: 200,
-      counsellorID: 1,
-      userID: 11,
-      message: 'Hi Meanie Blue.',
-      fromCounsellor: 0,
-      fromTwilio: 0,
-      user: "Bean"
-     }
-    ]
-  }
-  },
+  activeRoom: 1,
 
   counsellor: {
     counsellor: {
