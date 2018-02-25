@@ -1,15 +1,3 @@
-CREATE TABLE twilio (
-	ID INT NOT NULL,
-	email VARCHAR(256) NOT NULL,
-	twilioPhoneNumber VARCHAR(15),
-	accountSid VARCHAR(34),
-	authToken VARCHAR(32),
-	UNIQUE(email),
-	UNIQUE(twilioPhoneNumber),
-	UNIQUE(authToken),
-	PRIMARY KEY (ID)
-);
-
 CREATE TABLE user (
 	ID INT NOT NULL AUTO_INCREMENT,
 	username VARCHAR(14),
