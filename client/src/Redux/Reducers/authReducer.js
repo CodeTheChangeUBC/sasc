@@ -2,8 +2,7 @@ import {
     AUTH_USER,
     AUTH_COUNSELLOR,
     UNAUTH,
-    AUTH_ERROR,
-    REMOVE_ERROR
+    AUTH_ERROR
 } from './../Types/authTypes';
 import initialState from './initialState';
 

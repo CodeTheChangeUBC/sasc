@@ -30,7 +30,7 @@ export default function(ComposedComponent) {
   }
 
   AuthenticationForUser.propTypes = {
-    authenticated: PropTypes.bool
+    auth: PropTypes.bool
   };
 
   return connect(mapStateToProps)(AuthenticationForUser);

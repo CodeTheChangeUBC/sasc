@@ -24,7 +24,6 @@ class Logout extends Component {
         this.props.removeCounsellor();
         this.props.removeRooms();
         this.props.removeActiveRoom();
-        this.props.resetSMSSettings();
     }
     
     render() {

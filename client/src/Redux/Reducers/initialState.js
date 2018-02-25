@@ -13,10 +13,10 @@ export default {
 
   activeRoom: 1,
   
-  rooms: [
+  rooms: [{ 
     roomID: 1,
     sessionID: 0, // Latest session ID
-    { humans: {
+    humans: {
         counsellor: 1,
         user: 11,
       },

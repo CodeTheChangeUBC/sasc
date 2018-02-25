@@ -8,7 +8,7 @@ class MessageInstance extends Component {
   render() {
 
     const fromMe = ((this.props.auth === "counsellor" && this.props.fromCounsellor) 
-      || (this.props.role !== "counsellor" && this.props.fromCounsellor === 0)) ? 'from-me' : '';
+      || (this.props.auth !== "counsellor" && this.props.fromCounsellor === 0)) ? 'from-me' : '';
 
     return(
         <div className={`${fromMe} message-instance`}>

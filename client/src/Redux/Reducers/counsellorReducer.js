@@ -21,7 +21,7 @@ export default function(state = initialState, action) {
         case REMOVE_COUNSELLOR:
             return {...state, counsellor: null, status: { error: "", success: "Successfully removed counsellor."}};
         case COUNSELLOR_ERROR:
-            return {...state, status: { error: action.payload, success: ""};
+            return {...state, status: { error: action.payload, success: ""}};
     }
 
 

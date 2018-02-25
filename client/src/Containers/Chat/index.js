@@ -29,7 +29,7 @@ class Chat extends Component {
 
   componentWillMount() {
       if(!(this.props.connected)) {
-        socket.emit('subscribe', {room: this.props.room.roomID});
+        socket.emit('subscribe', {room: this.props.activeRoom});
         this.props.connectToChat();
     }
     //console.log('will mount initated');
@@ -62,7 +62,7 @@ class Chat extends Component {
           <h3>{/* TODO: Name of user */}</h3>
         </div>
         <MessageBox msgs={this.props.room.messages} />
-        <ChatInput socket={socket} />
+        <ChatInput socket={socket} room={this.props.room}/>
       </div>);
     } else {
       return (<div className="container-for-title-and-message-box"></div>);
@@ -103,8 +103,8 @@ function mapStateToProps(state, ownProps) {
     chat: state.chat.connected,
     user: state.user,
     counsellor: state.counsellor,
+    room: ownProps.findRoomById(state.activeRoom),
     rooms: state.rooms,
-    room: state.rooms[0], // TODO: How to get the active room
     activeRoom: state.activeRoom,
     auth: state.auth
   };
@@ -114,12 +114,15 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     addMessageToRoom: roomActions.addMessageToRoom,
     connectToChat: chatActions.connectToChat,
-    disconnectFromChat: chatActions.disconnectFromChat
+    disconnectFromChat: chatActions.disconnectFromChat,
+    findRoomById: roomActions.findRoomById
   }, dispatch);
 }
 
 Chat.propTypes = {
     auth: PropTypes.string,
+    activeRoom: PropTypes.number,
+    addMessageToRoom: PropTypes.func,
     connected: PropTypes.bool,
     user: PropTypes.object,
     counsellor: PropTypes.object,
@@ -130,7 +133,8 @@ Chat.propTypes = {
     message: PropTypes.string,
     messages: PropTypes.array,
     connectToChat: PropTypes.func,
-    disconnectFromChat: PropTypes.func
+    disconnectFromChat: PropTypes.func,
+    findRoomById: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

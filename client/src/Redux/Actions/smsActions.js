@@ -2,8 +2,7 @@ import {
     GET_SMS_SETTINGS,
     SET_SMS_SETTINGS,
     REMOVE_SMS_SETTINGS,
-    SMS_ERROR,
-    RESET_SMS_SETTINGS
+    SMS_ERROR
 } from './../Types/smsTypes';
 import axios from "axios";
 import {config} from "./../../config";

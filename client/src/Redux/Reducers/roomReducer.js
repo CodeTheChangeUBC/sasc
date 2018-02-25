@@ -22,20 +22,24 @@ export default function roomReducer(state = initialState.rooms, action) {
       return [];
     case ADD_MESSAGE_TO_ROOM:
       // Find the right room and adds a message to it
-      state.forEach(function (room) {
+      state.forEach(function (room, index) {
         if (room.roomID === action.roomID) {
           const message = createMessage(action.room, action.message, action.fromCounsellor, room.sessionID);
-          room.messages.push(message);
+          state[index] = room.messages.push(message);
         }
       });
       return state;
+    case GET_SESSION_ID:
+          return {...state, sessionID: action.sessionID, status: { error: "", success: ""}};
+    case SESSION_ERROR:
+      return {...state, status: { error: action.payload, success: ""}};
     default:
      return state; 
   }
 }
 
 function createMessage(room, messageContent, fromCounsellor, sessionID) {
-  var message = {
+  return {
     messageTime: Date.now(),
     sessionID: sessionID,
     counsellorID: room.humans.counsellor,

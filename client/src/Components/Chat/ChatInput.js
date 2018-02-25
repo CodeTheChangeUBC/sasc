@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as messageActions from '../../Redux/Actions/messageActions';
 import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import PropTypes from 'prop-types';
 
@@ -48,7 +47,6 @@ function mapStateToProps(state, ownProps) {
   return {
     connected: state.chat.connected,
     activeRoom: state.activeRoom,
-    room: state.rooms[0] // TODO: Figure out which room
     auth: state.auth,
     counsellor: state.counsellor
   };

@@ -1,4 +1,9 @@
-import { JOIN_ROOM, REMOVE_ROOMS, ADD_MESSAGE_TO_ROOM } from "./../Types/roomTypes";
+import {
+    JOIN_ROOM,
+    REMOVE_ROOMS,
+    ADD_MESSAGE_TO_ROOM,
+    GET_SESSION_ID,
+    SESSION_ERROR } from "./../Types/roomTypes";
 import axios from "axios";
 import {config} from "./../../config";
 
@@ -46,7 +51,7 @@ export function getSessionID() {
                 "Authorization": token
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}`, header)
+        axios.get(`${ROOT_URL + BASE_URL}/id`, header)
             .then(function (response) {
                 if (response.data.length !== 0) {
                     var sessionID = response.data[0];
@@ -59,5 +64,15 @@ export function getSessionID() {
             .catch(function (error) {
                 dispatch(sessionError(error.response.data.error));
             });
-    }
+    };
+}
+
+export function findRoomById(id, rooms) {
+    var theRoom = null;
+    rooms.forEach(function (room) {
+        if (room.roomID === id) {
+            theRoom = room;
+        }
+    });
+    return theRoom;
 }
