@@ -9,13 +9,13 @@ export default function(ComposedComponent) {
     };
 
     componentWillMount() {
-      if (!this.props.authenticated) {
+      if (this.props.auth !== "user") {
         this.context.router.history.push('/login');
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
+      if (nextProps.auth !== "user") {
         this.context.router.history.push('/login');
       }
     }
@@ -26,7 +26,7 @@ export default function(ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { authenticatedCounsellor: state.auth.authenticated };
+    return { auth: state.auth };
   }
 
   AuthenticationForUser.propTypes = {

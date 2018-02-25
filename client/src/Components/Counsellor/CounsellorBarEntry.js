@@ -33,7 +33,6 @@ import PropTypes from 'prop-types';
 }
 
 CounsellorBarEntry.propTypes = {
-    student: PropTypes.object,
     room: PropTypes.object,
     "room.humans": PropTypes.object,
     "room.humans.user": PropTypes.object,

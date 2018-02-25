@@ -1,4 +1,4 @@
-import { JOIN_ROOM, RESET_ROOM, ADD_MESSAGE_TO_ROOM } from "./../Types/roomTypes";
+import { JOIN_ROOM, REMOVE_ROOMS, ADD_MESSAGE_TO_ROOM } from "./../Types/roomTypes";
 import axios from "axios";
 import {config} from "./../../config";
 
@@ -23,9 +23,9 @@ export function addMessageToRoom(data) {
     };
 }
 
-export function resetRoom() {
+export function removeRooms() {
     return function (dispatch) {
-        dispatch({type: RESET_ROOM});
+        dispatch({type: REMOVE_ROOMS});
     };
 }
 

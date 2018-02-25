@@ -80,7 +80,7 @@ class CounsellorBar extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    counsellor: state.counsellor.counsellor,
+    counsellor: state.counsellor,
     rooms: state.rooms
   };
 }

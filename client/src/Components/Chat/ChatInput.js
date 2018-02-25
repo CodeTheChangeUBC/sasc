@@ -24,10 +24,10 @@ class ChatInput extends Component {
   handleOnSubmit(ev) {
     ev.preventDefault();
     if (this.state.input.trim() && this.props.connected) {
-      if (this.props.authenticatedCounsellor) {
-        this.props.socket.emit('chat message', {user: this.props.counsellor.firstName, message: this.state.input, room: this.props.room.title});
+      if (this.props.auth === "counsellor") {
+        this.props.socket.emit('chat message', {user: this.props.counsellor.firstName, message: this.state.input, room: this.props.room.roomID});
       } else {
-        this.props.socket.emit('chat message', {user: this.props.user.nickname, message: this.state.input, room: this.props.room.title});
+        this.props.socket.emit('chat message', {user: this.props.user.nickname, message: this.state.input, room: this.props.room.roomID});
       }
 
       this.setState({ input: '' });
@@ -47,11 +47,10 @@ class ChatInput extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     connected: state.chat.connected,
-    room: state.activeRoom.room,
-    authenticated: state.auth.authenticated,
-    authenticatedCounsellor: state.auth.authenticatedCounsellor,
-    user: state.user.user,
-    counsellor: state.counsellor.counsellor
+    activeRoom: state.activeRoom,
+    room: state.rooms[0] // TODO: Figure out which room
+    auth: state.auth,
+    counsellor: state.counsellor
   };
 }
 
@@ -60,12 +59,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 ChatInput.propTypes = {
-    authenticatedCounsellor: PropTypes.bool,
-    authenticated: PropTypes.bool,
+    auth: PropTypes.string,
     connected: PropTypes.bool,
     messages: PropTypes.array,
     room: PropTypes.object,
-    "room.title": PropTypes.string,
+    "room.roomID": PropTypes.number,
     user: PropTypes.object,
     counsellor: PropTypes.object,
     message: PropTypes.string,

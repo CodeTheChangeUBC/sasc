@@ -6,7 +6,7 @@ import './styles.css';
 
 class Header extends Component {
   renderLinks() {
-    if (this.props.authenticated || this.props.authenticatedCounsellor) {
+    if (this.props.auth !== "") {
         return [
           (<li className="nav-item" key={1}>
               <Link className="nav-link" to="/account">Account</Link>
@@ -28,7 +28,7 @@ class Header extends Component {
   }
 
   renderLinksCounsellor() {
-    if (this.props.authenticatedCounsellor) {
+    if (this.props.auth === "counsellor") {
         return [
             (<li className="nav-item" key={1}>
                 <Link to="/chat">Chat</Link>
@@ -44,7 +44,7 @@ class Header extends Component {
   }
 
   renderLinkChatUserConnected() {
-    if (this.props.connected && this.props.authenticated && !this.props.authenticatedCounsellor) {
+    if (this.props.connected && this.props.auth === "user") {
       return [
         (<li className="nav-item" key={1}><Link to="/chat">Chat</Link></li>)
       ];
@@ -52,7 +52,7 @@ class Header extends Component {
   }
 
   renderLinkChatAnonymousConnected() {
-    if (this.props.connected && !this.props.authenticated && !this.props.authenticatedCounsellor)
+    if (this.props.connected && this.props.auth === "")
       return [
         (<li className="nav-item" key={1}><Link className="nav-link" to="/register">Register</Link></li>)
       ];
@@ -77,15 +77,13 @@ class Header extends Component {
 
 Header.propTypes = {
     connected: PropTypes.bool,
-    authenticated: PropTypes.bool,
-    authenticatedCounsellor: PropTypes.bool
+    auth: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         connected: state.chat.connected,
-        authenticated: state.auth.authenticated,
-        authenticatedCounsellor: state.auth.authenticatedCounsellor
+        auth: state.auth
     };
 }
 

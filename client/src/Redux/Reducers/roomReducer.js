@@ -1,7 +1,7 @@
 import {
     NEW_ROOM,
     UPDATE_ROOM,
-    RESET_ROOM,
+    REMOVE_ROOMS,
     ADD_MESSAGE_TO_ROOM,
     GET_SESSION_ID,
     SESSION_ERROR
@@ -17,8 +17,8 @@ export default function roomReducer(state = initialState.rooms, action) {
     case UPDATE_ROOM:
       // Updates a room
       return [...state, action.room];  
-    case RESET_ROOM:
-      // Removes all rooms
+    case REMOVE_ROOMS:
+      // Removes all rooms when you sign out
       return [];
     case ADD_MESSAGE_TO_ROOM:
       // Find the right room and adds a message to it

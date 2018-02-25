@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as smsActions from '../../Redux/Actions/smsActions';
+import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -24,7 +25,7 @@ class Sms extends Component {
   }
 
   componentWillMount() {
-    this.props.removeSMSError();
+    this.props.removeError();
     this.props.getSMSDetails();
   }
 
@@ -77,7 +78,7 @@ class Sms extends Component {
   }
 
   render() {
-    if (this.props.authenticatedCounsellor) {
+    if (this.props.auth === "counsellor") {
       return (
         <div className="Sms">
           <h2>SMS Settings</h2>
@@ -122,12 +123,12 @@ class Sms extends Component {
 }
 
 Sms.propTypes = {
-    authenticatedCounsellor: PropTypes.bool,
+    auth: PropTypes.string,
     getSMSDetails: PropTypes.func,
     setSMSDetails: PropTypes.func,
     removeSMSDetails: PropTypes.func,
     history: PropTypes.object,
-    removeSMSError: PropTypes.func,
+    removeError: PropTypes.func,
     renderSMSError: PropTypes.func,
     sms: PropTypes.object,
     errorMessage: PropTypes.string
@@ -135,9 +136,9 @@ Sms.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    sms: state.smssettings.sms,
-    errorMessage: state.smssettings.error,
-    authenticatedCounsellor: state.auth.authenticatedCounsellor
+    sms: state.sms,
+    errorMessage: state.status.error,
+    auth: state.auth
   };
 }
 
@@ -147,7 +148,7 @@ function mapDispatchToProps(dispatch) {
     setSMSDetails: smsActions.setSMSDetails,
     removeSMSDetails: smsActions.removeSMSDetails,
     renderSMSError: smsActions.renderSMSError,
-    removeSMSError: smsActions.removeSMSError
+    removeError: errorActions.removeError
   }, dispatch);
 }
 

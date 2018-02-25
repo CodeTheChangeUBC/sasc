@@ -19,6 +19,7 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as userActions from '../../Redux/Actions/userActions';
+import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -42,7 +43,7 @@ class Register extends Component {
   }
 
   componentWillMount() {
-    this.props.removeAuthError();
+    this.props.removeError();
   }
 
   handleOnChange(event) {
@@ -71,7 +72,7 @@ class Register extends Component {
 
     // TODO: Add regex check for email here.
 
-    this.props.removeAuthError();
+    this.props.removeError();
 
     if (this.props.user) {
       fields.ID = this.props.user.ID;
@@ -149,7 +150,7 @@ class Register extends Component {
 function mapStateToProps(state) {
     return {
       user: state.user,
-      errorMessage: state.auth.error
+      errorMessage: state.status.error
     };
 }
 
@@ -161,7 +162,7 @@ Register.propTypes = {
   history: PropTypes.object,
   signupUser: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeAuthError: PropTypes.func,
+  removeError: PropTypes.func,
   renderAuthError: PropTypes.func
 };
 
@@ -169,7 +170,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     signupUser: authActions.signupUser,
     addUser: userActions.addUser,
-    removeAuthError: authActions.removeAuthError
+    removeError: errorActions.removeError
   }, dispatch);
 }
 

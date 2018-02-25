@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as userActions from '../../Redux/Actions/userActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
+import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -25,7 +26,7 @@ class PreChatSurvey extends Component {
   }
 
   componentWillMount() {
-    this.props.removeUserError();
+    this.props.removeError();
   }
 
   handleOnChange(event) {
@@ -104,7 +105,7 @@ class PreChatSurvey extends Component {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.auth.error
+      errorMessage: state.status.error
     };
 }
 
@@ -113,7 +114,7 @@ PreChatSurvey.propTypes = {
     history: PropTypes.object,
     submitSurvey: PropTypes.func,
     errorMessage: PropTypes.string,
-    removeUserError: PropTypes.func,
+    removeError: PropTypes.func,
     renderUserError: PropTypes.func
 };
 
@@ -121,7 +122,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     submitSurvey: userActions.submitSurvey,
     renderUserError: userActions.renderUserError,
-    removeUserError: userActions.removeUserError
+    removeError: errorActions.removeError
   }, dispatch);
 }
 
