@@ -7,7 +7,7 @@
 // Communication between sockets is done in User objects themselves.
 
 var config = require('../../config')
-var users = require('./acc/users') 
+var User = require('./acc/user') 
 
 var jwt = require('jsonwebtoken')
 
@@ -36,6 +36,6 @@ module.exports = io => {
         var req = socket.request
         console.info(`Connected: IP ${req.connection.remoteAddress}`)
 
-        new User(socket)
+        User.add(socket)
     })
 }
