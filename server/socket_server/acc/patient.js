@@ -8,10 +8,6 @@ class Patient {
         this.partner = this._connect()
     }
 
-    _connect () {
-        /** TODO: Find an appropriate counselor and connect. */
-    }
-
     release () {
         /** TODO: Record the session to the DB here. */
     }

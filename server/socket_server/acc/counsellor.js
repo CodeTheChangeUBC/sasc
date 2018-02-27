@@ -2,34 +2,38 @@ var uuid = require('uuid')
 var User = require('./user')
 
 class Counsellor extends User {
-  constructor (socket) {
-    super(socket, 'Counsellor', this)
+    constructor (socket) {
+        super(socket, 'Counsellor', this)
 
-    this._socket = socket
-    this.id = socket.id
+        this._socket = socket
+        this.id = socket.id
 
-    this.conversations = {}
+        this.conversations = {}
 
-    listen()
-  }
+        listen()
+    }
 
-  /**
-   * Sends the data to the appropriate student conversation
-   * @param  {JSON} data - contains conversation id and data
-   */
-  onMessage (data) {
-    this.conversations[data.convoId].socket.emit('msg', data.msg)
-  }
+    /**
+    * Sends the data to the appropriate student conversation
+    * @param  {JSON} data - contains conversation id and data
+    */
+    onMessage (data) {
+        this.conversations[data.convoId].socket.emit('msg', data.msg)
+    }
 
-  /**
-   * Sets up the listeners for the socket this counselor is connect to.
-   */
-  listen () {
-    var self = this
-    var socket = this._socket
+    request (patient) {
+        /** TODO: request a chat by a patient and have the ability to decline */
+    }
 
-    socket.on('msg', onMessage)
-  }
+    /**
+    * Sets up the listeners for the socket this counselor is connect to.
+    */
+    listen () {
+        var self = this
+        var socket = this._socket
+
+        socket.on('msg', onMessage)
+    }
 }
 
 
