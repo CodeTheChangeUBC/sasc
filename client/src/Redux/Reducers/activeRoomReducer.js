@@ -8,8 +8,8 @@ import {
 import initialState from './initialState';
 
 export default function activeRoomReducer(state = initialState.activeRoom, action) {
- 
-  switch(action.type) {
+  
+    switch(action.type) {
     case JOIN_ROOM:
       return {...state, room: { title: action.room.title, humans: action.room.humans, messages: action.room.messages }};
       /*return Object.assign({}, state.activeRoom.room, {
@@ -29,6 +29,6 @@ export default function activeRoomReducer(state = initialState.activeRoom, actio
       return {...state, room: {}};
     default:
      return state; 
-  }
+    }
 
 }

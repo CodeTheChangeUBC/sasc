@@ -169,7 +169,7 @@ exports.signup = function (req, res) {
             nickname: req.body.nickname.trim(),
             password: req.body.password,
             age: req.body.age,
-            gender: req.body.gender,
+            gender: req.body.gender.trim(),
             phoneNumber: req.body.phoneNumber.trim(),
             email: req.body.email.trim(),
             registered: 1
@@ -184,7 +184,7 @@ exports.signup = function (req, res) {
             nickname: req.body.nickname.trim(),
             password: req.body.password,
             age: req.body.age,
-            gender: req.body.gender,
+            gender: req.body.gender.trim(),
             phoneNumber: req.body.phoneNumber.trim(),
             email: req.body.email.trim(),
             registered: 1

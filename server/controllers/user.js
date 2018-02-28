@@ -1,14 +1,19 @@
 const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
+const helper = require("./helper");
 
 exports.submitSurvey = function (req, res) {
     var user = {
-        nickname: req.body.nickname,
+        nickname: req.body.nickname.trim(),
         age: req.body.age,
-        gender: req.body.gender,
-        email: req.body.email,
+        gender: req.body.gender.trim(),
+        email: req.body.email.trim(),
         registered: 0
     };
+
+    if (helper.checkBlankRequiredFields(user)) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // TODO: Add email regex check here
     // If email passes regex check, the function can continue
@@ -31,7 +36,7 @@ exports.submitSurvey = function (req, res) {
 };
 
 exports.getUser = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
 
     userModel.lookupById(id, function (err, results) {
         if (err) {
@@ -48,15 +53,18 @@ exports.getUser = function (req, res) {
 };
 
 exports.updateUser = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
 
     var user = {
-        nickname: req.body.nickname,
-        password: req.body.password,
+        nickname: req.body.nickname.trim(),
         age: req.body.age,
-        gender: req.body.gender,
-        email: req.body.email
+        gender: req.body.gender.trim(),
+        email: req.body.email.trim()
     };
+
+    if (helper.checkBlankRequiredFields(user)) {
+        return res.status(422).send({error: "You must enter all fields."});
+    }
 
     // Check entered password before updating user information
     Abstract.process(user, function (result) {
@@ -89,7 +97,7 @@ exports.updateUser = function (req, res) {
 };
 
 exports.changePassword = function (req, res) {
-    var id = req.body.ID;
+    var id = req.params.ID;
     var oldPassword = req.body.oldPassword;
 
     Abstract.hashOne(oldPassword, function (err, oldPasswordHashed) {

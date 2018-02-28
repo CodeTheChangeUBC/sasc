@@ -64,7 +64,7 @@ class Register extends Component {
       return false;
     }
 
-    if (!username || !nickname || !age || !gender || !email || !phoneNumber) {
+    if (!username || !nickname || !age || !gender || !email || !phoneNumber || !password) {
       this.props.renderAuthError("You must not leave any field blank.");
       return false;
     }
@@ -102,7 +102,7 @@ class Register extends Component {
       password
     };
 
-    var validated = this.validate(fields);
+    var validated = this.validateForm(fields);
 
     if (validated) {
       const { history } = this.props;

@@ -37,14 +37,24 @@ class RegisterCounsellor extends Component {
     }
   }
 
-  validateForm() {
-    const { password, passwordConfirm } = this.state;
+  validateForm(fields) {
+    const { firstName, lastName, email, password } = fields;
+    const { passwordConfirm } = this.state;
+
+    if (!firstName || !lastName || !email || !password || !passwordConfirm) {
+      this.props.renderAuthError("You must not leave any field blank.");
+      return false;
+    }
+
+    // TODO: add regex check for email here.
 
     if (password !== passwordConfirm) {
       this.props.renderAuthError("Passwords must match.");
     }
 
     this.props.removeAuthError();
+
+    return true;
   }
 
   handleOnChange(event) {
@@ -69,7 +79,7 @@ class RegisterCounsellor extends Component {
       password
     };
 
-    var validated = this.validate(fields);
+    var validated = this.validateForm(fields);
 
     if (validated) {
       const { history } = this.props;
