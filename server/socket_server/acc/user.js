@@ -3,8 +3,13 @@ import Counsellor from './counsellor'
 import Patient from './patient'
 
 class User {
-    constructor (socket, type, obj) {
-        this[type] = obj
+    constructor (socket, type) {
+        this._socket = socket
+    }
+
+    
+    send (event, msg) {
+        this._socket.emit(event, msg)
     }
 
     /**
