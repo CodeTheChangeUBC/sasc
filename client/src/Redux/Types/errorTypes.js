@@ -1,1 +1,0 @@
-export const REMOVE_ERROR = "remove_error";

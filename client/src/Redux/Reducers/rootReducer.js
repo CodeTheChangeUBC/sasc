@@ -6,7 +6,6 @@ import auth from './authReducer';
 import user from './userReducer';
 import counsellor from './counsellorReducer';
 import smssettings from './smsReducer';
-import errorReducer from './errorReducer';
 
 const rootReducer = combineReducers({
   rooms,
@@ -15,8 +14,7 @@ const rootReducer = combineReducers({
   auth,
   user,
   counsellor,
-  smssettings,
-  errorReducer
+  smssettings
 });
 
 export default rootReducer;

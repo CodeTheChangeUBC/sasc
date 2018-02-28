@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as counsellorActions from '../../Redux/Actions/counsellorActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -81,7 +80,7 @@ LoginCounsellor.propTypes = {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.auth.error
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -89,7 +88,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     signinCounsellor: authActions.signinCounsellor,
     addCounsellor: counsellorActions.addCounsellor,
-    removeError: errorActions.removeError }, dispatch);
+    removeError: counsellorActions.removeError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginCounsellor);

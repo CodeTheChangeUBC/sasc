@@ -25,9 +25,9 @@ class MessageInstance extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    auth: state.auth,
-    user: state.user,
-    counsellor: state.counsellor
+    auth: state.auth.auth,
+    user: state.user.user,
+    counsellor: state.counsellor.counsellor
   };
 }
 

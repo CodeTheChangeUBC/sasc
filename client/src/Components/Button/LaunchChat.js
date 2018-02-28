@@ -56,8 +56,8 @@ class LaunchChat extends Component {
 
 function mapStateToProps(state) {
     return {
-        chatConnected: state.rooms.room,
-        auth: state.auth
+        chatConnected: state.chat.connected,
+        auth: state.auth.auth
     };
 }
 

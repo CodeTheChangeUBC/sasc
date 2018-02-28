@@ -46,9 +46,10 @@ class ChatInput extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     connected: state.chat.connected,
-    activeRoom: state.activeRoom,
-    auth: state.auth,
-    counsellor: state.counsellor
+    activeRoom: state.activeRoom.activeRoom,
+    auth: state.auth.auth,
+    counsellor: state.counsellor.counsellor,
+    user: state.user.user
   };
 }
 

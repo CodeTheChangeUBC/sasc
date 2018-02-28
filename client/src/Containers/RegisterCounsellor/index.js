@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as counsellorActions from '../../Redux/Actions/counsellorActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -111,7 +110,7 @@ class RegisterCounsellor extends Component {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.status.error
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -120,7 +119,7 @@ function mapDispatchToProps(dispatch) {
     signupCounsellor: authActions.signupCounsellor,
     addCounsellor: counsellorActions.addCounsellor,
     renderAuthError: authActions.renderAuthError,
-    removeError: errorActions.removeError
+    removeError: authActions.removeError
   }, dispatch);
 }
 

@@ -4,14 +4,20 @@ import {
     UPDATE_COUNSELLOR,
     REMOVE_COUNSELLOR,
     COUNSELLOR_ERROR,
-    PASSWORD_CHANGE
+    PASSWORD_CHANGE,
+    REMOVE_ERROR
 } from './../Types/counsellorTypes';
-import { REMOVE_ERROR } from "./../Types/errorTypes";
 import axios from "axios";
 import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/counsellors";
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
 
 function counsellorError(error) {
     return {

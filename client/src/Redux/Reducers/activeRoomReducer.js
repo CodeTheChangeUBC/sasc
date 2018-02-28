@@ -4,7 +4,7 @@ import {
 } from "./../Types/activeRoomTypes";
 import initialState from './initialState';
 
-export default function activeRoomReducer(state = initialState, action) {
+export default function activeRoomReducer(state = initialState.activeRoom, action) {
   switch(action.type) {
     case SET_ACTIVE_ROOM:
       return {...state, activeRoom: action.roomID};

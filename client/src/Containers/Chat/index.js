@@ -19,7 +19,6 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.room.messages,
       connected: false
     };
 
@@ -29,7 +28,7 @@ class Chat extends Component {
 
   componentWillMount() {
       if(!(this.props.connected)) {
-        socket.emit('subscribe', {room: this.props.activeRoom});
+        socket.emit('subscribe', {room: this.props.rooms[0]});
         this.props.connectToChat();
     }
     //console.log('will mount initated');
@@ -44,9 +43,9 @@ class Chat extends Component {
     //console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
       if (this.props.auth === "counsellor") {
-        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+        this.props.addMessageToRoom({room: this.props.rooms[0], newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
-        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        this.props.addMessageToRoom({room: this.props.rooms[0], newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
       this.forceUpdate();
@@ -56,13 +55,13 @@ class Chat extends Component {
   renderChatBox() {
     // If a counsellor has never connected to any user before, they will have no rooms.
     // However, a user will always have a room when they enter the chat.
-    if (Object.keys(this.props.room).length !== 0) {
+    if (Object.keys(this.props.rooms).length !== 0) {
       return (<div className="container-for-title-and-message-box">
         <div className="chat-title">
           <h3>{/* TODO: Name of user */}</h3>
         </div>
-        <MessageBox msgs={this.props.room.messages} />
-        <ChatInput socket={socket} room={this.props.room}/>
+        <MessageBox msgs={this.props.rooms[0].messages} />
+        <ChatInput socket={socket} room={this.props.rooms[0]}/>
       </div>);
     } else {
       return (<div className="container-for-title-and-message-box"></div>);
@@ -87,7 +86,7 @@ class Chat extends Component {
             <div className="chat-title">
               <h3>{/* TODO: Name of counsellor */}</h3>
             </div>
-            <MessageBox msgs={this.props.room.messages} />
+            <MessageBox msgs={this.props.rooms[0].messages} />
             <ChatInput socket={socket} />
           </div>
         </div>
@@ -101,12 +100,11 @@ class Chat extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     chat: state.chat.connected,
-    user: state.user,
-    counsellor: state.counsellor,
-    room: ownProps.findRoomById(state.activeRoom),
+    user: state.user.user,
+    counsellor: state.counsellor.counsellor,
     rooms: state.rooms,
-    activeRoom: state.activeRoom,
-    auth: state.auth
+    activeRoom: state.activeRoom.activeRoom,
+    auth: state.auth.auth
   };
 }
 

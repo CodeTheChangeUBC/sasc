@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as userActions from '../../Redux/Actions/userActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -105,7 +104,7 @@ class PreChatSurvey extends Component {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.status.error
+      errorMessage: state.user.status.error
     };
 }
 
@@ -122,7 +121,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     submitSurvey: userActions.submitSurvey,
     renderUserError: userActions.renderUserError,
-    removeError: errorActions.removeError
+    removeError: userActions.removeError
   }, dispatch);
 }
 

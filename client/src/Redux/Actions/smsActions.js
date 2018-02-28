@@ -2,13 +2,20 @@ import {
     GET_SMS_SETTINGS,
     SET_SMS_SETTINGS,
     REMOVE_SMS_SETTINGS,
-    SMS_ERROR
+    SMS_ERROR,
+    REMOVE_ERROR
 } from './../Types/smsTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
 const ROOT_URL = config.api;
 export const BASE_URL = "/twilio";
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
 
 function smsError(error) {
     return {

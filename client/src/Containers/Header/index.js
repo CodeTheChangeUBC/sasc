@@ -83,7 +83,7 @@ Header.propTypes = {
 function mapStateToProps(state) {
     return {
         connected: state.chat.connected,
-        auth: state.auth
+        auth: state.auth.auth
     };
 }
 

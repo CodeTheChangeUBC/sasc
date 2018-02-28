@@ -1,17 +1,20 @@
 export default {
 
-  status: {
-    error: "",
-    success: ""
+  auth: {
+    auth: "",
+    status: {
+      error: "",
+      success: ""
+    },
   },
-
-  auth: "",
 
   chat: {
     connected: false
   },
 
-  activeRoom: 1,
+  activeRoom: {
+    activeRoom: null
+  },
   
   rooms: [{ 
     roomID: 1,
@@ -74,37 +77,55 @@ export default {
   ],
 
   user: {
-    ID: "",
-    firstName: "",
-    lastName: "",
-    username: "",
-    age: 0,
-    email: "",
-    gender: "",
-    nickname: "",
-    phoneNumber: "",
-    registered: 0
+    user: {
+      ID: "",
+      firstName: "",
+      lastName: "",
+      username: "",
+      age: 0,
+      email: "",
+      gender: "",
+      nickname: "",
+      phoneNumber: "",
+      registered: 0
+    },
+    status: {
+      error: "",
+      success: ""
+    }
   },
 
   counsellor: {
-    ID: "153",
-    firstName: "Shilo",
-    lastName: "St. Cyr",
-    email: "admin@ams.ubc.ca",
-    students: [
-      {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
-      {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },
-      {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" },
-      {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" },
-      {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" }
-    ]
+    counsellor: {
+      ID: "153",
+      firstName: "Shilo",
+      lastName: "St. Cyr",
+      email: "admin@ams.ubc.ca",
+      students: [
+        {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
+        {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },
+        {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" },
+        {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" },
+        {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" }
+      ]
+    },
+    status: {
+      error: "",
+      success: ""
+    }
   },
 
   sms: {
-    email: "",
-    twilioPhoneNumber: "",
-    accountSid: "",
-    authToken: ""
+    sms: {
+      email: "",
+      twilioPhoneNumber: "",
+      accountSid: "",
+      authToken: ""
+    },
+    status: {
+      error: "",
+      success: ""
+    }
   }
 
 };

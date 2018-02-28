@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as userActions from '../../Redux/Actions/userActions';
 import * as counsellorActions from '../../Redux/Actions/counsellorActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -27,7 +26,8 @@ class PasswordChange extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeCounsellorError();
+    this.props.removeUserError();
   }
 
   handleOnChange(event) {
@@ -40,7 +40,7 @@ class PasswordChange extends Component {
     });
   }
 
-  validateForm(renderError, removeError) {
+  validateForm(renderError) {
     const { oldPassword, newPassword, newPasswordConfirm } = this.state;
     if (newPassword === oldPassword) {
         renderError("The new password cannot be the same as the old password.");
@@ -52,7 +52,8 @@ class PasswordChange extends Component {
       return false;
     }
 
-    removeError();
+    this.props.removeUserError();
+    this.props.removeCounsellorError();
     
     var ID;
     if (this.props.auth === "counsellor") {
@@ -75,8 +76,7 @@ class PasswordChange extends Component {
     var validated = false;
     if (this.props.auth === "user") {
       validated = this.validateForm(
-        this.props.renderUserError,
-        this.props.removeError
+        this.props.renderUserError
       );
       if (validated) {
         this.props.changeUserPassword({
@@ -88,8 +88,7 @@ class PasswordChange extends Component {
       }
     } else if (this.props.auth === "counsellor") {
       validated = this.validateForm(
-        this.props.renderCounsellorError,
-        this.props.removeError
+        this.props.renderCounsellorError
       );
       if (validated) {
         this.props.changeCounsellorPassword({
@@ -103,16 +102,28 @@ class PasswordChange extends Component {
   }
 
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.props.counsellorStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessage}
+                {this.props.counsellorStatus.error}
             </div>
         );
-    } else if (this.props.successMessage) {
+    } else if (this.props.counsellorStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessage}
+                {this.props.counsellorStatus.success}
+            </div>
+        );
+    } else if (this.props.userStatus.error) {
+        return (
+            <div className="error">
+                {this.props.userStatus.error}
+            </div>
+        );
+    } else if (this.props.userStatus.success) {
+      return (
+            <div className="success">
+                {this.props.userStatus.success}
             </div>
         );
     }
@@ -143,11 +154,11 @@ class PasswordChange extends Component {
 
 function mapStateToProps(state) {
     return {
-      auth: state.auth,
-      user: state.user,
-      counsellor: state.counsellor,
-      errorMessage: state.status.error,
-      successMessage: state.status.success
+      auth: state.auth.auth,
+      user: state.user.user,
+      counsellor: state.counsellor.counsellor,
+      counsellorStatus: state.counsellor.status,
+      userStatus: state.user.status
     };
 }
 
@@ -159,7 +170,8 @@ function mapDispatchToProps(dispatch) {
     updateCounsellor: counsellorActions.updateCounsellor,
     changeUserPassword: userActions.changeUserPassword,
     changeCounsellorPassword: counsellorActions.changeCounsellorPassword,
-    removeError: errorActions.removeError,
+    removeUserError: userActions.removeError,
+    removeCounsellorError: counsellorActions.removeError,
     renderUserError: userActions.renderUserError,
     renderCounsellorError: counsellorActions.renderCounsellorError
   }, dispatch);
@@ -173,11 +185,12 @@ PasswordChange.propTypes = {
   "user.ID": PropTypes.string,
   counsellor: PropTypes.object,
   "counsellor.ID": PropTypes.string,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
+  counsellorStatus: PropTypes.object,
+  userStatus: PropTypes.object,
   renderUserError: PropTypes.func,
   renderCounsellorError: PropTypes.func,
-  removeError: PropTypes.func
+  removeUserError: PropTypes.func,
+  removeCounsellorError: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PasswordChange);

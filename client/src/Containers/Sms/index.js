@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 import Form from './../../Components/Form';
 import * as smsActions from '../../Redux/Actions/smsActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -136,9 +135,9 @@ Sms.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    sms: state.sms,
-    errorMessage: state.status.error,
-    auth: state.auth
+    sms: state.sms.sms,
+    errorMessage: state.sms.status.error,
+    auth: state.auth.auth
   };
 }
 
@@ -148,7 +147,7 @@ function mapDispatchToProps(dispatch) {
     setSMSDetails: smsActions.setSMSDetails,
     removeSMSDetails: smsActions.removeSMSDetails,
     renderSMSError: smsActions.renderSMSError,
-    removeError: errorActions.removeError
+    removeError: smsActions.removeError
   }, dispatch);
 }
 

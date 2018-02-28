@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as userActions from '../../Redux/Actions/userActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -87,7 +86,7 @@ Login.propTypes = {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.status.error
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -95,7 +94,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     signinUser: authActions.signinUser,
     addUser: userActions.addUser,
-    removeError: errorActions.removeError
+    removeError: userActions.removeError
   }, dispatch);
 }
 

@@ -19,7 +19,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as authActions from '../../Redux/Actions/authActions';
 import * as userActions from '../../Redux/Actions/userActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -149,8 +148,8 @@ class Register extends Component {
 
 function mapStateToProps(state) {
     return {
-      user: state.user,
-      errorMessage: state.status.error
+      user: state.user.user,
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -170,7 +169,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     signupUser: authActions.signupUser,
     addUser: userActions.addUser,
-    removeError: errorActions.removeError
+    removeError: authActions.removeError
   }, dispatch);
 }
 

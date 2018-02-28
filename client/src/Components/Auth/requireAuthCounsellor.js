@@ -26,7 +26,7 @@ export default function(ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { auth: state.auth };
+    return { auth: state.auth.auth };
   }
 
   AuthenticationForCounsellor.propTypes = {

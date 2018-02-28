@@ -4,3 +4,4 @@ export const UPDATE_COUNSELLOR = "update_counsellor";
 export const REMOVE_COUNSELLOR = "remove_counsellor";
 export const COUNSELLOR_ERROR = "counsellor_error";
 export const PASSWORD_CHANGE = "password_change";
+export const REMOVE_ERROR = "remove_error";

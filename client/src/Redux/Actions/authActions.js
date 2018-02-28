@@ -2,13 +2,20 @@ import {
     AUTH_USER,
     AUTH_COUNSELLOR,
     UNAUTH,
-    AUTH_ERROR
+    AUTH_ERROR,
+    REMOVE_ERROR
 } from "./../Types/authTypes";
 import axios from "axios";
 import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/auth";
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
 
 function authError(error) {
     return {

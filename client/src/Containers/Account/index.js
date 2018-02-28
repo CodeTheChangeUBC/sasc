@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import Form from './../../Components/Form';
 import * as userActions from '../../Redux/Actions/userActions';
 import * as counsellorActions from '../../Redux/Actions/counsellorActions';
-import * as errorActions from '../../Redux/Actions/errorActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -32,7 +31,8 @@ class Account extends Component {
   }
 
   componentWillMount() {
-    this.props.removeError();
+    this.props.removeCounsellorError();
+    this.props.removeUserError();
     if (this.props.auth === "user") {
       this.props.getUser(this.props.user.ID);
     } else if (this.props.auth === "counsellor") {
@@ -50,7 +50,7 @@ class Account extends Component {
     });
   }
 
-  validateForm(fields, renderError, removeError) {
+  validateForm(fields, renderError) {
     const { password, passwordConfirm } = this.state;
 
     if (password !== passwordConfirm) {
@@ -113,7 +113,7 @@ class Account extends Component {
         password
       };
 
-      validated = this.validateForm(fields, this.props.renderUserError, this.props.removeError);
+      validated = this.validateForm(fields, this.props.renderUserError);
       if (validated) {
         this.props.updateUser(validated);
       }
@@ -131,7 +131,7 @@ class Account extends Component {
         lastName: lastName.trim(),
         password
       };
-      validated = this.validateForm(fields, this.props.renderCounsellorError, this.props.removeError);
+      validated = this.validateForm(fields, this.props.renderCounsellorError);
       if (validated) {
         this.props.updateCounsellor(validated);
       }
@@ -139,16 +139,28 @@ class Account extends Component {
   }
 
   renderAlert() {
-    if (this.props.errorMessage) {
+    if (this.props.counsellorStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessage}
+                {this.props.counsellorStatus.error}
             </div>
         );
-    } else if (this.props.successMessage) {
+    } else if (this.props.counsellorStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessage}
+                {this.props.counsellorStatus.success}
+            </div>
+        );
+    } else if (this.props.userStatus.error) {
+        return (
+            <div className="error">
+                {this.props.userStatus.error}
+            </div>
+        );
+    } else if (this.props.userStatus.success) {
+      return (
+            <div className="success">
+                {this.props.userStatus.success}
             </div>
         );
     }
@@ -239,11 +251,11 @@ class Account extends Component {
 
 function mapStateToProps(state) {
     return {
-      auth: state.auth,
-      user: state.user,
-      counsellor: state.counsellor,
-      errorMessage: state.status.error,
-      successMessage: state.status.success
+      auth: state.auth.auth,
+      user: state.user.user,
+      counsellor: state.counsellor.counsellor,
+      counsellorStatus: state.counsellor.status,
+      userStatus: state.user.status
     };
 }
 
@@ -253,7 +265,8 @@ function mapDispatchToProps(dispatch) {
     updateUser: userActions.updateUser,
     getCounsellor: counsellorActions.getCounsellor,
     updateCounsellor: counsellorActions.updateCounsellor,
-    removeError: errorActions.removeError
+    removeUserError: userActions.removeError,
+    removeCounsellorError: counsellorActions.removeError
   }, dispatch);
 }
 
@@ -279,8 +292,15 @@ Account.propTypes = {
   getCounsellor: PropTypes.func,
   updateUser: PropTypes.func,
   updateCounsellor: PropTypes.func,
-  removeError: PropTypes.func,
-  renderError: PropTypes.func
+  removeUserError: PropTypes.func,
+  removeCounsellorError: PropTypes.func,
+  renderError: PropTypes.func,
+  "counsellorStatus": PropTypes.object,
+  "userStatus": PropTypes.object,
+  "counsellorStatus.error": PropTypes.string,
+  "userStatus.error": PropTypes.string,
+  "counsellorStatus.success": PropTypes.string,
+  "userStatus.success": PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
