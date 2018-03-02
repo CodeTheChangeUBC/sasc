@@ -24,7 +24,6 @@ function abstractLocalLogin(identifier, password, done, lookupUser, verifyPasswo
         if (err) {
             return done(err);
         }
-
         if (users[0] === undefined || users[0] === null) {
             return done(null, false);
         }

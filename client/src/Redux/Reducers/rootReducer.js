@@ -5,7 +5,7 @@ import chat from './chatReducer';
 import auth from './authReducer';
 import user from './userReducer';
 import counsellor from './counsellorReducer';
-import smssettings from './smsReducer';
+import sms from './smsReducer';
 
 const rootReducer = combineReducers({
   rooms,
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   auth,
   user,
   counsellor,
-  smssettings
+  sms
 });
 
 export default rootReducer;
