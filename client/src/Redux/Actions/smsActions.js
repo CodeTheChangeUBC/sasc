@@ -44,7 +44,6 @@ export function getSMSDetails() {
         };
         axios.get(`${ROOT_URL + BASE_URL}/settings`, header)
             .then(function (response) {
-                console.log(response.data)
                 dispatch({
                     type: GET_SMS_SETTINGS,
                     data: response.data
