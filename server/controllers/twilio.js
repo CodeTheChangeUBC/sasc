@@ -1,4 +1,26 @@
 const twilioModel = require("../models/twilio");
+const isEmailValid = require('../models/abstract').isEmailValid
+
+exports.addTwilioAccountInfo = function (req, res) {
+    var twilio = {
+        ID: 1,
+        email: req.body.email,
+        twilioPhoneNumber: req.body.twilioPhoneNumber,
+        accountSid: req.body.accountSid,
+        authToken: req.body.authToken
+    };
+
+    // Check if email is valid
+    if (!isEmailValid(email, res)) return;
+
+    twilioModel.create(twilio, function (err, ignore) {
+        if (err) {
+            return res.status(422).send({error: "Failed to add twilio account information."});
+        } else {
+            return res.status(201).send({success: "Successfully added twilio account information."});
+        }
+    });
+};
 
 exports.getAllTwilioAccountInfo = function (req, res) {
     var twilio = twilioModel.getSMSFields();
@@ -23,9 +45,8 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
-    // TODO: Add email regex check here
-    // If email passes regex check, the function can continue
-    // else, send a response to the frontend.
+    // Check if email is valid, if not, return
+    if (!isEmailValid(email, res)) return;
 
     if (isNaN(values.twilioPhoneNumber)) {
         return res.status(422).send({error: "Twilio phone number must be a number."});
