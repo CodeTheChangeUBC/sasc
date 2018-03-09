@@ -200,9 +200,9 @@ function fieldQueries(fields, and) {
 
 // Check if email invalid. 
 // If not, send 500 error and error response
-function isEmailValid(email,res) {
+exports.isEmailValid = function (email,res) {
 	if (!emailRegex({exact: true}).test(email)) {
-        res.status(500).send({error: 'Please provide a valid email'})
+        res.status(422).send({error: 'Please provide a valid email'})
         return false;
     }
     return true;
