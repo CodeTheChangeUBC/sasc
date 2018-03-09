@@ -6,7 +6,24 @@ class Counsellor extends User {
     constructor (socket) {
         super(socket)
 
+        // For patients that haven't been accepted yet
         this._patientQueue = []
+
+        // For patients that have been accepted, meant for relaying
+        this._patients = {}
+
+        socket
+            .on('patients', data => {
+                let keys = Object.keys(this._patients)
+
+                this.emit(keys)
+            })
+            .on('msg', packet => {
+                let patientKey = packet.to
+                let patient = this._patients[patientKey]
+
+                patient.send(packet.msg)
+            })
     }
 
     /**

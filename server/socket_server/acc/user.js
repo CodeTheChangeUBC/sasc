@@ -9,7 +9,7 @@ class User {
     }
 
     
-    send (event, msg) {
+    emit (event, msg) {
         this._socket.emit(event, msg)
     }
 
@@ -47,7 +47,7 @@ class User {
         // Detect payload user type and create the proper user type
         switch (socket.payload) {
             case 'PATIENT':
-                .// Patients must be immediately matched to a counsellor.
+                // Patients must be immediately matched to a counsellor.
                 let user = new Patient(socket)
                 this.Patients[socket.id] = user
 

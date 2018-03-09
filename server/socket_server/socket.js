@@ -34,7 +34,7 @@ module.exports = io => {
     // Set up listeners for this socket.
     io.on('connection', socket => {
         var req = socket.request
-        console.info(`Connected: IP ${req.connection.remoteAddress}`)
+        console.info(`Socket connection: IP ${req.connection.remoteAddress}`)
 
         User.add(socket)
     })
