@@ -1,80 +1,44 @@
-# sasc
-Development repo for the SASC project.
+[![Maintainability](https://api.codeclimate.com/v1/badges/04db8a89d03f899cb0c5/maintainability)](https://codeclimate.com/github/CodeTheChangeUBC/reBOOT/maintainability)   [![Test Coverage](https://api.codeclimate.com/v1/badges/04db8a89d03f899cb0c5/test_coverage)](https://codeclimate.com/github/CodeTheChangeUBC/reBOOT/test_coverage)
+# SASC
+This is the development repository for the project. The project is a chat app deveoped fo
 
-The tech stack for this project is node.js, express, react, and MySQL.
+## Tech/Frameworks
+- **Front-End:** React/Redux
+- **Back-End:** NodeJS, Express
+- **Database:** MySQL
 
-How to get the project running:
+## Humans
+#### Lead Developers
+- **Stephanie Chan** - [@schan219](http://github.com/schan219)
+- **Joe (Joseph) Thomas** - [@shade](http://github.com/shade)
 
-To install dependencies, inside the sasc folder run
-``` 
-npm install
-```
+#### Developers
+- **Ben Chugg** - [@bchugg](http://github.com/bchugg)
+- **Colin Chen** - [@fireofearth](http://github.com/fireofearth)
+- **Jonathan Funk** - [@jonathanfunk](http://github.com/jonathanfunk)
 
-When working on a major functionality for the project that has a chance of breaking everyone else's work, please create your own branch and work on your part there.
+## Contributing
+Coding contributions are to be made by members of **Code the Change UBC** only.
 
-To create a branch use
-```
-git branch your-branch-name
-```
+When making a **contribution**, make sure to do the following:
 
-To switch to the branch you have just created use
-```
-git checkout your-branch-name
-```
+1. Assign yourself to an issue
+2. **Make sure** you `git pull` the latest changes to the master branch
+3. Checkout a new branch `git checkout -b [name_of_your_new_branch]` to commit your changes to
+4. Make (and test!) your changes.
+5. `git commit -m "ADD A DESCRIPTION OF YOUR CHANGES"` to commit your changes to the branch
+6. `git push origin [name_of_your_branch]` to push your changes to the repo
+7. Create a **Pull Request** into the master branch
+8. After approval from **at least one** supervisor (**@shade** or **@schan219**) merge branch into master.
 
-To check which branch you are working on use
-```
-git branch
-```
 
-To push changes to your branch use
-```
-git push origin your-branch-name
-```
+## Found a Bug?
+To provide **suggestions** or **report bugs**, open an **issue** first to discuss potential changes/additions.
 
-When you are ready to merge your branch with master, please create a pull request so someone can review your code before it gets merged with master.
+## Contacts
+#### Code the Change UBC
+* Homepage: https://codethechangeubc.org/
+* Email: codethechangeubc@gmail.com
+* Facebook: https://www.facebook.com/codethechangeubc/
 
-### (Local) DB Setup 
-From the sasc project root directory, change your working directory to the commons folder:
-```
-cd commons
-```
-Ensure you have mysql installed locally. Create the development table sasc_dev_db by logging into mysql - `mysql -uroot` (`mysql -uroot -p` with password) - and then running
-```
-create database sasc_dev_db;
-```
-From here, create a user sasc which will have access to this db:
-```
-CREATE USER 'sasc'@'localhost';
-```
-And then give it the desired privileges: 
-```
-GRANT ALL PRIVILEGES
-	-> ON sasc_dev_db.*
-	-> TO 'sasc'@'localhost';
-``` 
-Now use the database:
-```
-use sasc_dev_db
-```
-Pull the tables from scripts.sql into the application:
-```
-source scripts.sql
-```
-You should be good to go!
-
-### Testing 
-
-To run all tests: 
-```
-npm test
-```
-
-To test a specific feature (where tests for this feature are under `./test/<feature-name>/*`):
-```
-npm run-script test-<feature-name>
-```
-To run the specific test file `./test/<feature-name>/<test-name>.js`: 
-``` 
-mocha ./test/<feature-name>/<test-name>.js
-```
+*README.md file has been imported and modified from the Represent the 10 project. Originally by @EWaterman*
