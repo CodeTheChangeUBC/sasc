@@ -25,7 +25,7 @@ exports.addOrUpdateTwilioAccountInfo = function (req, res) {
     }
 
     // Check if email is valid, if not, return
-    if (!isEmailValid(email, res)) return;
+    if (!isEmailValid(values.email, res)) return;
 
     if (isNaN(values.twilioPhoneNumber)) {
         return res.status(422).send({error: "Twilio phone number must be a number."});
