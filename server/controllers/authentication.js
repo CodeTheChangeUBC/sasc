@@ -154,6 +154,7 @@ exports.checkRoleAndGetInfo = function (req, res) {
 }
 
 exports.signup = function (req, res) {
+
     var requiredCredentials = {
         username: req.body.username.trim(),
         password: req.body.password,
@@ -161,8 +162,8 @@ exports.signup = function (req, res) {
     };
 
     // If email invalid, send error to frontend and return
-    if (!isEmailValid(email, res)) return;
-    
+    if (!isEmailValid(requiredCredentials.email, res)) return;
+
     if (req.body.ID === undefined || req.body.ID === null) {
         // Signing up without taking pre-chat survey
         var user = {
@@ -227,7 +228,7 @@ exports.signupCounsellor = function (req, res) {
     };
 
     // Check if email valid 
-    if (!isEmailValid(email, res)) return;
+    if (!isEmailValid(requiredCredentials.email, res)) return;
 
     abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel.lookupByEmail, Abstract.process, counsellorModel.create);
 };
