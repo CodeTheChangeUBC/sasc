@@ -1,6 +1,7 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/04db8a89d03f899cb0c5/maintainability)](https://codeclimate.com/github/CodeTheChangeUBC/reBOOT/maintainability)   [![Test Coverage](https://api.codeclimate.com/v1/badges/04db8a89d03f899cb0c5/test_coverage)](https://codeclimate.com/github/CodeTheChangeUBC/reBOOT/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/90eb1ea404b5ffa970aa/maintainability)](https://codeclimate.com/github/CodeTheChangeUBC/sasc/maintainability)
+    
 # SASC
-This is the development repository for the project. The project is a chat app deveoped fo
+This is the development repository for the project.
 
 ## Tech/Frameworks
 - **Front-End:** React/Redux
