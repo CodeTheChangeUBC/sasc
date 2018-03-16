@@ -1,36 +1,45 @@
-// Pre-req: Socket Server should already be running.
-var assert = require('assert')
-var io_client = require('socket.io-client')
 
-// Build some tokens later.
-const AUTH_TOKENS = [
-    '..'
-]
+var expect = require('chai').expect
+  , server = require('../index')
+  , io = require('socket.io-client')
+  , ioOptions = { 
+      transports: ['websocket']
+    , forceNew: true
+    , reconnection: false
+  }
+  , testMsg = 'HelloWorld'
+  , sender
+  , receiver
 
-describe('connection', n => {
-    var socket
 
-    // Select a random token and make a socket connection
-    before(n => {
-        var token = AUTH_TOKENS[~~(Math.random() * AUTH_TOKENS)]
-        socket = io_client(`http://localhost?t=${token}`)
+
+describe('Chat Events', function(){
+  beforeEach(function(done){
+    
+    // start the io server
+    server.start()
+    // connect two io clients
+    sender = io('http://localhost:3000/', ioOptions)
+    receiver = io('http://localhost:3000/', ioOptions)
+    
+    // finish beforeEach setup
+    done()
+  })
+  afterEach(function(done){
+    
+    // disconnect io clients after each test
+    sender.disconnect()
+    receiver.disconnect()
+    done()
+  })
+
+  describe('Message Events', function(){
+    it('Clients should receive a message when the `message` event is emited.', function(done){
+      sender.emit('message', testMsg)
+      receiver.on('message', function(msg){
+        expect(msg).to.equal(testMsg)
+        done()
+      })
     })
-
-    // Check that a basic echo works on this connection.
-    it('should send echo fine.', done => {
-        const orig = 'JOE THOMAS IS AMAZING (@bchugg is meh)!!! 420 YOLO... SWAG SWAG'
-
-        socket.once('echo', msg => {
-            assert(msg).equal(orig)
-            done()
-        })
-    })
+  })
 })
-
-
-
-
-
-
-
-

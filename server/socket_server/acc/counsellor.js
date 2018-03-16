@@ -6,46 +6,46 @@ class Counsellor extends User {
     constructor (socket) {
         super(socket)
 
-        // For patients that haven't been accepted yet
-        this._patientQueue = []
+        // For counsellees that haven't been accepted yet
+        this._counselleeQueue = []
 
-        // For patients that have been accepted, meant for relaying
-        this._patients = {}
+        // For counsellees that have been accepted, meant for relaying
+        this._counsellees = {}
 
         socket
-            .on('patients', data => {
-                let keys = Object.keys(this._patients)
+            .on('counsellees', data => {
+                let keys = Object.keys(this._counsellees)
 
                 this.emit(keys)
             })
             .on('msg', packet => {
-                let patientKey = packet.to
-                let patient = this._patients[patientKey]
+                let counselleeKey = packet.to
+                let counsellee = this._counsellees[counselleeKey]
 
-                patient.send(packet.msg)
+                counsellee.send(packet.msg)
             })
     }
 
     /**
-     * Sets up a basic connection to the patient
-     * @param  {Patient} patient - the patient trying to connect
+     * Sets up a basic connection to the counsellee
+     * @param  {Counsellee} counsellee - the counsellee trying to connect
      */
-    request (patient) {
+    request (counsellee) {
 
         // Request a message 
-        this.emit('request', patient.id)
-        this._hook(patient)
+        this.emit('request', counsellee.id)
+        this._hook(counsellee)
 
-        this._patientQueue.push(patient)
+        this._counselleeQueue.push(counsellee)
     }
 
     /**
-     * Sets up local hooks for messages from patients
-     * @param  {Patient} p - the patient to set listeners for
+     * Sets up local hooks for messages from counsellees
+     * @param  {Counsellee} p - the counsellee to set listeners for
      */
     _hook (p) {
 
-        // Relay messages from the patient
+        // Relay messages from the counsellee
         p.socket.on('msg', data => {
             this.emit('msg', data)
         })
