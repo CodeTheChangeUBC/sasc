@@ -34,7 +34,7 @@ function convertToSentence(listOfNouns) {
     return str;
 }
 
-async function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryptPassword, create) {
+async function abstractSignup(user, requiredCredentials, role, res, model) {
     var error = false;
     var missingCredentials = [];
 
@@ -53,7 +53,7 @@ async function abstractSignup(user, requiredCredentials, role, res, lookupUser, 
 
     // Check if user with their corresponding identifier already exists
     let err, users;
-    [err, users] = await to(lookupUser(usernameCredential));
+    [err, users] = await to(model.lookupByCredential(usernameCredential));
 
     if (err) {
         return res.status(422).send({error: "Cannot look up user."});
@@ -64,43 +64,48 @@ async function abstractSignup(user, requiredCredentials, role, res, lookupUser, 
         return res.status(422).send({error: usernameCredential + " is in use."});
     }
 
-    let result;
-    [err, result] = await to(encryptPassword(user));
+    var result, results;
+    [err, result] = await to(Abstract.Process(user));
     user = result;
 
     if (user.ID === undefined || user.ID === null) {
         // Create a new user
-        let results;
-        [err, results] = await to(create(user));
-        if (err) {
-            return res.status(422).send({error: "Cannot create " + role + "."});
-        }
-
-        if (!results) {
-            return res.status(422).send({error: "Cannot create " + role + "."});
-        }
-
-        user.ID = results.insertId;
-
-        // Send token back to client
-        res.json({token: tokenForUser(user, role)});
-
+        [err, results] = await to(model.create(user));
     } else {
         // Update existing user who took the pre-chat survey
-        let results;
-        [err, results] = await to(create(user.ID, user));
-        if (err) {
-            return res.status(422).send({error: "Cannot create " + role + "."});
-        }
-
-        if (!results) {
-            return res.status(422).send({error: "Cannot create " + role + "."});
-        }
-
-        // Send token back to client
-        res.json({token: tokenForUser(user, role)});
+        [err, results] = await to(model.update(user.ID, user));
     }
+
+    if (err) {
+        return res.status(422).send({error: "Cannot create " + role + "."});
+    }
+
+    if (!results) {
+        return res.status(422).send({error: "Cannot create " + role + "."});
+    }
+
+    // Send token back to client
+    res.json({token: tokenForUser(user, role)});
 };
+
+async function abstractCheckRole(model, role) {
+    [err, users] = await to(model.lookupById(id));
+    if (err) {
+        return res.status(422).send({error: "Unable to lookup " + role + "."});
+    }
+
+    if (users.length === 0) {
+        return res.status(422).send({error: "No such " + role + "."});
+    }
+
+    var user = users[0];
+    delete user.password;
+
+    return res.send({
+        user: user,
+        role: role
+    });
+}
 
 exports.checkRoleAndGetInfo = async function (req, res) {
     try {
@@ -110,39 +115,9 @@ exports.checkRoleAndGetInfo = async function (req, res) {
         var err, users;
 
         if (role === "user") {
-            [err, users] = await to(userModel.lookupById(id));
-            if (err) {
-                return res.status(422).send({error: "Unable to lookup user."});
-            }
-
-            if (users.length === 0) {
-                return res.status(422).send({error: "No such user."});
-            }
-
-            var user = users[0];
-            delete user.password;
-
-            return res.send({
-                user: user,
-                role: role
-            });
+            abstractCheckRole(userModel, "user");
         } else if (role === "counsellor") {
-            [err, users] = await to(counsellorModel.lookupById(id));
-            if (err) {
-                return res.status(422).send({error: "Unable to lookup counsellor."});
-            }
-
-            if (users.length === 0) {
-                return res.status(422).send({error: "No such counsellor."});
-            }
-
-            var user = users[0];
-            delete user.password;
-
-            return res.send({
-                user: user,
-                role: role
-            });
+            abstractCheckRole(counsellorModel, "counsellor");
         }
 
     } catch (e) {
@@ -163,54 +138,41 @@ exports.signup = function (req, res) {
         return;
     }
 
-    if (req.body.ID === undefined || req.body.ID === null) {
-        // Signing up without taking pre-chat survey
-        var user = {
-            username: req.body.username.trim(),
-            nickname: req.body.nickname.trim(),
-            password: req.body.password,
-            age: req.body.age,
-            gender: req.body.gender.trim(),
-            phoneNumber: req.body.phoneNumber.trim(),
-            email: req.body.email.trim(),
-            registered: 1
-        };
+    var user = {
+        username: req.body.username.trim(),
+        nickname: req.body.nickname.trim(),
+        password: req.body.password,
+        age: req.body.age,
+        gender: req.body.gender.trim(),
+        phoneNumber: req.body.phoneNumber.trim(),
+        email: req.body.email.trim(),
+        registered: 1
+    };
 
-        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.create);
-    } else {
+    if (req.body.ID !== undefined && req.body.ID !== null) {
         // Signing up after taking pre-chat survey
-        var user = {
-            ID: req.body.ID,
-            username: req.body.username.trim(),
-            nickname: req.body.nickname.trim(),
-            password: req.body.password,
-            age: req.body.age,
-            gender: req.body.gender.trim(),
-            phoneNumber: req.body.phoneNumber.trim(),
-            email: req.body.email.trim(),
-            registered: 1
-        };
-
-        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.update);
+        // Add the ID that was created when the pre-chat survey was submitted.
+        user.ID = req.body.ID;
     }
 
+    abstractSignup(user, requiredCredentials, "user", res, userModel);
 };
 
-exports.signin = function (req, res) {
+function abstractSignin(req, res, role) {
     delete req.user.password;
     res.send({
-        token: tokenForUser(req.user, "user"),
+        token: tokenForUser(req.user, role),
         user: req.user
     });
+}
+
+exports.signin = function (req, res) {
+    abstractSignin(req, res, "user");
 };
 
 // Authentication for counsellors
 exports.signinCounsellor = function (req, res) {
-    delete req.user.password;
-    res.send({
-        token: tokenForUser(req.user, "counsellor"),
-        counsellor: req.user
-    });
+    abstractSignin(req, res, "counsellor");
 };
 
 exports.signupCounsellor = function (req, res) {
@@ -229,5 +191,5 @@ exports.signupCounsellor = function (req, res) {
     // Check if email valid 
     if (!isEmailValid(requiredCredentials.email, res)) return;
 
-    abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel.lookupByEmail, Abstract.process, counsellorModel.create);
+    abstractSignup(counsellor, requiredCredentials, "counsellor", res, counsellorModel);
 };
