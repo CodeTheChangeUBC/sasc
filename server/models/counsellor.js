@@ -1,47 +1,112 @@
 const db = require('../db');
 const abstract = require('./abstract');
+const to = require("await-to-js").to;
 
 // Create counsellor from post request
-exports.create = function(values, callback) {
-	values['email'] = values['email'].toLowerCase();
-	abstract.create('counsellor', values, callback);
+exports.create = function(values) {
+	return new Promise(async function(resolve, reject) {
+		let err, results;
+		values['email'] = values['email'].toLowerCase();
+		[err, results] = await to(abstract.create('counsellor', values));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(results);
+		}
+	});
 }
 
 // Update counsellor
 // values is object countaining values to be updated
 // id is id of counsellor being updated
-exports.update = function(values, id, callback) {
-	abstract.update('counsellor', values, id, callback);
+exports.update = function(values, id) {
+	return new Promise(async function(resolve, reject) {
+		let err, obj;
+		[err, obj] = await to(abstract.update('counsellor', values, id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(obj);
+		}
+	});
 }
 
 // list all counsellors
-exports.list = function(values, callback) {
-	abstract.list('counsellor', callback);
+exports.list = function(values) {
+	return new Promise(async function(resolve, reject) {
+		let err, models;
+		[err, models] = await to(abstract.list('counsellor'));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(models);
+		}
+	});
 }
 
 // retrieve single counsellor 
-exports.retrieve = function(values, callback) {
-	abstract.retrieve('counsellor', req.params.counsellorId, callback);
+exports.retrieve = function(values) {
+	return new Promise(async function(resolve, reject) {
+		let err, result;
+		[err, result] = await to(abstract.retrieve('counsellor', req.params.counsellorId));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Retrieve counsellor by values
-exports.retrieveByValues = function(values, callback) {
-	abstract.retrieveByValues('counsellor', values, callback);
+exports.retrieveByValues = function(values) {
+	return new Promise(async function(resolve, reject) {
+		let err, results, fields;
+		[err, results, fields] = await to(abstract.retrieveByValues('counsellor', values));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(results, fields);
+		}
+	});
 }
 
 // Lookup counsellor by email
-exports.lookupByEmail = function(email, callback) {
-	abstract.lookupByValue('counsellor', 'email', email, callback);
+exports.lookupByEmail = function(email) {
+	return new Promise(async function(resolve, reject) {
+		let err, rows;
+		[err, rows] = await to(abstract.lookupByValue('counsellor', 'email', email));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(rows);
+		}
+	});
 }
 
 // Retrieve user by id
-exports.lookupById = function(id, callback) {
-	abstract.lookupByValue('counsellor', 'ID', id, callback);
+exports.lookupById = function(id) {
+	return new Promise(async function(resolve, reject) {
+		let err, rows;
+		[err, rows] = await to(abstract.lookupByValue('counsellor', 'ID', id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(rows);
+		}
+	});
 }
 
 // destroy given counsellor
-exports.destroy = function(id, callback) {
-	abstract.destroy('counsellor', id, callback);
+exports.destroy = function(id) {
+	return new Promise(async function(resolve, reject) {
+		let err, result;
+		[err, result] = await to(abstract.destroy('counsellor', id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Count number of cousellors in db

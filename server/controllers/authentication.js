@@ -4,7 +4,8 @@ const userModel = require("../models/user");
 const counsellorModel = require("../models/counsellor");
 const config = require("../../config");
 const emailRegex = require('email-regex');
-const isEmailValid = require('../models/abstract').isEmailValid
+const isEmailValid = require('../models/abstract').isEmailValid;
+const to = require("await-to-js").to;
 
 function tokenForUser(user, role) {
     const timestamp = Date.now();                         // in milliseconds
@@ -33,7 +34,7 @@ function convertToSentence(listOfNouns) {
     return str;
 }
 
-function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryptPassword, create) {
+async function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryptPassword, create) {
     var error = false;
     var missingCredentials = [];
 
@@ -51,100 +52,96 @@ function abstractSignup(user, requiredCredentials, role, res, lookupUser, encryp
     var usernameCredential = requiredCredentials[Object.keys(requiredCredentials)[0]];
 
     // Check if user with their corresponding identifier already exists
-    lookupUser(usernameCredential, function (err, users) {
+    let err, users;
+    [err, users] = await to(lookupUser(usernameCredential));
 
+    if (err) {
+        return res.status(422).send({error: "Cannot look up user."});
+    }
+
+    // If a user with the identifier already exists, return an error
+    if (users[0] !== undefined && users[0] !== null) {
+        return res.status(422).send({error: usernameCredential + " is in use."});
+    }
+
+    let result;
+    [err, result] = await to(encryptPassword(user));
+    user = result;
+
+    if (user.ID === undefined || user.ID === null) {
+        // Create a new user
+        let results;
+        [err, results] = await to(create(user));
         if (err) {
-            return res.status(422).send({error: "Cannot look up user."});
+            return res.status(422).send({error: "Cannot create " + role + "."});
         }
 
-        // If a user with the identifier already exists, return an error
-        if (users[0] !== undefined && users[0] !== null) {
-            return res.status(422).send({error: usernameCredential + " is in use."});
+        if (!results) {
+            return res.status(422).send({error: "Cannot create " + role + "."});
         }
 
-        encryptPassword(user, function (result) {
-            user = result;
+        user.ID = results.insertId;
 
-            if (user.ID === undefined || user.ID === null) {
-                // Create a new user
-                create(user, function (err, results) {
-                    if (err) {
-                        return res.status(422).send({error: "Cannot create " + role + "."});
-                    }
+        // Send token back to client
+        res.json({token: tokenForUser(user, role)});
 
-                    if (!results) {
-                        return res.status(422).send({error: "Cannot create " + role + "."});
-                    }
+    } else {
+        // Update existing user who took the pre-chat survey
+        let results;
+        [err, results] = await to(create(user.ID, user));
+        if (err) {
+            return res.status(422).send({error: "Cannot create " + role + "."});
+        }
 
-                    user.ID = results.insertId;
+        if (!results) {
+            return res.status(422).send({error: "Cannot create " + role + "."});
+        }
 
-                    // Send token back to client
-                    res.json({token: tokenForUser(user, role)});
-
-                });
-            } else {
-                // Update existing user who took the pre-chat survey
-                create(user.ID, user, function (err, results) {
-                    if (err) {
-                        return res.status(422).send({error: "Cannot create " + role + "."});
-                    }
-
-                    if (!results) {
-                        return res.status(422).send({error: "Cannot create " + role + "."});
-                    }
-
-                    // Send token back to client
-                    res.json({token: tokenForUser(user, role)});
-
-                });
-            }
-
-        });
-
-    });
+        // Send token back to client
+        res.json({token: tokenForUser(user, role)});
+    }
 };
 
-exports.checkRoleAndGetInfo = function (req, res) {
+exports.checkRoleAndGetInfo = async function (req, res) {
     try {
         const tokenContents = jwt.decode(req.body.token, config.secret);
         const role = tokenContents.role;
         const id = tokenContents.sub;
+        var err, users;
 
         if (role === "user") {
-            userModel.lookupById(id, function (err, users) {
-                if (err) {
-                    return res.status(422).send({error: "Unable to lookup user."});
-                }
+            [err, users] = await to(userModel.lookupById(id));
+            if (err) {
+                return res.status(422).send({error: "Unable to lookup user."});
+            }
 
-                if (users.length === 0) {
-                    return res.status(422).send({error: "No such user."});
-                }
+            if (users.length === 0) {
+                return res.status(422).send({error: "No such user."});
+            }
 
-                var user = users[0];
-                delete user.password;
+            var user = users[0];
+            delete user.password;
 
-                return res.send({
-                    user: user,
-                    role: role
-                });
+            return res.send({
+                user: user,
+                role: role
             });
         } else if (role === "counsellor") {
-            counsellorModel.lookupById(id, function (err, users) {
-                if (err) {
-                    return res.status(422).send({error: "Unable to lookup counsellor."});
-                }
+            [err, users] = await to(counsellorModel.lookupById(id));
+            if (err) {
+                return res.status(422).send({error: "Unable to lookup counsellor."});
+            }
 
-                if (users.length === 0) {
-                    return res.status(422).send({error: "No such counsellor."});
-                }
+            if (users.length === 0) {
+                return res.status(422).send({error: "No such counsellor."});
+            }
 
-                var user = users[0];
-                delete user.password;
+            var user = users[0];
+            delete user.password;
 
-                return res.send({
-                    user: user,
-                    role: role
-                });
+            return res.send({
+                user: user,
+                role: role
             });
         }
 
@@ -162,7 +159,9 @@ exports.signup = function (req, res) {
     };
 
     // If email invalid, send error to frontend and return
-    if (!isEmailValid(requiredCredentials.email, res)) return;
+    if (!isEmailValid(requiredCredentials.email, res)) {
+        return;
+    }
 
     if (req.body.ID === undefined || req.body.ID === null) {
         // Signing up without taking pre-chat survey
@@ -192,7 +191,7 @@ exports.signup = function (req, res) {
             registered: 1
         };
 
-        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.updateCallbackVer);
+        abstractSignup(user, requiredCredentials, "user", res, userModel.lookupByUsername, Abstract.process, userModel.update);
     }
 
 };

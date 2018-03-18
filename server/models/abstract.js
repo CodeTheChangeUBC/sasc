@@ -6,58 +6,76 @@ var bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 const emailRegex = require('email-regex');
 
-
 // Create model 
 // - Values is dictionary containing model values
 // - model is name of model (string)
-exports.create = function(model, values, callback) {
-	db.get().query('INSERT INTO '+model+' SET ?', values, 
-		function(err, results) {
-			if (err) { callback(err, null); }
-
-			else { callback(null, results); }
- 		});
+exports.create = function(model, values) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('INSERT INTO '+model+' SET ?', values, 
+			function(err, results) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(results);
+				}
+	 	});
+	});
 }
 
 // Hash password
-exports.process = function(values, callback) {
-	if (values.password) {
-	    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
-	    	values.password = hash;
-	        callback(values);
-		});
-	} else { callback(values); }
-}
-
-exports.hashOne = function (password, callback) {
-	bcrypt.hash(password, SALT_ROUNDS, function (err, hash) {
-		if (err) {
-			callback(err, null);
+exports.process = function(values) {
+	return new Promise(function(resolve, reject) {
+		if (values.password) {
+		    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
+		    	values.password = hash;
+		        resolve(values);
+			});
 		} else {
-			callback(null, hash);
+			reject(values);
 		}
 	});
 }
 
-// compare password
-exports.comparePassword = function(password, hash, callback) {
- 	bcrypt.compare(password, hash, function(err, res) {
- 	    if (err) { return callback(err, null); }
+exports.hashOne = function (password) {
+	return new Promise(function(resolve, reject) {
+		bcrypt.hash(password, SALT_ROUNDS, function (err, hash) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(hash);
+			}
+		});
+	});
+}
 
- 	    callback(null, res);
+// compare password
+exports.comparePassword = function(password, hash) {
+ 	return new Promise(function(resolve, reject) {
+ 		bcrypt.compare(password, hash, function(err, res) {
+	 	    if (err) {
+	 	    	return reject(err);
+	 	    } else {
+	 	    	resolve(res);
+	 	    }
+	 	});
  	});
 }
 
 // Destroy model
 // - model is name of model (string)
 // - id is the id of the model to be destroyed
-exports.destroy = function(model, id, callback) {
-	db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
-		[id], 
-		function(err, result) {
-			if (err) callback(err);
-			else callback(null, result);
-		});
+exports.destroy = function(model, id) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('DELETE FROM '+model+' WHERE ID=?;', 
+			[id], 
+			function(err, result) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+	});
 }
 
 // Update model 
@@ -65,64 +83,90 @@ exports.destroy = function(model, id, callback) {
 // - values is ordered set of values to update (should include model id last)
 // - valueNames is array containing the names of the values to be inserted
 // (not including id)
-exports.update = function(model, values, id, callback) {
-	db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
-			if (err) callback(err);
-			callback(null, results, fields);
+exports.update = function(model, values, id) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve({results, fields});
+				}
+		});
 	});
 }
 
 // Lookup model to pass to other functions
 // - model is name of model (string)
 // - id is id of model (int)
-exports.lookup = function(model, id, callback) {
-	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', [id],
-		function(err, results, fields) {
-			if (err) callback(err, null, null);
-			callback(null, results, fields);
-		});
+exports.lookup = function(model, id) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('SELECT * FROM '+model+' WHERE ID=?;', [id],
+			function(err, results, fields) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve({results, fields});
+				}
+			});
+	});
 }
 
 // Retrieve model by values instead of ID
-exports.retrieveByValues = function(model, values, valueNames, callback) {
-	var query = 'SELECT * FROM '+model+' WHERE';
-	query += fieldQueries(valueNames,1);
-	db.get().query(query, values, function(err,results,fields) {
-			if (err) { callback(err); }
-			callback(null, results);
-		});
+exports.retrieveByValues = function(model, values, valueNames) {
+	return new Promise(function(resolve, reject) {
+		var query = 'SELECT * FROM '+model+' WHERE';
+		query += fieldQueries(valueNames,1);
+		db.get().query(query, values, function(err, results, fields) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(results);
+				}
+			});
+	});
 }
 
 // Retrieve user specified by userID in params
-// - if res is null, call callback upon completion
-exports.retrieve = function(model, id, callback) {
-	db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
-		[id],
-		function(err, result) {
-			if (err) callback(err);
-			callback(null,result)
-		});
+exports.retrieve = function(model, id) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('SELECT * FROM '+model+' WHERE ID=?;', 
+			[id],
+			function(err, result) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+	});
 }
 
 // Retrieve model values, where model is specified by identifier
-exports.lookupByValue = function(model, identifier, value, callback) {
-	db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
-		[value], 
-		function (err, rows) {
-		if (err) { callback(err, null); }
-		else { callback(null, rows); }
+exports.lookupByValue = function(model, identifier, value) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
+			[value], 
+			function (err, rows) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(rows);
+			}
+		});
 	});
 }
 
 // List all models
 // - model is name of model (string)
-exports.list = function(model, callback) {
-	db.get().query('SELECT * FROM '+model+';', function (err, models) {
-		if (err) {
-			callback(err, null);
-		} else {
-			callback(null, models)
-		}
+exports.list = function(model) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('SELECT * FROM '+model+';', function (err, models) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(models);
+			}
+		});
 	});
 }
 
@@ -157,12 +201,17 @@ exports.destroyAll = function(model) {
 // - model is name of model (string)
 // - foreign key is name of foreign key (string)
 // - id is id of foreign key
-exports.listByForeignKey = function(model, fk, id, callback) {
-	db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
-		function(err, results, fields) {
-			if (err) { callback(err); }
-			callback(null, results);
-		});
+exports.listByForeignKey = function(model, fk, id) {
+	return new Promise(function(resolve, reject) {
+		db.get().query('SELECT * FROM '+model+' WHERE '+fk+'=?', [id], 
+			function(err, results, fields) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(results);
+				}
+			});
+	});
 }
 
 // Function to call when returning data or error in NON Http response
@@ -207,8 +256,6 @@ exports.isEmailValid = function (email,res) {
     }
     return true;
 }
-
-
 
 exports.noHttpResponse = noHttpResponse;
 exports.httpResponse = httpResponse;

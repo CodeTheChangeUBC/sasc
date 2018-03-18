@@ -1,4 +1,5 @@
 const messageModel = require("../models/message");
+const to = require("await-to-js").to;
 
 exports.addMessage = function (req, res) {
     var message = {
