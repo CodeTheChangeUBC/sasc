@@ -18,10 +18,12 @@ const localOptionsCounsellor = {
     session: false
 };
 
-async function abstractLocalLogin(identifier, password, done, lookupUser, verifyPassword) {
+async function abstractLocalLogin(identifier, password, done, model) {
     // Retrieve user by identifier and compare hashed password
     // from database with the given password hashed
-    [err, users] = await to(lookupUser(identifier));
+    var err, users, isMatch;
+    [err, users] = await to(model.lookupByCredential(identifier));
+    
     if (err) {
         return done(err);
     }
@@ -29,7 +31,7 @@ async function abstractLocalLogin(identifier, password, done, lookupUser, verify
         return done(null, false);
     }
 
-    [err, isMatch] = await to(verifyPassword(password, users[0].password));
+    [err, isMatch] = await to(Abstract.comparePassword(password, users[0].password));
     if (err) {
         return done(err);
     }
@@ -41,12 +43,13 @@ async function abstractLocalLogin(identifier, password, done, lookupUser, verify
     return done(null, users[0]);
 }
 
-async function abstractJwtLogin(payload, done, role, lookupById) {
+async function abstractJwtLogin(payload, done, role, model) {
     // lookup user by user id from payload subject
     // and return the user object if found
     // or false if not found
     if (payload.role === role) {
-        [err, users] = await to(lookupById(payload.sub));
+        var err, users;
+        [err, users] = await to(model.lookupById(payload.sub));
         if (err) {
             return done(err, false);
         // If user exists, return user
@@ -61,11 +64,11 @@ async function abstractJwtLogin(payload, done, role, lookupById) {
 }
 
 const localLoginUser = new LocalStrategy(localOptionsUser, function (username, password, done) {
-    abstractLocalLogin(username, password, done, User.lookupByUsername, Abstract.comparePassword);
+    abstractLocalLogin(username, password, done, User, Abstract.comparePassword);
 });
 
 const localLoginCounsellor = new LocalStrategy(localOptionsCounsellor, function (email, password, done) {
-    abstractLocalLogin(email, password, done, Counsellor.lookupByEmail, Abstract.comparePassword);
+    abstractLocalLogin(email, password, done, Counsellor, Abstract.comparePassword);
 });
 
 const jwtOptions = {
@@ -74,11 +77,11 @@ const jwtOptions = {
 };
 
 const jwtLoginUser = new JwtStrategy(jwtOptions, function (payload, done) {
-    abstractJwtLogin(payload, done, "user", User.lookupById);
+    abstractJwtLogin(payload, done, "user", User);
 });
 
 const jwtLoginCounsellor = new JwtStrategy(jwtOptions, function (payload, done) {
-    abstractJwtLogin(payload, done, "counsellor", Counsellor.lookupById);
+    abstractJwtLogin(payload, done, "counsellor", Counsellor);
 });
 
 passport.use("jwt-user", jwtLoginUser);

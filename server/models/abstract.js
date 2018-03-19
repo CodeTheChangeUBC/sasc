@@ -27,11 +27,15 @@ exports.process = function(values) {
 	return new Promise(function(resolve, reject) {
 		if (values.password) {
 		    bcrypt.hash(values.password, SALT_ROUNDS, function(err, hash) {
-		    	values.password = hash;
-		        resolve(values);
+		    	if (err) {
+		    		reject(err);
+		    	} else {
+		    		values.password = hash;
+		        	resolve(values);
+		    	}
 			});
 		} else {
-			reject(values);
+			reject("Password does not exist.");
 		}
 	});
 }
@@ -53,7 +57,7 @@ exports.comparePassword = function(password, hash) {
  	return new Promise(function(resolve, reject) {
  		bcrypt.compare(password, hash, function(err, res) {
 	 	    if (err) {
-	 	    	return reject(err);
+	 	    	reject(err);
 	 	    } else {
 	 	    	resolve(res);
 	 	    }
@@ -147,11 +151,13 @@ exports.lookupByValue = function(model, identifier, value) {
 		db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 			[value], 
 			function (err, rows) {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(rows);
-			}
+				console.log("abstract err:", err);
+				console.log("abstract rows", rows);
+				if (err) {
+					reject(err);
+				} else {
+					resolve(rows);
+				}
 		});
 	});
 }

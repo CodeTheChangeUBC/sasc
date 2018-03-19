@@ -22,8 +22,8 @@ exports.updateCounsellor = async function (req, res) {
     var id = req.params.ID;
 
     var counsellor = {
-        firstName: req.body.nickname.trim(),
-        lastName: req.body.password,
+        firstName: req.body.firstName.trim(),
+        lastName: req.body.lastName.trim(),
         email: req.body.email.trim()
     };
 

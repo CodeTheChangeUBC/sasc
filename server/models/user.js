@@ -70,7 +70,7 @@ exports.retrieve = function(values) {
 }
 
 // Retrieve username and password specified by username from form field
-exports.lookupByUsername = function(username) {
+exports.lookupByCredential = function(username) {
 	return new Promise(async function(resolve, reject) {
 		let err, rows;
 		[err, rows] = await to(abstract.lookupByValue('user', 'username', username));
@@ -85,11 +85,15 @@ exports.lookupByUsername = function(username) {
 // Retrieve user by id
 exports.lookupById = function(id) {
 	return new Promise(async function(resolve, reject) {
+		console.log("here");
 		let err, rows;
 		[err, rows] = await to(abstract.lookupByValue('user', 'ID', id));
+		console.log("err", err);
+		console.log("rows", rows);
 		if (err) {
 			reject(err);
 		} else {
+			console.log("lookupbyid")
 			resolve(rows);
 		}
 	});

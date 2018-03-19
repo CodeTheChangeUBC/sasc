@@ -71,7 +71,7 @@ exports.retrieveByValues = function(values) {
 }
 
 // Lookup counsellor by email
-exports.lookupByEmail = function(email) {
+exports.lookupByCredential = function(email) {
 	return new Promise(async function(resolve, reject) {
 		let err, rows;
 		[err, rows] = await to(abstract.lookupByValue('counsellor', 'email', email));
