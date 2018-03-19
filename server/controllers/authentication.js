@@ -96,7 +96,6 @@ exports.checkRoleAndGetInfo = async function (req, res) {
     let err, users;
 
     if (role === "user") {
-        console.log("hey")
         [err, users] = await to(userModel.lookupById(id));
     } else if (role === "counsellor") {
         [err, users] = await to(counsellorModel.lookupById(id));

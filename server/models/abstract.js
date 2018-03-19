@@ -151,8 +151,6 @@ exports.lookupByValue = function(model, identifier, value) {
 		db.get().query('SELECT * FROM ' + model + ' WHERE ' + identifier + ' = ?;',
 			[value], 
 			function (err, rows) {
-				console.log("abstract err:", err);
-				console.log("abstract rows", rows);
 				if (err) {
 					reject(err);
 				} else {

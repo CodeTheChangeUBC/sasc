@@ -85,15 +85,11 @@ exports.lookupByCredential = function(username) {
 // Retrieve user by id
 exports.lookupById = function(id) {
 	return new Promise(async function(resolve, reject) {
-		console.log("here");
 		let err, rows;
 		[err, rows] = await to(abstract.lookupByValue('user', 'ID', id));
-		console.log("err", err);
-		console.log("rows", rows);
 		if (err) {
 			reject(err);
 		} else {
-			console.log("lookupbyid")
 			resolve(rows);
 		}
 	});

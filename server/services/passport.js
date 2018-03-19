@@ -7,6 +7,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const LocalStrategy = require("passport-local");
 const to = require("await-to-js").to;
+const utilTo = require("../../util/promise");
 
 const localOptionsUser = {
     usernameField: "username",
@@ -47,19 +48,20 @@ async function abstractJwtLogin(payload, done, role, model) {
     // lookup user by user id from payload subject
     // and return the user object if found
     // or false if not found
+    var err, users;
     if (payload.role === role) {
-        var err, users;
+        //err = null;
         [err, users] = await to(model.lookupById(payload.sub));
         if (err) {
-            return done(err, false);
+            done(err, false);
         // If user exists, return user
         } else if (users[0] !== undefined && users[0] !== null) {
-            return done(null, users);
+            done(null, users);
         } else {
-            return done(null, false);
+            done(null, false);
         }
     } else {
-        return done(null, false);
+        done(null, false);
     }
 }
 
