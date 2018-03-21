@@ -7,7 +7,7 @@ exports.getCounsellor = async function (req, res) {
 };
 
 exports.updateCounsellor = async function (req, res) {
-    var id = req.query.userId;
+    var id = req.query.counsellorId;
 
     var counsellor = {
         firstName: req.body.firstName.trim(),
@@ -23,5 +23,6 @@ exports.updateCounsellor = async function (req, res) {
 };
 
 exports.changePassword = function (req, res) {
-    account.changePassword(req, res, counsellorModel);
+    var id = req.query.counsellorId;
+    account.changePassword(req, res, counsellorModel, id);
 }

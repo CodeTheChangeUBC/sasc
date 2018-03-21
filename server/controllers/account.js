@@ -62,32 +62,28 @@ exports.updateAccount = async function (role, model, user, id, req, res) {
     return res.status(201).send({success: "Successfully updated "+role+"."});
 };
 
-async function changePassword (req, res, model) {
-    var id = req.params.ID;
+async function changePassword (req, res, model, id) {
     var oldPassword = req.body.oldPassword;
 
-    let err, oldPasswordHashed, newPasswordHashed, results;
+    let err, oldPasswordHashed, newPasswordHashed, users, isMatch;
 
-    [err, oldPasswordHashed] = await to(Abstract.hashOne(oldPassword));
-    if (err) {
-        return res.status(422).send({error: "Failed to encrypt password."});
-    }
-
-    if (!oldPasswordHashed) {
-        return res.status(422).send({error: "Failed to encrypt password."});
-    }
-
-    [err, results] = await to(model.lookupById(id));
+    [err, users] = await to(model.lookupById(id));
     if (err) {
         return res.status(422).send({error: "Failed to lookup user account information."});
     }
 
-    if (results.length === 0) {
+    if (users.length === 0) {
         return res.status(422).send({error: "No such user."});
     }
 
-    if (results[0].password !== oldPasswordHashed) {
-        return res.status(422).send({error: "The provided password is incorrect."});
+    [err, isMatch] = await to(Abstract.comparePassword(oldPassword, users[0].password));
+
+    if (err) {
+        return res.status(422).send({error: "Failed checking password."});
+    }
+
+    if (!isMatch) {
+        return res.status(422).send({error: "The old password is incorrect."});
     }
 
     var newPassword = req.body.newPassword;
