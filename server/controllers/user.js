@@ -63,7 +63,5 @@ exports.updateUser = async function (req, res) {
 };
 
 exports.changePassword = function (req, res) {
-    console.log(id);
-    console.log(req.body);
     account.changePassword(req, res, userModel);
 }

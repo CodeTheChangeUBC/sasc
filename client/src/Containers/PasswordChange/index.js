@@ -82,8 +82,7 @@ class PasswordChange extends Component {
         this.props.changeUserPassword({
           ID: this.props.user.ID,
           oldPassword,
-          newPassword,
-          newPasswordConfirm
+          newPassword
         });
       }
     } else if (this.props.auth === "counsellor") {
@@ -94,8 +93,7 @@ class PasswordChange extends Component {
         this.props.changeCounsellorPassword({
           ID: this.props.counsellor.ID,
           oldPassword,
-          newPassword,
-          newPasswordConfirm
+          newPassword
         });
       }
     }

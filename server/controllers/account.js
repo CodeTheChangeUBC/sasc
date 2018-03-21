@@ -62,7 +62,7 @@ exports.updateAccount = async function (role, model, user, id, req, res) {
     return res.status(201).send({success: "Successfully updated "+role+"."});
 };
 
-async function changePassword (req, res, model) {
+exports.changePassword = async function (req, res, model) {
     var id = req.query.ID;
     var oldPassword = req.body.oldPassword;
 
@@ -102,7 +102,7 @@ async function changePassword (req, res, model) {
         password: newPasswordHashed
     };
 
-    [err, results] = await to(model.update(id, user));
+    [err, results] = await to(model.update(user, id));
     if (err) {
         return res.status(422).send({error: "Failed to change password."});
     }

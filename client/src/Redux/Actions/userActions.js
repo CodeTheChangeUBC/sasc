@@ -138,7 +138,7 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
     };
 }
 
-export function changeUserPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeUserPassword({ID, oldPassword, newPassword}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -150,22 +150,20 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
                 ID: ID
             }
         };
-        const data = {ID, oldPassword, newPassword, newPasswordConfirm};
+        const data = {ID, oldPassword, newPassword};
+
         axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
             .then(function (response) {
-                dispatch({
-                    type: PASSWORD_CHANGE,
-                    success: response.data.success
-                });
+                if (response.data.success) {
+                    dispatch({
+                        type: PASSWORD_CHANGE,
+                        success: response.data.success
+                    });
+                }
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
             });
-
-        dispatch({
-            type: PASSWORD_CHANGE,
-            success: "Password successfully changed."
-        });
     };
 }
 
