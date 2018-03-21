@@ -90,36 +90,38 @@ async function abstractSignup(user, requiredCredentials, role, res, model) {
 
 exports.checkRoleAndGetInfo = async function (req, res) {
 
-    const tokenContents = jwt.decode(req.body.token, config.secret);
-    const role = tokenContents.role;
-    const id = tokenContents.sub;
-    let err, users;
+    try {
+        const tokenContents = jwt.decode(req.body.token, config.secret);
+        const role = tokenContents.role;
+        const id = tokenContents.sub;
+        let err, users;
 
-    if (role === "user") {
-        [err, users] = await to(userModel.lookupById(id));
-    } else if (role === "counsellor") {
-        [err, users] = await to(counsellorModel.lookupById(id));
+        if (role === "user") {
+            [err, users] = await to(userModel.lookupById(id));
+        } else if (role === "counsellor") {
+            [err, users] = await to(counsellorModel.lookupById(id));
+        }
+
+        if (err) {
+            return res.status(422).send({error: "Unable to lookup " + role + ".", role: "none"});
+        }
+
+        if (users.length === 0) {
+            return res.status(422).send({error: "No such " + role + ".", role: "none"});
+        }
+
+        var user = users[0];
+        if (user.password) {
+            delete user.password;
+        }
+
+        return res.send({
+            user: user,
+            role: role
+        });
+    } catch (err) {
+        return res.status(201).send({role: "none"});
     }
-
-    console.log("what about here?")
-
-    if (err) {
-        return res.status(422).send({error: "Unable to lookup " + role + ".", role: "none"});
-    }
-
-    if (users.length === 0) {
-        return res.status(422).send({error: "No such " + role + ".", role: "none"});
-    }
-
-    var user = users[0];
-    if (user.password) {
-        delete user.password;
-    }
-
-    return res.send({
-        user: user,
-        role: role
-    });
 }
 
 

@@ -1,25 +1,13 @@
+const counsellorModel = require("../models/counsellor");
 const helper = require("./helper");
 const to = require("await-to-js").to;
 
 exports.getCounsellor = async function (req, res) {
-    var id = req.params.ID;
-    var err, results;
-
-    [err, results] = await to(counsellorModel.lookupById(id));
-    if (err) {
-        return res.status(422).send({error: "Failed to lookup counsellor account information."});
-    }
-
-    if (results.length === 0) {
-        return res.status(422).send({error: "No such counsellor."});
-    }
-
-    var counsellor = results[0];
-    return res.status(201).send({counsellor: counsellor});
+    account.getAccount("counsellor", counsellorModel, req, res);
 };
 
 exports.updateCounsellor = async function (req, res) {
-    var id = req.params.ID;
+    var id = req.query.userId;
 
     var counsellor = {
         firstName: req.body.firstName.trim(),
@@ -31,30 +19,9 @@ exports.updateCounsellor = async function (req, res) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
-    // Check entered password before updating user information
-    var err, results;
-    [err, results] = await to(Abstract.process(counsellor));
-    [err, results] = await to(counsellorModel.lookupById(id));
-    if (err) {
-        return res.status(422).send({error: "Failed to lookup counsellor account information."});
-    }
-
-    if (results.length === 0) {
-        return res.status(422).send({error: "No such counsellor."});
-    }
-
-    if (results[0].password !== result.password) {
-        return res.status(422).send({error: "The provided password is incorrect."});
-    }
-
-    [err, results] = await to(counsellorModel.update(id, counsellor));
-    if (err) {
-        return res.status(422).send({error: "Failed to update counsellor account information."});
-    }
-
-    if (!results) {
-        return res.status(422).send({error: "Failed to update counsellor account information."});
-    }
-
-    return res.status(201).send({success: "Successfully updated counsellor."});
+    account.updateAccount("counsellor", counsellorModel, counsellor, id, req, res);
 };
+
+exports.changePassword = function (req, res) {
+    account.changePassword(req, res, counsellorModel);
+}

@@ -89,7 +89,11 @@ exports.destroy = function(model, id) {
 // (not including id)
 exports.update = function(model, values, id) {
 	return new Promise(function(resolve, reject) {
-		db.get().query('UPDATE '+model+' SET ? WHERE ID=?', [values, id], function(err, results, fields) {
+		db.get().query('UPDATE '+model+' SET ? WHERE ID=?;', [values, id],
+			function(err, results, fields) {
+				console.log("err", err);
+				console.log("results", results);
+				console.log("fields", fields);
 				if (err) {
 					reject(err);
 				} else {

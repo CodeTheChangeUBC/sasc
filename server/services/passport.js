@@ -50,7 +50,6 @@ async function abstractJwtLogin(payload, done, role, model) {
     // or false if not found
     var err, users;
     if (payload.role === role) {
-        //err = null;
         [err, users] = await to(model.lookupById(payload.sub));
         if (err) {
             done(err, false);
