@@ -65,7 +65,7 @@ async function abstractSignup(user, requiredCredentials, role, res, model) {
     }
 
     var result, results;
-    [err, result] = await to(Abstract.Process(user));
+    [err, result] = await to(Abstract.process(user));
     user = result;
 
     if (user.ID === undefined || user.ID === null) {
