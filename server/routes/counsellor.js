@@ -6,6 +6,6 @@ const requireAuthCounsellor = passport.authenticate('jwt-counsellor', {session: 
 
 router.get('/', counsellorController.getCounsellor);
 router.put('/', counsellorController.updateCounsellor);
-router.put('/password/:userId', requireAuthCounsellor, counsellorController.changePassword);
+router.put('/password', requireAuthCounsellor, counsellorController.changePassword);
 
 module.exports = router;

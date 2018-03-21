@@ -147,11 +147,11 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
                 "Authorization": token
             },
             params: {
-                userId: ID
+                ID: ID
             }
         };
         const data = {ID, oldPassword, newPassword, newPasswordConfirm};
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+        axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
             .then(function (response) {
                 dispatch({
                     type: PASSWORD_CHANGE,
@@ -161,10 +161,10 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
             });
-        */
+
         dispatch({
             type: PASSWORD_CHANGE,
-            success: "Password did not change because this is unimplemented."
+            success: "Password successfully changed."
         });
     };
 }

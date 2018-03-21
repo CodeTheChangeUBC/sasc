@@ -11,6 +11,6 @@ router.put('/', userController.updateUser);
 
 router.post('/surveys', userController.submitSurvey);
 
-router.put('/password/:userId', requireAuthUser, userController.changePassword);
+router.put('/password', requireAuthUser, userController.changePassword);
 
 module.exports = router;

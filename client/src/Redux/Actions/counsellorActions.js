@@ -92,26 +92,26 @@ export function updateCounsellor({ID, email, firstName, lastName, password}) {
             }
         };
         const data = {ID, email, firstName, lastName, password};
-        // This is what it does temporarily
-        if (data.password) {
-            delete data.password;
-        }
-        dispatch({
-            type: UPDATE_COUNSELLOR,
-            counsellor: data
-        });
-        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
+
+        axios.put(`${ROOT_URL + BASE_URL}`, data, header)
             .then(function (response) {
-                delete data.password;
-                dispatch({
-                    type: UPDATE_COUNSELLOR,
-                    counsellor: data,
-                    success: response.data.success
-                });
+                // If successfully updated on the backend, update on frontend as well.
+                if (response.data.success) {
+
+                    if (data.password) {
+                        delete data.password;
+                    }
+
+                    dispatch({
+                        type: UPDATE_COUNSELLOR,
+                        counsellor: data,
+                        success: response.data.success
+                    });
+                }
             })
             .catch(function (error) {
                 dispatch(counsellorError(error.response.data.error));
-            });*/
+            });
     };
 }
 
@@ -124,11 +124,11 @@ export function changeCounsellorPassword({ID, oldPassword, newPassword, newPassw
                 "Authorization": token
             },
             params: {
-                counsellorId: ID
+                ID: ID
             }
         };
         const data = {ID, oldPassword, newPassword, newPasswordConfirm};
-        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
+        axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
             .then(function (response) {
                 dispatch({
                     type: PASSWORD_CHANGE,
@@ -138,10 +138,10 @@ export function changeCounsellorPassword({ID, oldPassword, newPassword, newPassw
             .catch(function (error) {
                 dispatch(counsellorError(error.response.data.error));
             });
-        */
+
         dispatch({
             type: PASSWORD_CHANGE,
-            success: "Password did not change because this is unimplemented."
+            success: "Password successfully changed."
         });
     };
 }

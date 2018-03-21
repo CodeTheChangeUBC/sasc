@@ -219,24 +219,6 @@ exports.listByForeignKey = function(model, fk, id) {
 	});
 }
 
-// Function to call when returning data or error in NON Http response
-// - err is error (if any) 
-// - data is data to return
-// - toCall is function to call
-function noHttpResponse(err,data,toCall) {
-	if (err) { toCall(err); }
-	else { toCall(null, data); }
-}
-
-// Function to call when returning data or error in Http response
-function httpResponse(err, errCode, data, dataCode, res) {
-	if (err) {
-		res.status(errCode).send(err);
-		return;
-	}
-	res.status(dataCode).send(data);
-}
-
 // Compute string of ' field1=?, ... , fieldn=?'
 // Returned string starts with a space!
 // - if and === 1 use AND instead of commas
@@ -261,9 +243,3 @@ exports.isEmailValid = function (email,res) {
     }
     return true;
 }
-
-exports.noHttpResponse = noHttpResponse;
-exports.httpResponse = httpResponse;
-
-
-

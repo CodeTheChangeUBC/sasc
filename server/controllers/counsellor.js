@@ -23,6 +23,5 @@ exports.updateCounsellor = async function (req, res) {
 };
 
 exports.changePassword = function (req, res) {
-    var id = req.query.counsellorId;
-    account.changePassword(req, res, counsellorModel, id);
+    account.changePassword(req, res, counsellorModel);
 }

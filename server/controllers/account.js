@@ -62,7 +62,8 @@ exports.updateAccount = async function (role, model, user, id, req, res) {
     return res.status(201).send({success: "Successfully updated "+role+"."});
 };
 
-async function changePassword (req, res, model, id) {
+async function changePassword (req, res, model) {
+    var id = req.query.ID;
     var oldPassword = req.body.oldPassword;
 
     let err, oldPasswordHashed, newPasswordHashed, users, isMatch;
