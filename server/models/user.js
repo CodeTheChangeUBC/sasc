@@ -45,13 +45,12 @@ exports.destroyAll = function(callback) {
 // id is id of user being updated
 exports.update = function(values, id) {
 	return new Promise(async function(resolve, reject) {
-		let err, obj;
-		[err, obj] = await to(abstract.update('user', values, id));
-		console.log(obj);
+		let err, results;
+		[err, results] = await to(abstract.update('user', values, id));
 		if (err) {
 			reject(err);
 		} else {
-			resolve(obj);
+			resolve(results);
 		}
 	});
 }

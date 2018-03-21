@@ -21,12 +21,12 @@ exports.create = function(values) {
 // id is id of counsellor being updated
 exports.update = function(values, id) {
 	return new Promise(async function(resolve, reject) {
-		let err, obj;
-		[err, obj] = await to(abstract.update('counsellor', values, id));
+		let err, results;
+		[err, results] = await to(abstract.update('counsellor', values, id));
 		if (err) {
 			reject(err);
 		} else {
-			resolve(obj);
+			resolve(results);
 		}
 	});
 }
@@ -60,12 +60,12 @@ exports.retrieve = function(values) {
 // Retrieve counsellor by values
 exports.retrieveByValues = function(values) {
 	return new Promise(async function(resolve, reject) {
-		let err, results, fields;
-		[err, results, fields] = await to(abstract.retrieveByValues('counsellor', values));
+		let err, results;
+		[err, results] = await to(abstract.retrieveByValues('counsellor', values));
 		if (err) {
 			reject(err);
 		} else {
-			resolve(results, fields);
+			resolve(results);
 		}
 	});
 }

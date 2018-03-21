@@ -50,12 +50,12 @@ exports.updateAccount = async function (role, model, user, id, req, res) {
     }
 
     var results;
-    [err, results] = await to(model.update(id, user));
+    [err, results] = await to(model.update(user, id));
     if (err) {
-        return res.status(422).send({error: "Failed to update "+role+" account information."});
+        return res.status(422).send({error: "Database "+role+" update error."});
     }
 
-    if (!results) {
+    if (results.changedRows === 0) {
         return res.status(422).send({error: "Failed to update "+role+" account information."});
     }
 

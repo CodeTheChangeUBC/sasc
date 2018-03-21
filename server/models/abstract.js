@@ -91,13 +91,10 @@ exports.update = function(model, values, id) {
 	return new Promise(function(resolve, reject) {
 		db.get().query('UPDATE '+model+' SET ? WHERE ID=?;', [values, id],
 			function(err, results, fields) {
-				console.log("err", err);
-				console.log("results", results);
-				console.log("fields", fields);
 				if (err) {
 					reject(err);
 				} else {
-					resolve({results, fields});
+					resolve(results);
 				}
 		});
 	});
@@ -113,7 +110,7 @@ exports.lookup = function(model, id) {
 				if (err) {
 					reject(err);
 				} else {
-					resolve({results, fields});
+					resolve(results);
 				}
 			});
 	});
