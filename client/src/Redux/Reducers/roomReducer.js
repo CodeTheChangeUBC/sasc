@@ -4,30 +4,31 @@ import {
     REMOVE_ROOMS,
     ADD_MESSAGE_TO_ROOM,
     GET_SESSION_ID,
-    SESSION_ERROR
+    SESSION_ERROR,
+    SET_ACTIVE_ROOM,
+    REMOVE_ACTIVE_ROOM,
 } from "./../Types/roomTypes";
 import initialState from './initialState';
 
-export default function roomReducer(state = initialState.rooms, action) {
+export default function roomReducer(state = initialState.room, action) {
 
   switch(action.type) {
+    case SET_ACTIVE_ROOM:
+      return {...state, activeRoom: action.roomID};
+    case REMOVE_ACTIVE_ROOM:
+      return {...state, activeRoom: null};
     case NEW_ROOM:
       // Creates a room
-      return [...state, action.room];
+      return {...state, rooms: [...state.rooms, action.room]};
     case UPDATE_ROOM:
       // Updates a room
-      return [...state, action.room];  
+      return {...state, rooms: [...state.rooms, action.room]};  
     case REMOVE_ROOMS:
       // Removes all rooms when you sign out
-      return [];
+      return {...state, rooms: []};
     case ADD_MESSAGE_TO_ROOM:
       // Find the right room and adds a message to it
-      state.forEach(function (room, index) {
-        if (room.roomID === action.roomID) {
-          const message = createMessage(action.room, action.message, action.fromCounsellor, room.sessionID);
-          state[index] = room.messages.push(message);
-        }
-      });
+      // TODO
       return state;
     case GET_SESSION_ID:
           return {...state, sessionID: action.sessionID, status: { error: "", success: ""}};

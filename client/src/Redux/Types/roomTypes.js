@@ -6,3 +6,5 @@ export const ADD_MESSAGE_TO_ROOM = "add_message_to_room";
 export const GET_SESSION_ID = "get_session_id";
 export const SESSION_ERROR = "session_error";
 export const REMOVE_ERROR = "remove_error";
+export const SET_ACTIVE_ROOM = "set_active_room";
+export const REMOVE_ACTIVE_ROOM = "remove_active_room";

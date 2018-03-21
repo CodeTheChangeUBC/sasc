@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import rooms from './roomReducer';
-import activeRoom from './activeRoomReducer';
+import room from './roomReducer';
 import chat from './chatReducer';
 import auth from './authReducer';
 import user from './userReducer';
@@ -8,8 +7,7 @@ import counsellor from './counsellorReducer';
 import sms from './smsReducer';
 
 const rootReducer = combineReducers({
-  rooms,
-  activeRoom,
+  room,
   chat,
   auth,
   user,

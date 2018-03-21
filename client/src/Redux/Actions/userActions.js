@@ -83,13 +83,12 @@ export function getUser(id) {
                 userId: id
             }
         };
-        /*axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
+        axios.get(`${ROOT_URL + BASE_URL}`, header)
             .then(function (response) {
-                if (response.data.length !== 0) {
-                    var user = response.data[0];
-                    if (user.password) {
-                        delete user.password;
-                    }
+                if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
+
+                    var user = response.data.user;
+
                     dispatch({
                         type: GET_USER,
                         user: user
@@ -98,8 +97,7 @@ export function getUser(id) {
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
-            });*/
-        
+            });
     };
 }
 
@@ -116,25 +114,27 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
             }
         };
         const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
-        // This is what it does temporarily
-        if (data.password) {
-            delete data.password;
-        }
-        dispatch({
-            type: UPDATE_USER,
-            user: data
-        });
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+
+        axios.put(`${ROOT_URL + BASE_URL}`, data, header)
             .then(function (response) {
-                dispatch({
-                    type: UPDATE_USER,
-                    user: data,
-                    success: response.data.success
-                });
+
+                // If successfully updated on the backend, update on frontend as well.
+                if (response.data.success) {
+
+                    if (data.password) {
+                        delete data.password;
+                    }
+                    dispatch({
+                        type: UPDATE_USER,
+                        user: data,
+                        success: response.data.success
+                    });
+                }
+
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
-            });*/
+            });
     };
 }
 
