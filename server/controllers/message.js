@@ -1,7 +1,7 @@
 const messageModel = require("../models/message");
 const to = require("await-to-js").to;
 
-exports.addMessage = function (req, res) {
+exports.addMessage = async function (req, res) {
     var message = {
         sessionID: req.body.sessionID,
         messageTime: req.body.messageTime,
@@ -11,22 +11,32 @@ exports.addMessage = function (req, res) {
         fromCounsellor: req.body.fromCounsellor,
         fromTwilio: req.body.fromTwilio
     };
-    messageModel.create(message, function (err) {
-        if (err) {
-            return res.status(422).send({error: "Failed to store message."});
-        } else {
-            return res.status(201).send({success: "Created a message."});
-        }
-    });
+
+    let err, results;
+    [err, results] = await to(messageModel.create(message));
+    
+    if (err) {
+        return res.status(422).send({error: "Failed to store message."});
+    }
+
+    if (results.changedRows === 0) {
+        return res.status(422).send({error: "Cannot create message."});
+    }
+
+    return res.status(201).send({success: "Created a message."});
 };
 
-exports.getMessages = function (req, res) {
+exports.getMessages = async function (req, res) {
     const sessionID = req.params.sessionID;
-    messageModel.listBySession(sessionID, function (err, results) {
-        if (err) {
-            return res.status(422).send({error: "Failed to retrieve messages."});
-        }
+    let err, results;
+    [err, results] = await to(messageModel.listBySession(sessionID));
+    if (err) {
+        return res.status(422).send({error: "Failed to retrieve messages."});
+    }
 
-        return res.status(200).json(results);
-    });
+    if (!results) {
+        return res.status(422).send({error: "Cannot get message."});
+    }
+
+    return res.status(200).json(results);
 };

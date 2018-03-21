@@ -7,7 +7,6 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const LocalStrategy = require("passport-local");
 const to = require("await-to-js").to;
-const utilTo = require("../../util/promise");
 
 const localOptionsUser = {
     usernameField: "username",

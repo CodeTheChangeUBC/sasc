@@ -8,13 +8,19 @@ exports.createSession = async function (req, res) {
         counsellorID: req.body.counsellorID,
         userID: req.body.userID
     };
-    var err;
-    [err] = await to(sessionModel.create(session));
+
+    var err, results;
+    [err, results] = await to(sessionModel.create(session));
+
     if (err) {
         return res.status(422).send({error: "Failed to create session."});
-    } else {
-        return res.status(201).send({success: "Created a session."});
     }
+
+    if (results.changedRows === 0) {
+        return res.status(422).send({error: "Cannot create session."});
+    }
+        
+    return res.status(201).send({success: "Created a session."});
 };
 
 exports.counsellorGetSessions = async function (req, res) {
