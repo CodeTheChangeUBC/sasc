@@ -80,7 +80,7 @@ export function getUser(id) {
                 "Authorization": token
             },
             params: {
-                userId: id
+                ID: id
             }
         };
         axios.get(`${ROOT_URL + BASE_URL}`, header)
@@ -88,7 +88,9 @@ export function getUser(id) {
                 if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
 
                     var user = response.data.user;
-
+                    if (user.password) {
+                        delete user.password;
+                    }
                     dispatch({
                         type: GET_USER,
                         user: user

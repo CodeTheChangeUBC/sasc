@@ -37,13 +37,18 @@ export function renderCounsellorError(error) {
 
 export function addCounsellor(counsellor) {
     return function (dispatch) {
-        if (counsellor.password) {
-            delete counsellor.password;
+        if (counsellor) {
+            if (counsellor.password) {
+                delete counsellor.password;
+            }
+            dispatch({
+                type: ADD_COUNSELLOR,
+                counsellor: counsellor
+            });
+        } else {
+            dispatch(counsellorError("Counsellor information cannot be added to the login session."));
         }
-        dispatch({
-            type: ADD_COUNSELLOR,
-            counsellor: counsellor
-        });
+        
     };
 }
 
@@ -56,13 +61,13 @@ export function getCounsellor(id) {
                 "Authorization": token
             },
             params: {
-                counsellorId: id
+                ID: id
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}/:counsellorId`, header)
+        axios.get(`${ROOT_URL + BASE_URL}`, header)
             .then(function (response) {
-                if (response.data.length !== 0) {
-                    var counsellor = response.data[0];
+                if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
+                    var counsellor = response.data.counsellor;
                     if (counsellor.password) {
                         delete counsellor.password;
                     }

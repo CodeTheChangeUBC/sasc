@@ -161,10 +161,17 @@ exports.signup = function (req, res) {
 
 function abstractSignin(req, res, role) {
     delete req.user.password;
-    res.send({
-        token: tokenForUser(req.user, role),
-        user: req.user
-    });
+    if (role === "counsellor") {
+        res.send({
+            token: tokenForUser(req.user, role),
+            counsellor: req.user
+        });
+    } else {
+        res.send({
+            token: tokenForUser(req.user, role),
+            user: req.user
+        });
+    }
 }
 
 exports.signin = function (req, res) {

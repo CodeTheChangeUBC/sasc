@@ -3,7 +3,7 @@ const counsellorModel = require("../models/counsellor");
 const to = require("await-to-js").to;
 
 exports.getAccount = async function (role, model, req, res) {
-    var id = req.query.userId;
+    var id = req.query.ID;
     var err, results;
     [err, results] = await to(model.lookupById(id));
     
