@@ -68,15 +68,18 @@ async function abstractSignup(user, requiredCredentials, role, res, model) {
     [err, result] = await to(Abstract.process(user));
     user = result;
 
-    if (user.ID === undefined || user.ID === null) {
+    if (user.ID === "") {
         // Create a new user
+        // Remove empty id field first
+        delete user.ID;
         [err, results] = await to(model.create(user));
     } else {
         // Update existing user who took the pre-chat survey
-        [err, results] = await to(model.update(user.ID, user));
+        [err, results] = await to(model.update(user, user.ID));
     }
 
     if (err) {
+        console.log(err);
         return res.status(422).send({error: "Cannot create " + role + "."});
     }
 
