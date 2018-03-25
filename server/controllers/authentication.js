@@ -77,11 +77,12 @@ async function abstractSignup(user, requiredCredentials, role, res, model) {
     }
 
     if (err) {
-        return res.status(422).send({error: "Cannot create " + role + "."});
+    	console.log(err);
+        return res.status(422).send({error: "Cannot create " + role + "because err"});
     }
 
     if (!results) {
-        return res.status(422).send({error: "Cannot create " + role + "."});
+        return res.status(422).send({error: "Cannot create " + role + "because !results"});
     }
 
     // Send token back to client
