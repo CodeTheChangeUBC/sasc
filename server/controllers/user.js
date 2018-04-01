@@ -1,9 +1,11 @@
 const Abstract = require("../models/abstract");
 const userModel = require("../models/user");
+const account = require("./account");
 const helper = require("./helper");
-const isEmailValid = require('../models/abstract').isEmailValid
+const isEmailValid = require("../models/abstract").isEmailValid;
+const to = require("await-to-js").to;
 
-exports.submitSurvey = function (req, res) {
+exports.submitSurvey = async function (req, res) {
     var user = {
         nickname: req.body.nickname.trim(),
         age: req.body.age,
@@ -17,43 +19,34 @@ exports.submitSurvey = function (req, res) {
     }
 
     // Check if email is valid
-    if (!isEmailValid(email, res)) return;
+    if (!isEmailValid(user.email, res)) {
+        return;
+    }
 
-    userModel.create(user, function (err, results) {
-        if (err) {
-            return res.status(422).send({error: "Failed to submit survey."});
-        }
+    var err, results;
+    err, results = await to(userModel.create(user));
+    
+    if (err) {
+        return res.status(422).send({error: "Failed to submit survey."});
+    }
 
-        if (!results) {
-            return res.status(422).send({error: "Failed to submit survey."});
-        }
+    if (!results) {
+        return res.status(422).send({error: "Failed to submit survey."});
+    }
 
-        return res.status(201).send({
-            success: "Survey successfully submitted.",
-            userid: results.insertId
-        });
+    return res.status(201).send({
+        success: "Survey successfully submitted.",
+        userid: results.insertId
     });
+
 };
 
-exports.getUser = function (req, res) {
-    var id = req.params.ID;
-
-    userModel.lookupById(id, function (err, results) {
-        if (err) {
-            return res.status(422).send({error: "Failed to lookup user account information."});
-        }
-
-        if (results.length === 0) {
-            return res.status(422).send({error: "No such user."});
-        }
-
-        var user = results[0];
-        return res.status(201).send({user: user});
-    });
+exports.getUser = async function (req, res) {
+    account.getAccount("user", userModel, req, res);
 };
 
-exports.updateUser = function (req, res) {
-    var id = req.params.ID;
+exports.updateUser = async function (req, res) {
+    var id = req.query.userId;
 
     var user = {
         nickname: req.body.nickname.trim(),
@@ -66,89 +59,9 @@ exports.updateUser = function (req, res) {
         return res.status(422).send({error: "You must enter all fields."});
     }
 
-    // Check entered password before updating user information
-    Abstract.process(user, function (result) {
-        userModel.lookupById(id, function (err, results) {
-            if (err) {
-                return res.status(422).send({error: "Failed to lookup user account information."});
-            }
-
-            if (results.length === 0) {
-                return res.status(422).send({error: "No such user."});
-            }
-
-            if (results[0].password !== result.password) {
-                return res.status(422).send({error: "The provided password is incorrect."});
-            }
-
-            userModel.update(id, user, function (err, results) {
-                if (err) {
-                    return res.status(422).send({error: "Failed to update user account information."});
-                }
-
-                if (!results) {
-                    return res.status(422).send({error: "Failed to update user account information."});
-                }
-
-                return res.status(201).send({success: "Successfully updated user."});
-            });
-        });
-    });
+    account.updateAccount("user", userModel, user, id, req, res);
 };
 
 exports.changePassword = function (req, res) {
-    var id = req.params.ID;
-    var oldPassword = req.body.oldPassword;
-
-    Abstract.hashOne(oldPassword, function (err, oldPasswordHashed) {
-        if (err) {
-            return res.status(422).send({error: "Failed to encrypt password."});
-        }
-
-        if (!oldPasswordHashed) {
-            return res.status(422).send({error: "Failed to encrypt password."});
-        }
-
-        userModel.lookupById(id, function (err, results) {
-            if (err) {
-                return res.status(422).send({error: "Failed to lookup user account information."});
-            }
-
-            if (results.length === 0) {
-                return res.status(422).send({error: "No such user."});
-            }
-
-            if (results[0].password !== oldPasswordHashed) {
-                return res.status(422).send({error: "The provided password is incorrect."});
-            }
-
-            var newPassword = req.body.newPassword;
-
-            Abstract.hashOne(newPassword, function (err, newPasswordHashed) {
-                if (err) {
-                    return res.status(422).send({error: "Failed to encrypt password."});
-                }
-
-                if (!newPasswordHashed) {
-                    return res.status(422).send({error: "Failed to encrypt password."});
-                }
-
-                var user = {
-                    password: newPasswordHashed
-                };
-
-                userModel.update(id, user, function (err, results) {
-                    if (err) {
-                        return res.status(422).send({error: "Failed to change password."});
-                    }
-
-                    if (!results) {
-                        return res.status(422).send({error: "Failed to change password."});
-                    }
-
-                    return res.status(201).send({success: "Successfully changed password."});
-                });
-            });
-        });
-    });
-};
+    account.changePassword(req, res, userModel);
+}

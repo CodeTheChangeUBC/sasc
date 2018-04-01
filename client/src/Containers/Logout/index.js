@@ -7,7 +7,6 @@ import * as userActions from '../../Redux/Actions/userActions';
 import * as counsellorActions from '../../Redux/Actions/counsellorActions';
 import * as chatActions from '../../Redux/Actions/chatActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
-import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -46,7 +45,7 @@ function mapDispatchToProps(dispatch) {
         removeCounsellor: counsellorActions.removeCounsellor,
         disconnectFromChat: chatActions.disconnectFromChat,
         removeRooms: roomActions.removeRooms,
-        removeActiveRoom: activeRoomActions.removeActiveRoom
+        removeActiveRoom: roomActions.removeActiveRoom
     }, dispatch);
 }
 

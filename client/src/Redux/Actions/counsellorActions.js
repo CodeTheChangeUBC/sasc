@@ -37,13 +37,18 @@ export function renderCounsellorError(error) {
 
 export function addCounsellor(counsellor) {
     return function (dispatch) {
-        if (counsellor.password) {
-            delete counsellor.password;
+        if (counsellor) {
+            if (counsellor.password) {
+                delete counsellor.password;
+            }
+            dispatch({
+                type: ADD_COUNSELLOR,
+                counsellor: counsellor
+            });
+        } else {
+            dispatch(counsellorError("Counsellor information cannot be added to the login session."));
         }
-        dispatch({
-            type: ADD_COUNSELLOR,
-            counsellor: counsellor
-        });
+        
     };
 }
 
@@ -56,13 +61,13 @@ export function getCounsellor(id) {
                 "Authorization": token
             },
             params: {
-                counsellorId: id
+                ID: id
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}/:counsellorId`, header)
+        axios.get(`${ROOT_URL + BASE_URL}`, header)
             .then(function (response) {
-                if (response.data.length !== 0) {
-                    var counsellor = response.data[0];
+                if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
+                    var counsellor = response.data.counsellor;
                     if (counsellor.password) {
                         delete counsellor.password;
                     }
@@ -92,30 +97,30 @@ export function updateCounsellor({ID, email, firstName, lastName, password}) {
             }
         };
         const data = {ID, email, firstName, lastName, password};
-        // This is what it does temporarily
-        if (data.password) {
-            delete data.password;
-        }
-        dispatch({
-            type: UPDATE_COUNSELLOR,
-            counsellor: data
-        });
-        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
+
+        axios.put(`${ROOT_URL + BASE_URL}`, data, header)
             .then(function (response) {
-                delete data.password;
-                dispatch({
-                    type: UPDATE_COUNSELLOR,
-                    counsellor: data,
-                    success: response.data.success
-                });
+                // If successfully updated on the backend, update on frontend as well.
+                if (response.data.success) {
+
+                    if (data.password) {
+                        delete data.password;
+                    }
+
+                    dispatch({
+                        type: UPDATE_COUNSELLOR,
+                        counsellor: data,
+                        success: response.data.success
+                    });
+                }
             })
             .catch(function (error) {
                 dispatch(counsellorError(error.response.data.error));
-            });*/
+            });
     };
 }
 
-export function changeCounsellorPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeCounsellorPassword({ID, oldPassword, newPassword}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -124,25 +129,22 @@ export function changeCounsellorPassword({ID, oldPassword, newPassword, newPassw
                 "Authorization": token
             },
             params: {
-                counsellorId: ID
+                ID: ID
             }
         };
-        const data = {ID, oldPassword, newPassword, newPasswordConfirm};
-        /*axios.put(`${ROOT_URL + BASE_URL}/:counsellorId`, data, header)
+        const data = {ID, oldPassword, newPassword};
+        axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
             .then(function (response) {
-                dispatch({
-                    type: PASSWORD_CHANGE,
-                    success: response.data.success
-                });
+                if (response.data.success) {
+                    dispatch({
+                        type: PASSWORD_CHANGE,
+                        success: response.data.success
+                    });
+                }
             })
             .catch(function (error) {
                 dispatch(counsellorError(error.response.data.error));
             });
-        */
-        dispatch({
-            type: PASSWORD_CHANGE,
-            success: "Password did not change because this is unimplemented."
-        });
     };
 }
 

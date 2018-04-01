@@ -36,6 +36,7 @@ if (token) {
                     user: response.data.user
                 });
             } else if (response.data.role === "none") {
+                localStorage.removeItem("token");
                 store.dispatch({type: UNAUTH});
             }
         });

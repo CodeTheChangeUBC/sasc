@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as activeRoomActions from './../../Redux/Actions/activeRoomActions';
+import * as roomActions from './../../Redux/Actions/roomActions';
 import PropTypes from 'prop-types';
 
 /**
@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
     }
 
     switchActiveRoom() {
-        this.props.setActiveRoom(this.props.room);
+        this.props.setActiveRoom(this.props.room.roomID);
     }
 
     render() {
@@ -47,7 +47,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    setActiveRoom: activeRoomActions.setActiveRoom
+    setActiveRoom: roomActions.setActiveRoom
   }, dispatch);
 }
 

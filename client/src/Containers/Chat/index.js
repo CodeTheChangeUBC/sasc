@@ -6,7 +6,6 @@ import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import ChatInput from './../../Components/Chat/ChatInput';
 import * as chatActions from './../../Redux/Actions/chatActions';
-import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
 import { config } from './../../config';
 import PropTypes from 'prop-types';
@@ -102,8 +101,8 @@ function mapStateToProps(state, ownProps) {
     chat: state.chat.connected,
     user: state.user.user,
     counsellor: state.counsellor.counsellor,
-    rooms: state.rooms,
-    activeRoom: state.activeRoom.activeRoom,
+    rooms: state.room.rooms,
+    activeRoom: state.room.activeRoom,
     auth: state.auth.auth
   };
 }

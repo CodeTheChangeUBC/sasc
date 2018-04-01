@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
+import * as roomActions from '../../Redux/Actions/roomActions';
 import PropTypes from 'prop-types';
 
 class ChatInput extends Component {
@@ -46,7 +46,7 @@ class ChatInput extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     connected: state.chat.connected,
-    activeRoom: state.activeRoom.activeRoom,
+    activeRoom: state.room.activeRoom,
     auth: state.auth.auth,
     counsellor: state.counsellor.counsellor,
     user: state.user.user

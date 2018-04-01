@@ -1,4 +1,6 @@
 import {
+    SET_ACTIVE_ROOM,
+    REMOVE_ACTIVE_ROOM,
     JOIN_ROOM,
     REMOVE_ROOMS,
     ADD_MESSAGE_TO_ROOM,
@@ -9,6 +11,21 @@ import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/sessions";
+
+export function setActiveRoom(roomID) {
+    return function (dispatch) {
+        dispatch({
+            type: SET_ACTIVE_ROOM,
+            roomID: roomID
+        });
+    };
+}
+
+export function removeActiveRoom() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ACTIVE_ROOM});
+    };
+}
 
 export function joinRoom(room) { 
   return { type: JOIN_ROOM, room }; 

@@ -1,10 +1,18 @@
-const abstract = require('./abstract.js')
+const abstract = require('./abstract.js');
+const to = require("await-to-js").to;
 
 // Create message 
 // - m is a dictionary containing message values
 // - 	valueNames, but without ID
-exports.create = function(m, callback) {
-	abstract.create('message', m, callback);
+exports.create = function(m) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.create('message', m));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // counts number of message
@@ -21,40 +29,76 @@ exports.destroyAll = function(callback) {
 }
 
 // Retrieve by counsellor ID
-exports.listByCounsellor = function(counsellorID, callback) {
-	abstract.listByForeignKey('message', 'counsellorID', counsellorID, callback);
+exports.listByCounsellor = function(counsellorID) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.listByForeignKey('message', 'counsellorID', counsellorID));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Retrieve by user ID
-exports.listByUser = function(userID, callback) {
-	abstract.listByForeignKey('message', 'userID', userID, callback);
+exports.listByUser = function(userID) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.listByForeignKey('message', 'userID', userID));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Retrieve by Session ID
-exports.listBySession = function(sessionID, callback) {
-	abstract.listByForeignKey('message', 'sessionID', sessionID, callback);
+exports.listBySession = function(sessionID) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.listByForeignKey('message', 'sessionID', sessionID));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Retrieve by values
-exports.retrieveByValues = function(m, callback) {
-	var values = [m.sessionID, m.userID, m.counsellorID, m.messageTime, 
-				m.messageContent, m.fromCounsellor, m.fromTwilio];
-	var valueNames = ['sessionID', 'userID', 'counsellorID', 'messageTime', 
-				'messageContent', 'fromCounsellor', 'fromTwilio'];
-	abstract.retrieveByValues('message', values, valueNames, callback);	
+exports.retrieveByValues = function(m) {
+	return new Promise(async function(resolve, reject) {
+		var values = [m.sessionID, m.userID, m.counsellorID, m.messageTime, 
+					m.messageContent, m.fromCounsellor, m.fromTwilio];
+		var valueNames = ['sessionID', 'userID', 'counsellorID', 'messageTime', 
+					'messageContent', 'fromCounsellor', 'fromTwilio'];
+		[err, result] = await to(abstract.retrieveByValues('message', values, valueNames));	
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Retrieve messages by ID
-exports.retrieveById = function(id, callback) {
-	abstract.retrieve('message', id, null, callback);
+exports.retrieveById = function(id) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.retrieve('message', id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 // Update message
 // - id is ID of message to be updated
 // - vals is dictionary of vals to be updated 
-exports.update = function(id, vals, callback) {
-	// First get relevant message
-	exports.retrieveById(id, (err, message) => {
+exports.update = function(id, vals) {
+	return new Promise(async function(resolve, reject) {
+		// First get relevant message
+		exports.retrieveById(id, (err, message) => {
 		var values = {
 			sessionID: vals.sessionID || message.sessionID,
 			userID: vals.userID || message.userID,
@@ -66,13 +110,25 @@ exports.update = function(id, vals, callback) {
 		}
 		var valueNames = ['sessionID', 'userID', 'counsellorID', 'messageTime', 
 				'messageContent', 'fromCounsellor', 'fromTwilio'];
-		abstract.update('message', values, id, null, callback);
+		[err, result] = await to(abstract.update('message', values, id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
 	});
 } 
 
 // Destroy message by id
-exports.destroy = function(id, callback) {
-	abstract.destroy('message', id, null, callback);
+exports.destroy = function(id) {
+	return new Promise(async function(resolve, reject) {
+		[err, result] = await to(abstract.destroy('message', id));
+		if (err) {
+			reject(err);
+		} else {
+			resolve(result);
+		}
+	});
 }
 
 
