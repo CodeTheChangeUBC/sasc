@@ -15,7 +15,7 @@ module.exports = io => {
     
     // Check and accept/reject connection based on token.
     io.use((socket, next) => {
-        var token = socket.request.query.t
+        var token = socket.request.query.token
         var secret = util.secret
 
         // Verify and decode the token.

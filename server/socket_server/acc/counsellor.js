@@ -31,7 +31,6 @@ class Counsellor extends User {
      * @param  {Counsellee} counsellee - the counsellee trying to connect
      */
     request (counsellee) {
-
         // Request a message 
         this.emit('request', counsellee.id)
         this._hook(counsellee)
@@ -41,12 +40,12 @@ class Counsellor extends User {
 
     /**
      * Sets up local hooks for messages from counsellees
-     * @param  {Counsellee} p - the counsellee to set listeners for
+     * @param  {Counsellee} counsellee - the counsellee to set listeners for
      */
-    _hook (p) {
+    _hook (counsellee) {
 
         // Relay messages from the counsellee
-        p.socket.on('msg', data => {
+        counsellee.socket().on('msg', data => {
             this.emit('msg', data)
         })
     }

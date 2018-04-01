@@ -1,6 +1,6 @@
 
 import Counsellor from './counsellor'
-import Patient from './patient'
+import Counsellee from './counsellee'
 
 
 class User {
@@ -14,26 +14,26 @@ class User {
     }
 
     /**
-     * Matches a patient to a free counsellor and creates the appropriate socket hooks
+     * Matches a counsellee to a free counsellor and creates the appropriate socket hooks
      * 
-     * @param  {Patient} patient - A type of patient, extended from the user class
+     * @param  {Counsellee} counsellee - A type of counsellee, extended from the user class
      */
-    static match (patient) {
-        // Aggregate and sort all the counsellor ids by amount of patients watching (ascending)
+    static match (counsellee) {
+        // Aggregate and sort all the counsellor ids by amount of counsellees watching (ascending)
         var counsellorIds = Object.keys(this.Counsellor)
 
         counsellorIds.sort((a, b) => {
             // Using `this` because arrow function are non-binding
-            var aPatients = this.Counsellor[a].patients.length
-            var bPatients = this.Counsellor[b].patients.length
+            var aCounsellees = this.Counsellor[a].counsellees.length
+            var bCounsellees = this.Counsellor[b].counsellees.length
 
-            return aPatients - bPatients
+            return aCounsellees - bCounsellees
         })
 
         // The first Id is the most suitable counsellor
         // ergo, we request a chatd
         var selected = this.Counsellor[counsellorIds[0]]
-        selected.request(patient)
+        selected.request(counsellee)
     }
 
     /**
@@ -46,15 +46,15 @@ class User {
 
         // Detect payload user type and create the proper user type
         switch (socket.payload) {
-            case 'PATIENT':
-                // Patients must be immediately matched to a counsellor.
-                let user = new Patient(socket)
-                this.Patients[socket.id] = user
+            case 'COUNSELLEE':
+                // Counsellees must be immediately matched to a counsellor.
+                let user = new Counsellee(socket)
+                this.Counsellees[socket.id] = user
 
                 this.match(user)
                 break
             case 'COUNSELLOR':
-                // Counsellors do not need to connect to a patient right away.
+                // Counsellors do not need to connect to a counsellee right away.
                 this.Counsellors[socket.id] = new Counsellor(socket)
                 break
             default:
@@ -67,6 +67,6 @@ class User {
 
 
 User.Counsellors = {}
-User.Patients = {}
+User.Counsellees = {}
 
 export default User
