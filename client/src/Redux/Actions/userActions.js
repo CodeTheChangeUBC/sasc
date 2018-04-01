@@ -5,14 +5,20 @@ import {
     UPDATE_USER,
     REMOVE_USER,
     USER_ERROR,
-    REMOVE_ERROR,
-    PASSWORD_CHANGE
+    PASSWORD_CHANGE,
+    REMOVE_ERROR
 } from './../Types/userTypes';
 import axios from "axios";
 import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/users";
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
 
 function userError(error) {
     return {
@@ -27,12 +33,6 @@ export function renderUserError(error) {
             type: USER_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeUserError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 

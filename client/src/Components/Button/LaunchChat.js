@@ -26,7 +26,7 @@ class LaunchChat extends Component {
   }
 
   render() {
-    if (this.props.chatConnected || this.props.authenticatedCounsellor) {
+    if (this.props.chatConnected || this.props.auth === "counsellor") {
       return (
         <div>
             <p>
@@ -34,7 +34,7 @@ class LaunchChat extends Component {
            </p>
         </div>
       );
-    } else if (this.props.authenticated) {
+    } else if (this.props.auth === "user") {
       return (
           <div className="connect-to-chat" onClick={this.gotoChat}>
             <div className="launch-chat" value="Launch Chat">
@@ -56,9 +56,8 @@ class LaunchChat extends Component {
 
 function mapStateToProps(state) {
     return {
-        chatConnected: state.rooms.room,
-        authenticated: state.auth.authenticated,
-        authenticatedCounsellor: state.auth.authenticatedCounsellor,
+        chatConnected: state.chat.connected,
+        auth: state.auth.auth
     };
 }
 
@@ -69,8 +68,7 @@ function mapDispatchToProps(dispatch) {
 LaunchChat.propTypes = {
     history: PropTypes.object,
     chatConnected: PropTypes.bool,
-    authenticated: PropTypes.bool,
-    authenticatedCounsellor: PropTypes.bool
+    auth: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LaunchChat);

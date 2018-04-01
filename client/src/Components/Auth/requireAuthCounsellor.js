@@ -9,13 +9,13 @@ export default function(ComposedComponent) {
     };
 
     componentWillMount() {
-      if (!this.props.authenticatedCounsellor) {
+      if (this.props.auth !== "counsellor") {
         this.context.router.history.push('/');
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticatedCounsellor) {
+      if (nextProps.auth !== "counsellor") {
         this.context.router.history.push('/');
       }
     }
@@ -26,11 +26,11 @@ export default function(ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { authenticatedCounsellor: state.auth.authenticatedCounsellor };
+    return { auth: state.auth.auth };
   }
 
   AuthenticationForCounsellor.propTypes = {
-    authenticatedCounsellor: PropTypes.bool
+    auth: PropTypes.string
   };
 
   return connect(mapStateToProps)(AuthenticationForCounsellor);

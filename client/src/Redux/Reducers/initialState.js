@@ -1,39 +1,27 @@
 export default {
-  auth: {},
+
+  auth: {
+    auth: "",
+    status: {
+      error: "",
+      success: ""
+    },
+  },
 
   chat: {
     connected: false
   },
 
-  messages: [
-    { user: 'ChatBot',
-      message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'
-    }, 
-    { user: 'Mac Miller',
-      message: 'I tots agree'
-    },
-    { user: 'Scott Mescudi',
-      message: '!!!!!!!!!!!!!!!! I feel immortal'
-    } 
-  ],
+  activeRoom: {
+    activeRoom: null
+  },
   
-  rooms: [
-    { title: 'Music is Life', 
-      humans: {
-        counsellor: {
-          ID: 1,
-          email: "meanieblue@example.com",
-          firstName: "Meanie",
-          lastName: "Blue"
-        },
-        user: {
-          ID: 11,
-          username: "beantdonethat",
-          nickname: "Bean",
-          age: 0,
-          email: "beantdonethat@example.com",
-          phoneNumber: 1234567890
-        },
+  rooms: [{ 
+    roomID: 1,
+    sessionID: 0, // Latest session ID
+    humans: {
+        counsellor: 1,
+        user: 11,
       },
      messages: [
      {
@@ -42,10 +30,9 @@ export default {
       messageTime: 100,
       counsellorID: 1,
       userID: 1,
-      message: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
+      messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io',
       fromCounsellor: 1,
-      fromTwilio: 0,
-      user: 'ChatBot'
+      fromTwilio: 0
      },
      {
       ID: 2,
@@ -55,27 +42,15 @@ export default {
       userID: 1,
       message: 'Wait, what are these words?',
       fromCounsellor: 0,
-      fromTwilio: 0,
-      user: 'Scott Mescudi'
+      fromTwilio: 0
      }
     ] },
     {
-      title: 'Come share your feelings',
+      roomID: 2,
+      sessionID: 1,
       humans: {
-      counsellor: {
-        ID: 2,
-        email: "scottmescudi@example.com",
-        firstName: "Scott",
-        lastName: "Mescudi"
-      },
-      user: {
-        ID: 12,
-        username: "fox",
-        nickname: "Q-Tip",
-        age: 0,
-        email: "foxTheQuiet@example.com",
-        phoneNumber: 1234567891
-      }
+      counsellor: 2,
+      user: 12
     },
      messages: [
      {
@@ -84,8 +59,7 @@ export default {
       messageTime: 100,
       counsellorID: 2,
       userID: 12,
-      user: "Scott",
-     message: 'Someone explain Sockets to me Please',
+     messageContent: 'Someone explain Sockets to me Please',
      fromCounsellor: 1,
      fromTwilio: 0
    },
@@ -95,76 +69,12 @@ export default {
     messageTime: 200,
     counsellorID: 2,
     userID: 12,
-    user: 'Q-Tip',
-    message: 'I have no idea',
+    messageContent: 'I have no idea',
     fromCounsellor: 0,
     fromTwilio: 0
   }] 
     }
   ],
-
-  activeRoom: {
-    room: {
-    title: 'Music is Life',
-    humans: {
-      counsellor: {
-        ID: 1,
-        email: "meanieblue@example.com",
-        firstName: "Meanie",
-        lastName: "Blue"
-      },
-      user: {
-        ID: 11,
-        username: "beantdonethat",
-        nickname: "Bean",
-        age: 0,
-        email: "beantdonethat@example.com",
-        phoneNumber: 1234567890
-      }
-    },
-    //messages: [ { user: 'ChatBot', messageContent: 'Welcome to React Chat -- Built using React, Redux, Express, and Socket.io'}, { user: 'Scott Mescudi', messageContent: 'Wait, what are these words?'}]
-    messages: [
-    {
-      ID: 1,
-      sessionID: 1,
-      messageTime: 100,
-      counsellorID: 1,
-      userID: 11,
-      message: 'Hi Bean.',
-      fromCounsellor: 1,
-      fromTwilio: 0,
-      user: "Meanie"
-    },
-    {
-      ID: 2,
-      sessionID: 1,
-      messageTime: 200,
-      counsellorID: 1,
-      userID: 11,
-      message: 'Hi Meanie Blue.',
-      fromCounsellor: 0,
-      fromTwilio: 0,
-      user: "Bean"
-     }
-    ]
-  }
-  },
-
-  counsellor: {
-    counsellor: {
-      ID: "153",
-      firstName: "Shilo",
-      lastName: "St. Cyr",
-      email: "admin@ams.ubc.ca"
-    },
-    students: [
-      {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
-      {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },
-      {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" },
-      {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" },
-      {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" }
-    ]
-  },
 
   user: {
     user: {
@@ -177,19 +87,45 @@ export default {
       gender: "",
       nickname: "",
       phoneNumber: "",
-      registered: 0,
+      registered: 0
     },
-    error: ""
+    status: {
+      error: "",
+      success: ""
+    }
   },
 
-  smssettings: {
+  counsellor: {
+    counsellor: {
+      ID: "153",
+      firstName: "Shilo",
+      lastName: "St. Cyr",
+      email: "admin@ams.ubc.ca",
+      students: [
+        {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
+        {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },
+        {name: "Tommy Chuk", phone: "(604) 777-7777", email: "tchuk@hotmail.com" },
+        {name: "Sabrina", phone: "(604) 777-7777", email: "sabrina@protonmain.ch" },
+        {name: "Bradly", phone: "(604) 777-7777", email: "bradly@protonmain.ch" }
+      ]
+    },
+    status: {
+      error: "",
+      success: ""
+    }
+  },
+
+  sms: {
     sms: {
       email: "",
       twilioPhoneNumber: "",
       accountSid: "",
       authToken: ""
     },
-    error: ""
+    status: {
+      error: "",
+      success: ""
+    }
   }
 
 };

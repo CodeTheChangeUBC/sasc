@@ -31,11 +31,11 @@ class Account extends Component {
   }
 
   componentWillMount() {
-    this.props.removeUserError();
     this.props.removeCounsellorError();
-    if (this.props.authenticated) {
+    this.props.removeUserError();
+    if (this.props.auth === "user") {
       this.props.getUser(this.props.user.ID);
-    } else if (this.props.authenticatedCounsellor) {
+    } else if (this.props.auth === "counsellor") {
       this.props.getCounsellor(this.props.counsellor.ID);
     }
   }
@@ -50,7 +50,7 @@ class Account extends Component {
     });
   }
 
-  validateForm(fields, renderError, removeError) {
+  validateForm(fields, renderError) {
     const { password, passwordConfirm } = this.state;
 
     if (password !== passwordConfirm) {
@@ -58,13 +58,13 @@ class Account extends Component {
       return false;
     }
 
-    if (this.props.role === "user") {
+    if (this.props.auth === "user") {
       const { nickname, age, gender, email, phoneNumber } = fields;
       if (!nickname || !age || !gender || !email || !phoneNumber || !password || !passwordConfirm) {
         renderError("You must not leave any field blank.");
         return false;
       }
-    } else if (this.props.role === "counsellor") {
+    } else if (this.props.auth === "counsellor") {
       const { email, firstName, lastName, password } = fields;
       if (!email || !firstName || !lastName || !password || !passwordConfirm) {
         renderError("You must not leave any field blank.");
@@ -74,9 +74,9 @@ class Account extends Component {
 
     // TODO: Add regex check for email here.
 
-    if (this.props.role === "user") {
+    if (this.props.auth === "user") {
       fields.ID = this.props.user.ID;
-    } else if (this.props.role === "counsellor") {
+    } else if (this.props.auth === "counsellor") {
       fields.ID = this.props.counsellor.ID;
     }
 
@@ -94,7 +94,7 @@ class Account extends Component {
     var fields;
     var validated = false;
 
-    if (this.props.role === "user") {
+    if (this.props.auth === "user") {
       const {
         nickname,
         age,
@@ -113,11 +113,11 @@ class Account extends Component {
         password
       };
 
-      validated = this.validateForm(fields, this.props.renderUserError, this.props.removeUserError);
+      validated = this.validateForm(fields, this.props.renderUserError);
       if (validated) {
         this.props.updateUser(validated);
       }
-    } else if (this.props.role === "counsellor") {
+    } else if (this.props.auth === "counsellor") {
       const {
         email,
         firstName,
@@ -131,7 +131,7 @@ class Account extends Component {
         lastName: lastName.trim(),
         password
       };
-      validated = this.validateForm(fields, this.props.renderCounsellorError, this.props.removeCounsellorError);
+      validated = this.validateForm(fields, this.props.renderCounsellorError);
       if (validated) {
         this.props.updateCounsellor(validated);
       }
@@ -139,35 +139,35 @@ class Account extends Component {
   }
 
   renderAlert() {
-    if (this.props.errorMessageCounsellor) {
+    if (this.props.counsellorStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessageCounsellor}
+                {this.props.counsellorStatus.error}
             </div>
         );
-    } else if (this.props.successMessageCounsellor) {
+    } else if (this.props.counsellorStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessageCounsellor}
+                {this.props.counsellorStatus.success}
             </div>
         );
-    } else if (this.props.errorMessageUser) {
+    } else if (this.props.userStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessageUser}
+                {this.props.userStatus.error}
             </div>
         );
-    } else if (this.props.successMessageUser) {
+    } else if (this.props.userStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessageUser}
+                {this.props.userStatus.success}
             </div>
         );
     }
   }
 
   render() {
-    if (this.props.authenticated) {
+    if (this.props.auth === "user") {
       return (
         <div className="Account">
           <h2>User Account Information</h2>
@@ -208,7 +208,7 @@ class Account extends Component {
           <div className="change-your-password-here"><p>Change your password <Link to="/changepassword">here</Link>.</p></div>
         </div>
       );
-    } else if (this.props.authenticatedCounsellor) {
+    } else if (this.props.auth === "counsellor") {
       return (
         <div className="Account">
           <h2>Counsellor Account Information</h2>
@@ -251,15 +251,11 @@ class Account extends Component {
 
 function mapStateToProps(state) {
     return {
-      authenticated: state.auth.authenticated,
-      authenticatedCounsellor: state.auth.authenticatedCounsellor,
+      auth: state.auth.auth,
       user: state.user.user,
       counsellor: state.counsellor.counsellor,
-      role: state.auth.role,
-      errorMessageUser: state.user.error,
-      successMessageUser: state.user.success,
-      errorMessageCounsellor: state.counsellor.error,
-      successMessageCounsellor: state.counsellor.success
+      counsellorStatus: state.counsellor.status,
+      userStatus: state.user.status
     };
 }
 
@@ -269,16 +265,13 @@ function mapDispatchToProps(dispatch) {
     updateUser: userActions.updateUser,
     getCounsellor: counsellorActions.getCounsellor,
     updateCounsellor: counsellorActions.updateCounsellor,
-    removeUserError: userActions.removeUserError,
-    removeCounsellorError: counsellorActions.removeCounsellorError,
-    renderUserError: userActions.renderUserError,
-    renderCounsellorError: counsellorActions.renderCounsellorError
+    removeUserError: userActions.removeError,
+    removeCounsellorError: counsellorActions.removeError
   }, dispatch);
 }
 
 Account.propTypes = {
-  authenticated: PropTypes.bool,
-  authenticatedCounsellor: PropTypes.bool,
+  auth: PropTypes.string,
   user: PropTypes.object,
   "user.ID": PropTypes.string,
   "user.nickname": PropTypes.string,
@@ -290,11 +283,8 @@ Account.propTypes = {
   "user.phoneNumber": PropTypes.number,
   counsellor: PropTypes.object,
   "counsellor.email": PropTypes.string,
-  role: PropTypes.string,
-  errorMessageUser: PropTypes.string,
-  successMessageUser: PropTypes.string,
-  errorMessageCounsellor: PropTypes.string,
-  successMessageCounsellor: PropTypes.string,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
   renderUserError: PropTypes.func,
   renderCounsellorError: PropTypes.func,
   addUser: PropTypes.func,
@@ -304,7 +294,13 @@ Account.propTypes = {
   updateCounsellor: PropTypes.func,
   removeUserError: PropTypes.func,
   removeCounsellorError: PropTypes.func,
-  renderError: PropTypes.func
+  renderError: PropTypes.func,
+  "counsellorStatus": PropTypes.object,
+  "userStatus": PropTypes.object,
+  "counsellorStatus.error": PropTypes.string,
+  "userStatus.error": PropTypes.string,
+  "counsellorStatus.success": PropTypes.string,
+  "userStatus.success": PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

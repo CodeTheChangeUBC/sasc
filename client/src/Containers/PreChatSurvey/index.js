@@ -25,7 +25,7 @@ class PreChatSurvey extends Component {
   }
 
   componentWillMount() {
-    this.props.removeUserError();
+    this.props.removeError();
   }
 
   handleOnChange(event) {
@@ -104,7 +104,7 @@ class PreChatSurvey extends Component {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.auth.error
+      errorMessage: state.user.status.error
     };
 }
 
@@ -113,7 +113,7 @@ PreChatSurvey.propTypes = {
     history: PropTypes.object,
     submitSurvey: PropTypes.func,
     errorMessage: PropTypes.string,
-    removeUserError: PropTypes.func,
+    removeError: PropTypes.func,
     renderUserError: PropTypes.func
 };
 
@@ -121,7 +121,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     submitSurvey: userActions.submitSurvey,
     renderUserError: userActions.renderUserError,
-    removeUserError: userActions.removeUserError
+    removeError: userActions.removeError
   }, dispatch);
 }
 

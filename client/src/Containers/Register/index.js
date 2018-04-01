@@ -42,7 +42,7 @@ class Register extends Component {
   }
 
   componentWillMount() {
-    this.props.removeAuthError();
+    this.props.removeError();
   }
 
   handleOnChange(event) {
@@ -71,7 +71,7 @@ class Register extends Component {
 
     // TODO: Add regex check for email here.
 
-    this.props.removeAuthError();
+    this.props.removeError();
 
     if (this.props.user) {
       fields.ID = this.props.user.ID;
@@ -148,8 +148,8 @@ class Register extends Component {
 
 function mapStateToProps(state) {
     return {
-      user: state.user,
-      errorMessage: state.auth.error
+      user: state.user.user,
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -161,7 +161,7 @@ Register.propTypes = {
   history: PropTypes.object,
   signupUser: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeAuthError: PropTypes.func,
+  removeError: PropTypes.func,
   renderAuthError: PropTypes.func
 };
 
@@ -169,7 +169,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     signupUser: authActions.signupUser,
     addUser: userActions.addUser,
-    removeAuthError: authActions.removeAuthError
+    removeError: authActions.removeError
   }, dispatch);
 }
 

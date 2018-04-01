@@ -8,7 +8,6 @@ import * as counsellorActions from '../../Redux/Actions/counsellorActions';
 import * as chatActions from '../../Redux/Actions/chatActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
 import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
-import * as smsActions from '../../Redux/Actions/smsActions';
 import PropTypes from 'prop-types';
 import './styles.css';
 
@@ -23,9 +22,8 @@ class Logout extends Component {
         this.props.disconnectFromChat();
         this.props.removeUser();
         this.props.removeCounsellor();
-        this.props.resetRoom();
+        this.props.removeRooms();
         this.props.removeActiveRoom();
-        this.props.resetSMSSettings();
     }
     
     render() {
@@ -42,15 +40,14 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    signout: authActions.signout,
-    removeUser: userActions.removeUser,
-    removeCounsellor: counsellorActions.removeCounsellor,
-    disconnectFromChat: chatActions.disconnectFromChat,
-    resetRoom: roomActions.resetRoom,
-    removeActiveRoom: activeRoomActions.removeActiveRoom,
-    resetSMSSettings: smsActions.resetSMSSettings
-}, dispatch);
+    return bindActionCreators({
+        signout: authActions.signout,
+        removeUser: userActions.removeUser,
+        removeCounsellor: counsellorActions.removeCounsellor,
+        disconnectFromChat: chatActions.disconnectFromChat,
+        removeRooms: roomActions.removeRooms,
+        removeActiveRoom: activeRoomActions.removeActiveRoom
+    }, dispatch);
 }
 
 Logout.propTypes = {
@@ -58,9 +55,8 @@ Logout.propTypes = {
     removeCounsellor: PropTypes.func,
     signout: PropTypes.func,
     disconnectFromChat: PropTypes.func,
-    resetRoom: PropTypes.func,
-    removeActiveRoom: PropTypes.func,
-    resetSMSSettings: PropTypes.func
+    removeRooms: PropTypes.func,
+    removeActiveRoom: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);

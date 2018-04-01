@@ -1,8 +1,7 @@
 import {
     AUTH_USER,
     AUTH_COUNSELLOR,
-    UNAUTH_USER,
-    UNAUTH_COUNSELLOR,
+    UNAUTH,
     AUTH_ERROR,
     REMOVE_ERROR
 } from "./../Types/authTypes";
@@ -11,6 +10,12 @@ import {config} from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/auth";
+
+export function removeError() {
+    return function (dispatch) {
+        dispatch({type: REMOVE_ERROR});
+    };
+}
 
 function authError(error) {
     return {
@@ -25,12 +30,6 @@ export function renderAuthError(error) {
             type: AUTH_ERROR,
             payload: error
         });
-    };
-}
-
-export function removeAuthError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
     };
 }
 
@@ -105,7 +104,6 @@ export function signupUser({ID, username, nickname, age, gender, phoneNumber, em
 export function signout() {
     return function (dispatch) {
         localStorage.removeItem("token");
-        dispatch({type: UNAUTH_USER});
-        dispatch({type: UNAUTH_COUNSELLOR});
+        dispatch({type: UNAUTH});
     };
 }

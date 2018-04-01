@@ -7,8 +7,8 @@ import './../../Containers/Chat/styles.css';
 class MessageInstance extends Component {
   render() {
 
-    const fromMe = ((this.props.role === "counsellor" && this.props.fromCounsellor) 
-      || (this.props.role !== "counsellor" && this.props.fromCounsellor === 0)) ? 'from-me' : '';
+    const fromMe = ((this.props.auth === "counsellor" && this.props.fromCounsellor) 
+      || (this.props.auth !== "counsellor" && this.props.fromCounsellor === 0)) ? 'from-me' : '';
 
     return(
         <div className={`${fromMe} message-instance`}>
@@ -25,7 +25,7 @@ class MessageInstance extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    role: state.auth.role,
+    auth: state.auth.auth,
     user: state.user.user,
     counsellor: state.counsellor.counsellor
   };
@@ -36,7 +36,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 MessageInstance.propTypes = {
-    role: PropTypes.string,
+    auth: PropTypes.string,
     fromCounsellor: PropTypes.number,
     name: PropTypes.string,
     message: PropTypes.string,

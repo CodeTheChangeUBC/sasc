@@ -1,24 +1,13 @@
 import {
   SET_ACTIVE_ROOM,
-  REMOVE_ACTIVE_ROOM,
-  ADD_MESSAGE
+  REMOVE_ACTIVE_ROOM
 } from "./../Types/activeRoomTypes";
 
-export function addMessageToActiveRoom(data) {
-    return function (dispatch) {
-        var message = JSON.parse(data.newMessage.message);
-        dispatch({
-            type: ADD_MESSAGE,
-            message: message
-        });
-    };
-}
-
-export function setActiveRoom(room) {
+export function setActiveRoom(roomID) {
     return function (dispatch) {
         dispatch({
             type: SET_ACTIVE_ROOM,
-            room: room
+            roomID: roomID
         });
     };
 }

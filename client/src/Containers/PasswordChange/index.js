@@ -26,8 +26,8 @@ class PasswordChange extends Component {
   }
 
   componentWillMount() {
-    this.props.removeUserError();
     this.props.removeCounsellorError();
+    this.props.removeUserError();
   }
 
   handleOnChange(event) {
@@ -40,7 +40,7 @@ class PasswordChange extends Component {
     });
   }
 
-  validateForm(renderError, removeError) {
+  validateForm(renderError) {
     const { oldPassword, newPassword, newPasswordConfirm } = this.state;
     if (newPassword === oldPassword) {
         renderError("The new password cannot be the same as the old password.");
@@ -52,12 +52,13 @@ class PasswordChange extends Component {
       return false;
     }
 
-    removeError();
+    this.props.removeUserError();
+    this.props.removeCounsellorError();
     
     var ID;
-    if (this.props.role === "counsellor") {
+    if (this.props.auth === "counsellor") {
       ID = this.props.counsellor.ID;
-    } else if (this.props.role === "user") {
+    } else if (this.props.auth === "user") {
       ID = this.props.user.ID;
     }
 
@@ -73,10 +74,9 @@ class PasswordChange extends Component {
     ev.preventDefault();
     const { oldPassword, newPassword, newPasswordConfirm } = this.state;
     var validated = false;
-    if (this.props.authenticated) {
+    if (this.props.auth === "user") {
       validated = this.validateForm(
-        this.props.renderUserError,
-        this.props.removeUserError
+        this.props.renderUserError
       );
       if (validated) {
         this.props.changeUserPassword({
@@ -86,10 +86,9 @@ class PasswordChange extends Component {
           newPasswordConfirm
         });
       }
-    } else if (this.props.authenticatedCounsellor) {
+    } else if (this.props.auth === "counsellor") {
       validated = this.validateForm(
-        this.props.renderCounsellorError,
-        this.props.removeCounsellorError
+        this.props.renderCounsellorError
       );
       if (validated) {
         this.props.changeCounsellorPassword({
@@ -103,28 +102,28 @@ class PasswordChange extends Component {
   }
 
   renderAlert() {
-    if (this.props.errorMessageCounsellor) {
+    if (this.props.counsellorStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessageCounsellor}
+                {this.props.counsellorStatus.error}
             </div>
         );
-    } else if (this.props.successMessageCounsellor) {
+    } else if (this.props.counsellorStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessageCounsellor}
+                {this.props.counsellorStatus.success}
             </div>
         );
-    } else if (this.props.errorMessageUser) {
+    } else if (this.props.userStatus.error) {
         return (
             <div className="error">
-                {this.props.errorMessageUser}
+                {this.props.userStatus.error}
             </div>
         );
-    } else if (this.props.successMessageUser) {
+    } else if (this.props.userStatus.success) {
       return (
             <div className="success">
-                {this.props.successMessageUser}
+                {this.props.userStatus.success}
             </div>
         );
     }
@@ -155,15 +154,11 @@ class PasswordChange extends Component {
 
 function mapStateToProps(state) {
     return {
-      authenticated: state.auth.authenticated,
-      authenticatedCounsellor: state.auth.authenticatedCounsellor,
+      auth: state.auth.auth,
       user: state.user.user,
       counsellor: state.counsellor.counsellor,
-      role: state.auth.role,
-      errorMessageUser: state.user.error,
-      errorMessageCounsellor: state.counsellor.error,
-      successMessageUser: state.user.success,
-      successMessageCounsellor: state.counsellor.success
+      counsellorStatus: state.counsellor.status,
+      userStatus: state.user.status
     };
 }
 
@@ -175,27 +170,23 @@ function mapDispatchToProps(dispatch) {
     updateCounsellor: counsellorActions.updateCounsellor,
     changeUserPassword: userActions.changeUserPassword,
     changeCounsellorPassword: counsellorActions.changeCounsellorPassword,
-    removeUserError: userActions.removeUserError,
-    removeCounsellorError: counsellorActions.removeCounsellorError,
+    removeUserError: userActions.removeError,
+    removeCounsellorError: counsellorActions.removeError,
     renderUserError: userActions.renderUserError,
     renderCounsellorError: counsellorActions.renderCounsellorError
   }, dispatch);
 }
 
 PasswordChange.propTypes = {
-  authenticated: PropTypes.bool,
-  authenticatedCounsellor: PropTypes.bool,
+  auth: PropTypes.string,
   changeUserPassword: PropTypes.func,
   changeCounsellorPassword: PropTypes.func,
   user: PropTypes.object,
   "user.ID": PropTypes.string,
   counsellor: PropTypes.object,
   "counsellor.ID": PropTypes.string,
-  role: PropTypes.string,
-  errorMessageUser: PropTypes.string,
-  successMessageUser: PropTypes.string,
-  errorMessageCounsellor: PropTypes.string,
-  successMessageCounsellor: PropTypes.string,
+  counsellorStatus: PropTypes.object,
+  userStatus: PropTypes.object,
   renderUserError: PropTypes.func,
   renderCounsellorError: PropTypes.func,
   removeUserError: PropTypes.func,

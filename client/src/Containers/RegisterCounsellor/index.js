@@ -24,7 +24,7 @@ class RegisterCounsellor extends Component {
   }
 
   componentWillMount() {
-    this.props.removeAuthError();
+    this.props.removeError();
   }
 
   renderAlert() {
@@ -52,7 +52,7 @@ class RegisterCounsellor extends Component {
       this.props.renderAuthError("Passwords must match.");
     }
 
-    this.props.removeAuthError();
+    this.props.removeError();
 
     return true;
   }
@@ -110,7 +110,7 @@ class RegisterCounsellor extends Component {
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.auth.error
+      errorMessage: state.auth.status.error
     };
 }
 
@@ -119,7 +119,7 @@ function mapDispatchToProps(dispatch) {
     signupCounsellor: authActions.signupCounsellor,
     addCounsellor: counsellorActions.addCounsellor,
     renderAuthError: authActions.renderAuthError,
-    removeAuthError: authActions.removeAuthError
+    removeError: authActions.removeError
   }, dispatch);
 }
 
@@ -130,7 +130,7 @@ RegisterCounsellor.propTypes = {
   history: PropTypes.object,
   signupCounsellor: PropTypes.func,
   errorMessage: PropTypes.string,
-  removeAuthError: PropTypes.func,
+  removeError: PropTypes.func,
   renderAuthError: PropTypes.func
 };
 

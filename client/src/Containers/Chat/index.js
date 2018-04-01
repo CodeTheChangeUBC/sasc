@@ -6,7 +6,6 @@ import MessageBox from './../../Components/Chat/MessageBox';
 import CounsellorBar from './../../Components/Counsellor/CounsellorBar';
 import ChatInput from './../../Components/Chat/ChatInput';
 import * as chatActions from './../../Redux/Actions/chatActions';
-import * as messageActions from '../../Redux/Actions/messageActions';
 import * as activeRoomActions from '../../Redux/Actions/activeRoomActions';
 import * as roomActions from '../../Redux/Actions/roomActions';
 import { config } from './../../config';
@@ -20,7 +19,6 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: props.messages,
       connected: false
     };
 
@@ -30,7 +28,7 @@ class Chat extends Component {
 
   componentWillMount() {
       if(!(this.props.connected)) {
-        socket.emit('subscribe', {room: this.props.room.title});
+        socket.emit('subscribe', {room: this.props.rooms[0]});
         this.props.connectToChat();
     }
     //console.log('will mount initated');
@@ -44,12 +42,10 @@ class Chat extends Component {
   _handleMessageEvent(){
     //console.log('Wait for it...');
     socket.on('chat message', (inboundMessage) => {
-      if (this.props.authenticatedCounsellor) {
-        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
-        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
+      if (this.props.auth === "counsellor") {
+        this.props.addMessageToRoom({room: this.props.rooms[0], newMessage: {user: this.props.counsellor.firstName, message: inboundMessage}});
       } else {
-        this.props.addMessageToActiveRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
-        this.props.addMessageToRoom({room: this.props.room, newMessage: {user: this.props.user.nickname, message: inboundMessage}});
+        this.props.addMessageToRoom({room: this.props.rooms[0], newMessage: {user: this.props.user.nickname, message: inboundMessage}});
         //console.log('received message', inboundMessage);
       }
       this.forceUpdate();
@@ -57,13 +53,15 @@ class Chat extends Component {
   }
 
   renderChatBox() {
-    if (Object.keys(this.props.room).length !== 0) {
+    // If a counsellor has never connected to any user before, they will have no rooms.
+    // However, a user will always have a room when they enter the chat.
+    if (Object.keys(this.props.rooms).length !== 0) {
       return (<div className="container-for-title-and-message-box">
         <div className="chat-title">
-          <h3>{this.props.room.humans.user.nickname}</h3>
+          <h3>{/* TODO: Name of user */}</h3>
         </div>
-        <MessageBox msgs={this.props.room.messages} />
-        <ChatInput socket={socket} />
+        <MessageBox msgs={this.props.rooms[0].messages} />
+        <ChatInput socket={socket} room={this.props.rooms[0]}/>
       </div>);
     } else {
       return (<div className="container-for-title-and-message-box"></div>);
@@ -72,7 +70,7 @@ class Chat extends Component {
 
   render() {
     //console.log('messages is...', this.props.messages);
-    if (this.props.authenticatedCounsellor) {
+    if (this.props.auth === "counsellor") {
       return (
         <div className="Chat">
           <div className="outer-counsellor-bar">
@@ -81,14 +79,14 @@ class Chat extends Component {
           {this.renderChatBox()}
         </div>
       );
-    } else if (this.props.authenticated || this.props.connected) {
+    } else if (this.props.auth === "user" || this.props.connected) {
       return (
         <div className="Chat">
           <div className="container-for-title-and-message-box">
             <div className="chat-title">
-              <h3>{this.props.room.humans.counsellor.firstName}</h3>
+              <h3>{/* TODO: Name of counsellor */}</h3>
             </div>
-            <MessageBox msgs={this.props.messages} />
+            <MessageBox msgs={this.props.rooms[0].messages} />
             <ChatInput socket={socket} />
           </div>
         </div>
@@ -104,36 +102,37 @@ function mapStateToProps(state, ownProps) {
     chat: state.chat.connected,
     user: state.user.user,
     counsellor: state.counsellor.counsellor,
-    messages: state.activeRoom.room.messages,
-    room: state.activeRoom.room,
-    authenticated: state.auth.authenticated,
-    authenticatedCounsellor: state.auth.authenticatedCounsellor
+    rooms: state.rooms,
+    activeRoom: state.activeRoom.activeRoom,
+    auth: state.auth.auth
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    addMessageToActiveRoom: activeRoomActions.addMessageToActiveRoom,
     addMessageToRoom: roomActions.addMessageToRoom,
     connectToChat: chatActions.connectToChat,
-    disconnectFromChat: chatActions.disconnectFromChat
+    disconnectFromChat: chatActions.disconnectFromChat,
+    findRoomById: roomActions.findRoomById
   }, dispatch);
 }
 
 Chat.propTypes = {
-    authenticatedCounsellor: PropTypes.bool,
-    authenticated: PropTypes.bool,
-    addMessageToActiveRoom: PropTypes.func,
+    auth: PropTypes.string,
+    activeRoom: PropTypes.number,
+    addMessageToRoom: PropTypes.func,
     connected: PropTypes.bool,
     user: PropTypes.object,
     counsellor: PropTypes.object,
     room: PropTypes.object,
-    "room.title": PropTypes.string,
+    rooms: PropTypes.array,
+    "room.roomID": PropTypes.number,
     msgs: PropTypes.array,
     message: PropTypes.string,
     messages: PropTypes.array,
     connectToChat: PropTypes.func,
-    disconnectFromChat: PropTypes.func
+    disconnectFromChat: PropTypes.func,
+    findRoomById: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
