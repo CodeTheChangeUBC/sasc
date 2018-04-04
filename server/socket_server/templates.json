@@ -1,0 +1,25 @@
+{
+    "to": {
+        "//": "templates for messages sent by a counsellee",
+        "counsellee": {
+            "msg": "<MESSAGE>"
+        },
+        
+        "//": "templates for messages sent by a counsellor",
+        "counsellor": {
+            "accept": {
+                "counsellee": "<COUNSELLEE ID>"
+            },
+            "decline": {
+                "counsellee": "<COUNSELLEE ID>"
+            },
+            "msg": {
+                "message": "<MESSAGE>",
+                "counsellee": "<COUNSELLEE ID>"
+            }
+        }
+    },
+    "from": {
+
+    }
+}

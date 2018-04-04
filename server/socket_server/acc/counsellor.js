@@ -3,6 +3,7 @@ import User from './user'
 
 
 class Counsellor extends User {
+    
     constructor (socket) {
         super(socket)
 

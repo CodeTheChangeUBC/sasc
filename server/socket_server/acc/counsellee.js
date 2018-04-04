@@ -6,11 +6,17 @@ class Counsellee extends User {
 
     constructor (socket) {
         super(socket)
+        super.match(socket)
 
-        this._socket = socket
-    } 
-    
-    
+        socket.on('msg', this.onMessage)
+
+    }
+
+    onMessage (msg) {
+
+    }
+
+
     socket () {
         return this._socket
     }

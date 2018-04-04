@@ -6,17 +6,16 @@
 // 
 // Communication between sockets is done in User objects themselves.
 
-var config = require('../../config')
-var User = require('./acc/user') 
-
-var jwt = require('jsonwebtoken')
+import config from '../../config'
+import User from './acc/user'
+import jwt from 'jsonwebtoken'
 
 module.exports = io => {
     
     // Check and accept/reject connection based on token.
     io.use((socket, next) => {
         var token = socket.request.query.token
-        var secret = util.secret
+        var secret = config.secret
 
         // Verify and decode the token.
         jwt.verify(token, secret, (error, data) => {

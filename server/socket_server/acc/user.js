@@ -8,7 +8,6 @@ class User {
         this._socket = socket
     }
 
-    
     emit (event, msg) {
         this._socket.emit(event, msg)
     }
@@ -47,14 +46,9 @@ class User {
         // Detect payload user type and create the proper user type
         switch (socket.payload) {
             case 'COUNSELLEE':
-                // Counsellees must be immediately matched to a counsellor.
-                let user = new Counsellee(socket)
-                this.Counsellees[socket.id] = user
-
-                this.match(user)
+                this.Counsellees[socket.id] = new Counsellee(socket)
                 break
             case 'COUNSELLOR':
-                // Counsellors do not need to connect to a counsellee right away.
                 this.Counsellors[socket.id] = new Counsellor(socket)
                 break
             default:
