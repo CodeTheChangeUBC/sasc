@@ -80,13 +80,14 @@ export function getUser(id) {
                 "Authorization": token
             },
             params: {
-                userId: id
+                ID: id
             }
         };
-        /*axios.get(`${ROOT_URL + BASE_URL}/:userId`, header)
+        axios.get(`${ROOT_URL + BASE_URL}`, header)
             .then(function (response) {
-                if (response.data.length !== 0) {
-                    var user = response.data[0];
+                if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
+
+                    var user = response.data.user;
                     if (user.password) {
                         delete user.password;
                     }
@@ -98,8 +99,7 @@ export function getUser(id) {
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
-            });*/
-        
+            });
     };
 }
 
@@ -116,29 +116,31 @@ export function updateUser({ID, username, nickname, age, gender, email, phoneNum
             }
         };
         const data = {ID, username, nickname, age, gender, email, phoneNumber, password};
-        // This is what it does temporarily
-        if (data.password) {
-            delete data.password;
-        }
-        dispatch({
-            type: UPDATE_USER,
-            user: data
-        });
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+
+        axios.put(`${ROOT_URL + BASE_URL}`, data, header)
             .then(function (response) {
-                dispatch({
-                    type: UPDATE_USER,
-                    user: data,
-                    success: response.data.success
-                });
+
+                // If successfully updated on the backend, update on frontend as well.
+                if (response.data.success) {
+
+                    if (data.password) {
+                        delete data.password;
+                    }
+                    dispatch({
+                        type: UPDATE_USER,
+                        user: data,
+                        success: response.data.success
+                    });
+                }
+
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
-            });*/
+            });
     };
 }
 
-export function changeUserPassword({ID, oldPassword, newPassword, newPasswordConfirm}) {
+export function changeUserPassword({ID, oldPassword, newPassword}) {
     return function (dispatch) {
         const token = localStorage.getItem("token");
         const header = {
@@ -147,25 +149,23 @@ export function changeUserPassword({ID, oldPassword, newPassword, newPasswordCon
                 "Authorization": token
             },
             params: {
-                userId: ID
+                ID: ID
             }
         };
-        const data = {ID, oldPassword, newPassword, newPasswordConfirm};
-        /*axios.put(`${ROOT_URL + BASE_URL}/:userId`, data, header)
+        const data = {ID, oldPassword, newPassword};
+
+        axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
             .then(function (response) {
-                dispatch({
-                    type: PASSWORD_CHANGE,
-                    success: response.data.success
-                });
+                if (response.data.success) {
+                    dispatch({
+                        type: PASSWORD_CHANGE,
+                        success: response.data.success
+                    });
+                }
             })
             .catch(function (error) {
                 dispatch(userError(error.response.data.error));
             });
-        */
-        dispatch({
-            type: PASSWORD_CHANGE,
-            success: "Password did not change because this is unimplemented."
-        });
     };
 }
 
