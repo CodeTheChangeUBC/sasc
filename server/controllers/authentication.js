@@ -56,6 +56,7 @@ async function abstractSignup(user, requiredCredentials, role, res, model) {
     [err, users] = await to(model.lookupByCredential(usernameCredential));
 
     if (err) {
+        console.log(err);
         return res.status(422).send({error: "Cannot look up user."});
     }
 
