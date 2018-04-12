@@ -2,8 +2,8 @@ const mysql = require('mysql');
 const async = require('async');
 
 // Test and development DBs
-const DEV_DB = 'sasc_dev_db';
-const TEST_DB = 'sasc_test_db';
+const DEV_DB = 'chat_dev_db';
+const TEST_DB = 'chat_test_db';
 
 // DB modes corresponding to different DBs
 exports.MODE_TEST = 'mode_test';
@@ -19,7 +19,7 @@ exports.connect = function(mode, done) {
 	state.pool = mysql.createPool({
 		// Local DB details
 		host: '127.0.0.1',
-		user: 'sasc',
+		user: 'chat',
 		password: null,
 		database: mode === exports.MODE_DEVELOPMENT ? DEV_DB : TEST_DB
 	});
