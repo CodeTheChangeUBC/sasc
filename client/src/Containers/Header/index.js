@@ -61,7 +61,7 @@ class Header extends Component {
   render() {
     return (
       <div className="Header">
-        <h1 className="header-title">SASC</h1>
+        <h1 className="header-title">Open Counsellor Chat</h1>
         <nav className="Navigation">
           <ul>
             <li><Link to="/">Home</Link></li>

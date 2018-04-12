@@ -98,9 +98,9 @@ export default {
   counsellor: {
     counsellor: {
       ID: "153",
-      firstName: "Shilo",
-      lastName: "St. Cyr",
-      email: "admin@ams.ubc.ca",
+      firstName: "Admin",
+      lastName: "Chat",
+      email: "admin@example.com",
       students: [
         {name: "John Doe", phone: "(604) 111-1111", email: "John.Doe@yahoo.com" },
         {name: "Jane Doe", phone: "(604) 111-1111", email: "Jane.Doe@yahoo.com" },

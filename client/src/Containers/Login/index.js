@@ -68,7 +68,7 @@ class Login extends Component {
         {this.renderAlert()}
         <div className="login-as-counsellor">
           <p>
-            Are you a member of the SASC? Login <Link to="/signincounsellor">here</Link> as a counsellor.
+            Are you a counsellor? Login <Link to="/signincounsellor">here</Link> as a counsellor.
            </p>
         </div>
       </div>
