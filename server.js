@@ -12,7 +12,6 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 
 const config = require('./webpack.config.dev');
 const webpack = require('webpack');
@@ -38,10 +37,6 @@ exports.server = function(database, databaseMode) {
       console.log('WE ARE CONNECTED TO THE DB BABY');
     }
   });
-
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'jade');
 
   // uncomment after placing your favicon in /public
   //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -71,8 +66,6 @@ exports.server = function(database, databaseMode) {
   });
   app.use(express.static(path.join(__dirname, '/../client', 'build')));
 
-
-
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -88,7 +81,7 @@ exports.server = function(database, databaseMode) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.json({ error: err });
   });
 
   return app;
