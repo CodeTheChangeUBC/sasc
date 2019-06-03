@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as roomActions from './../../Redux/Actions/roomActions';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as roomActions from "./../../Redux/Actions/roomActions";
+import PropTypes from "prop-types";
 
 /**
  * Entry that show a student inside counsellor bar
  *
  * TODO: I want to redirect the chat to student's context when I click on an entry
  */
- class CounsellorBarEntry extends Component {
+class CounsellorBarEntry extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -23,13 +23,15 @@ import PropTypes from 'prop-types';
 
     render() {
         return (
-            <div className="counsellor-bar-entry" onClick={this.switchActiveRoom}>
+            <div
+                className="counsellor-bar-entry"
+                onClick={this.switchActiveRoom}
+            >
                 <h4>{this.props.room.humans.user.nickname}</h4>
                 <p>{this.props.room.humans.user.username}</p>
             </div>
         );
     }
-
 }
 
 CounsellorBarEntry.propTypes = {
@@ -42,13 +44,19 @@ CounsellorBarEntry.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  return state;
+    return state;
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    setActiveRoom: roomActions.setActiveRoom
-  }, dispatch);
+    return bindActionCreators(
+        {
+            setActiveRoom: roomActions.setActiveRoom
+        },
+        dispatch
+    );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CounsellorBarEntry);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CounsellorBarEntry);

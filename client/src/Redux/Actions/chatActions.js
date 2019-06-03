@@ -1,10 +1,7 @@
-import {
-    CONNECT_TO_CHAT,
-    DISCONNECT_FROM_CHAT
-} from './../Types/chatTypes';
+import { CONNECT_TO_CHAT, DISCONNECT_FROM_CHAT } from "./../Types/chatTypes";
 
 export function connectToChat() {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch({
             type: CONNECT_TO_CHAT,
             connected: true
@@ -13,7 +10,7 @@ export function connectToChat() {
 }
 
 export function disconnectFromChat() {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch({
             type: DISCONNECT_FROM_CHAT,
             connected: false

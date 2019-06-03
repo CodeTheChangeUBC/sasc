@@ -1,12 +1,8 @@
-import React, {
-    Component
-} from 'react';
-import {
-    connect
-} from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-export default function (ComposedComponent) {
+export default function(ComposedComponent) {
     class AuthenticationForUser extends Component {
         static contextTypes = {
             router: React.PropTypes.object
@@ -14,20 +10,18 @@ export default function (ComposedComponent) {
 
         componentWillMount() {
             if (this.props.auth !== "user") {
-                this.context.router.history.push('/login');
+                this.context.router.history.push("/login");
             }
         }
 
         componentWillUpdate(nextProps) {
             if (nextProps.auth !== "user") {
-                this.context.router.history.push('/login');
+                this.context.router.history.push("/login");
             }
         }
 
         render() {
-            return (<ComposedComponent { ...this.props
-            }
-            />);
+            return <ComposedComponent {...this.props} />;
         }
     }
 

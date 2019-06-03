@@ -1,12 +1,8 @@
-import React, {
-    Component
-} from 'react';
-import {
-    connect
-} from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-export default function (ComposedComponent) {
+export default function(ComposedComponent) {
     class AuthenticationForCounsellor extends Component {
         static contextTypes = {
             router: React.PropTypes.object
@@ -14,20 +10,18 @@ export default function (ComposedComponent) {
 
         componentWillMount() {
             if (this.props.auth !== "counsellor") {
-                this.context.router.history.push('/');
+                this.context.router.history.push("/");
             }
         }
 
         componentWillUpdate(nextProps) {
             if (nextProps.auth !== "counsellor") {
-                this.context.router.history.push('/');
+                this.context.router.history.push("/");
             }
         }
 
         render() {
-            return (<ComposedComponent { ...this.props
-            }
-            />);
+            return <ComposedComponent {...this.props} />;
         }
     }
 

@@ -1,16 +1,8 @@
-import React, {
-    Component
-} from 'react';
-import {
-    connect
-} from 'react-redux';
-import {
-    Link
-} from 'react-router-dom';
-import {
-    bindActionCreators
-} from 'redux';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
 
 class LaunchChat extends Component {
     constructor(props) {
@@ -23,17 +15,13 @@ class LaunchChat extends Component {
 
     gotoChat(ev) {
         ev.preventDefault();
-        const {
-            history
-        } = this.props;
+        const { history } = this.props;
         history.push("/chat");
     }
 
     gotoSurvey(ev) {
         ev.preventDefault();
-        const {
-            history
-        } = this.props;
+        const { history } = this.props;
         history.push("/prechatsurvey");
     }
 
@@ -41,26 +29,26 @@ class LaunchChat extends Component {
         if (this.props.chatConnected || this.props.auth === "counsellor") {
             return (
                 <div>
-                    <p>Go to <Link to = "/chat" >chat</Link>.</p>
+                    <p>
+                        Go to <Link to="/chat">chat</Link>.
+                    </p>
                 </div>
             );
-        }
-        else if (this.props.auth === "user") {
+        } else if (this.props.auth === "user") {
             return (
-                <div className = "connect-to-chat" onClick = {this.gotoChat}>
-                    <div className = "launch-chat" value = "Launch Chat">
+                <div className="connect-to-chat" onClick={this.gotoChat}>
+                    <div className="launch-chat" value="Launch Chat">
                         Launch Chat
                     </div>
                 </div>
             );
-        }
-        else {
+        } else {
             return (
-                <div className = "connect-to-chat" onClick = {this.gotoSurvey}>
-                    <div className = "launch-chat" value = "Launch Chat" >
+                <div className="connect-to-chat" onClick={this.gotoSurvey}>
+                    <div className="launch-chat" value="Launch Chat">
                         Launch Chat
                     </div>
-                </div >
+                </div>
             );
         }
     }
@@ -83,4 +71,7 @@ LaunchChat.propTypes = {
     auth: PropTypes.string
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LaunchChat);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LaunchChat);
