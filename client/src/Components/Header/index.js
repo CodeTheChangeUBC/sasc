@@ -76,14 +76,13 @@ class Header extends Component {
 
     render() {
         return (
-            <div className="header">
-                <h1 className="header__title">
-                    <Link to="/" style={{ color: "inherit" }}>
-                        SASC
-                    </Link>
-                </h1>
+            <div className="Header">
+                <h1 className="header-title">SASC</h1>
                 <nav className="Navigation">
                     <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
                         {this.renderLinkChatUserConnected()}
                         {this.renderLinksCounsellor()}
                         {this.renderLinks()}

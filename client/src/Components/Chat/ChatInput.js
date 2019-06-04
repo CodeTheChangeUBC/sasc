@@ -1,60 +1,76 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as roomActions from '../../Redux/Actions/roomActions';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as roomActions from "../../Redux/Actions/roomActions";
+import PropTypes from "prop-types";
 
 class ChatInput extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            input: ""
+        };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      input : ''
-    };
-
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleOnSubmit = this.handleOnSubmit.bind(this);
-  }
-
-  handleOnChange(ev) {
-   this.setState({ input: ev.target.value });
-  }
-
-  handleOnSubmit(ev) {
-    ev.preventDefault();
-    if (this.state.input.trim() && this.props.connected) {
-      if (this.props.auth === "counsellor") {
-        this.props.socket.emit('chat message', {user: this.props.counsellor.firstName, message: this.state.input, room: this.props.room.roomID});
-      } else {
-        this.props.socket.emit('chat message', {user: this.props.user.nickname, message: this.state.input, room: this.props.room.roomID});
-      }
-
-      this.setState({ input: '' });
+        this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
-  }
 
-  render() {
-    return (
-      <form className="chat-input" onSubmit={this.handleOnSubmit}>
-          <input id="chat-input-box" type="text" onChange={this.handleOnChange} value={this.state.input} />
-          <input id="send-message" type="submit" value="Send" />
-      </form>
-    );
-  }
+    handleOnChange(ev) {
+        this.setState({
+            input: ev.target.value
+        });
+    }
+
+    handleOnSubmit(ev) {
+        ev.preventDefault();
+        if (this.state.input.trim() && this.props.connected) {
+            if (this.props.auth === "counsellor") {
+                this.props.socket.emit("chat message", {
+                    user: this.props.counsellor.firstName,
+                    message: this.state.input,
+                    room: this.props.room.roomID
+                });
+            } else {
+                this.props.socket.emit("chat message", {
+                    user: this.props.user.nickname,
+                    message: this.state.input,
+                    room: this.props.room.roomID
+                });
+            }
+
+            this.setState({
+                input: ""
+            });
+        }
+    }
+
+    render() {
+        return (
+            <form className="chat-input" onSubmit={this.handleOnSubmit}>
+                <input
+                    id="chat-input-box"
+                    type="text"
+                    onChange={this.handleOnChange}
+                    value={this.state.input}
+                />
+                <input id="send-message" type="submit" value="Send" />
+            </form>
+        );
+    }
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    connected: state.chat.connected,
-    activeRoom: state.room.activeRoom,
-    auth: state.auth.auth,
-    counsellor: state.counsellor.counsellor,
-    user: state.user.user
-  };
+    return {
+        connected: state.chat.connected,
+        activeRoom: state.room.activeRoom,
+        auth: state.auth.auth,
+        counsellor: state.counsellor.counsellor,
+        user: state.user.user
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+    return bindActionCreators({}, dispatch);
 }
 
 ChatInput.propTypes = {
@@ -70,4 +86,7 @@ ChatInput.propTypes = {
     "socket.emit": PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatInput);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChatInput);
