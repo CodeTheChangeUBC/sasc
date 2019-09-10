@@ -1,38 +1,37 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
-import './../../Containers/Chat/styles.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
+import "./../../Containers/Chat/styles.css";
 
 class MessageInstance extends Component {
-  render() {
+    render() {
+        const fromMe =
+            (this.props.auth === "counsellor" && this.props.fromCounsellor) ||
+            (this.props.auth !== "counsellor" &&
+                this.props.fromCounsellor === 0)
+                ? "from-me"
+                : "";
 
-    const fromMe = ((this.props.auth === "counsellor" && this.props.fromCounsellor) 
-      || (this.props.auth !== "counsellor" && this.props.fromCounsellor === 0)) ? 'from-me' : '';
-
-    return(
-        <div className={`${fromMe} message-instance`}>
-            <div className="message-user">
-              {this.props.name}
+        return (
+            <div className={`${fromMe} message-instance`}>
+                <div className="message-user">{this.props.name}</div>
+                <div className="message-body">{this.props.message}</div>
             </div>
-            <div className="message-body">
-              {this.props.message}
-            </div>
-        </div>
-      );
-  }
+        );
+    }
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    auth: state.auth.auth,
-    user: state.user.user,
-    counsellor: state.counsellor.counsellor
-  };
+    return {
+        auth: state.auth.auth,
+        user: state.user.user,
+        counsellor: state.counsellor.counsellor
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+    return bindActionCreators({}, dispatch);
 }
 
 MessageInstance.propTypes = {
@@ -44,9 +43,12 @@ MessageInstance.propTypes = {
 };
 
 MessageInstance.defaultProps = {
-  message: '',
-  user: '',
-  fromMe: false
+    message: "",
+    user: "",
+    fromMe: false
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageInstance);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MessageInstance);

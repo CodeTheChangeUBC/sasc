@@ -6,16 +6,16 @@ import {
     COUNSELLOR_ERROR,
     PASSWORD_CHANGE,
     REMOVE_ERROR
-} from './../Types/counsellorTypes';
+} from "./../Types/counsellorTypes";
 import axios from "axios";
-import {config} from "./../../config";
+import { config } from "./../../config";
 
 export const ROOT_URL = config.api;
 export const BASE_URL = "/counsellors";
 
 export function removeError() {
-    return function (dispatch) {
-        dispatch({type: REMOVE_ERROR});
+    return function(dispatch) {
+        dispatch({ type: REMOVE_ERROR });
     };
 }
 
@@ -27,7 +27,7 @@ function counsellorError(error) {
 }
 
 export function renderCounsellorError(error) {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch({
             type: COUNSELLOR_ERROR,
             payload: error
@@ -36,7 +36,7 @@ export function renderCounsellorError(error) {
 }
 
 export function addCounsellor(counsellor) {
-    return function (dispatch) {
+    return function(dispatch) {
         if (counsellor) {
             if (counsellor.password) {
                 delete counsellor.password;
@@ -46,27 +46,35 @@ export function addCounsellor(counsellor) {
                 counsellor: counsellor
             });
         } else {
-            dispatch(counsellorError("Counsellor information cannot be added to the login session."));
+            dispatch(
+                counsellorError(
+                    "Counsellor information cannot be added to the login session."
+                )
+            );
         }
-        
     };
 }
 
 export function getCounsellor(id) {
-    return function (dispatch) {
+    return function(dispatch) {
         const token = localStorage.getItem("token");
         const header = {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": token
+                Authorization: token
             },
             params: {
                 ID: id
             }
         };
-        axios.get(`${ROOT_URL + BASE_URL}`, header)
-            .then(function (response) {
-                if (response.data !== null && response.data !== undefined && typeof response.data !== "string") {
+        axios
+            .get(`${ROOT_URL + BASE_URL}`, header)
+            .then(function(response) {
+                if (
+                    response.data !== null &&
+                    response.data !== undefined &&
+                    typeof response.data !== "string"
+                ) {
                     var counsellor = response.data.counsellor;
                     if (counsellor.password) {
                         delete counsellor.password;
@@ -77,32 +85,31 @@ export function getCounsellor(id) {
                     });
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 dispatch(counsellorError(error.response.data.error));
             });
-        
     };
 }
 
-export function updateCounsellor({ID, email, firstName, lastName, password}) {
-    return function (dispatch) {
+export function updateCounsellor({ ID, email, firstName, lastName, password }) {
+    return function(dispatch) {
         const token = localStorage.getItem("token");
         const header = {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": token
+                Authorization: token
             },
             params: {
                 counsellorId: ID
             }
         };
-        const data = {ID, email, firstName, lastName, password};
+        const data = { ID, email, firstName, lastName, password };
 
-        axios.put(`${ROOT_URL + BASE_URL}`, data, header)
-            .then(function (response) {
+        axios
+            .put(`${ROOT_URL + BASE_URL}`, data, header)
+            .then(function(response) {
                 // If successfully updated on the backend, update on frontend as well.
                 if (response.data.success) {
-
                     if (data.password) {
                         delete data.password;
                     }
@@ -114,27 +121,28 @@ export function updateCounsellor({ID, email, firstName, lastName, password}) {
                     });
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 dispatch(counsellorError(error.response.data.error));
             });
     };
 }
 
-export function changeCounsellorPassword({ID, oldPassword, newPassword}) {
-    return function (dispatch) {
+export function changeCounsellorPassword({ ID, oldPassword, newPassword }) {
+    return function(dispatch) {
         const token = localStorage.getItem("token");
         const header = {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": token
+                Authorization: token
             },
             params: {
                 ID: ID
             }
         };
-        const data = {ID, oldPassword, newPassword};
-        axios.put(`${ROOT_URL + BASE_URL}/password`, data, header)
-            .then(function (response) {
+        const data = { ID, oldPassword, newPassword };
+        axios
+            .put(`${ROOT_URL + BASE_URL}/password`, data, header)
+            .then(function(response) {
                 if (response.data.success) {
                     dispatch({
                         type: PASSWORD_CHANGE,
@@ -142,14 +150,14 @@ export function changeCounsellorPassword({ID, oldPassword, newPassword}) {
                     });
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 dispatch(counsellorError(error.response.data.error));
             });
     };
 }
 
 export function removeCounsellor() {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch({
             type: REMOVE_COUNSELLOR
         });

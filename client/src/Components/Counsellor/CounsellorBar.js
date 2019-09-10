@@ -1,10 +1,10 @@
-import React from 'react';
-import uuid from 'uuid';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
+import React from "react";
+import uuid from "uuid";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
 
-import CounsellorBarEntry from './CounsellorBarEntry';
+import CounsellorBarEntry from "./CounsellorBarEntry";
 
 /**
  * The sidebar of chat for counsellors
@@ -35,7 +35,11 @@ class CounsellorBar extends React.Component {
     renderCounsellorHeader() {
         return (
             <div className="counsellor-bar-header">
-                <h4 className="counsellor-bar-header-welcome">Hello {this.props.counsellor.firstName} {this.props.counsellor.lastName}! This is the counsellor bar.</h4>
+                <h4 className="counsellor-bar-header-welcome">
+                    Hello {this.props.counsellor.firstName}{" "}
+                    {this.props.counsellor.lastName}! This is the counsellor
+                    bar.
+                </h4>
             </div>
         );
     }
@@ -44,16 +48,18 @@ class CounsellorBar extends React.Component {
         if (this.props.rooms.length > 0) {
             return (
                 <div>
-                    {this.props.rooms.map((room) =>
-                            <div key={uuid.v4()}>
-                                <CounsellorBarEntry room={room} />
-                            </div>)}
+                    {this.props.rooms.map(room => (
+                        <div key={uuid.v4()}>
+                            <CounsellorBarEntry room={room} />
+                        </div>
+                    ))}
                 </div>
             );
         } else {
             return (
                 <div>
-                    <div className="counsellor-bar-entry"><p>You have no students.</p>
+                    <div className="counsellor-bar-entry">
+                        <p>You have no students.</p>
                     </div>
                 </div>
             );
@@ -79,14 +85,14 @@ class CounsellorBar extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    counsellor: state.counsellor.counsellor,
-    rooms: state.room.rooms
-  };
+    return {
+        counsellor: state.counsellor.counsellor,
+        rooms: state.room.rooms
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+    return bindActionCreators({}, dispatch);
 }
 
 CounsellorBar.propTypes = {
@@ -94,4 +100,7 @@ CounsellorBar.propTypes = {
     rooms: PropTypes.array
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CounsellorBar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CounsellorBar);

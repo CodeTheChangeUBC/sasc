@@ -1,101 +1,104 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
 
-import Form from './../../Components/Form';
-import * as authActions from '../../Redux/Actions/authActions';
-import * as userActions from '../../Redux/Actions/userActions';
-import PropTypes from 'prop-types';
-import './styles.css';
+import Form from "./../../Components/Form";
+import * as authActions from "../../Redux/Actions/authActions";
+import * as userActions from "../../Redux/Actions/userActions";
+import PropTypes from "prop-types";
+import "./styles.css";
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: null,
+            password: null,
+            error: null
+        };
+        this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    }
 
-  constructor(props) {
-    super(props);
-    this.state = { 
-      username: null,
-      password: null,
-      error: null
-    };
-     this.handleOnChange = this.handleOnChange.bind(this);
-     this.handleOnSubmit = this.handleOnSubmit.bind(this);
-  }
+    componentWillMount() {
+        this.props.removeError();
+    }
 
-  componentWillMount() {
-    this.props.removeError();
-  }
+    handleOnChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
-  handleOnChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+        this.setState({
+            [name]: value
+        });
+    }
 
-    this.setState({
-      [name]: value
-    });
-  }
+    handleOnSubmit(ev) {
+        ev.preventDefault();
 
-  handleOnSubmit(ev) {
-    ev.preventDefault();
+        const { history } = this.props;
 
-    const { history } = this.props;
+        this.props.signinUser(this.state, history, this.props.addUser);
+    }
 
-    this.props.signinUser(this.state, history, this.props.addUser);
-  }
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return <div className="error">{this.props.errorMessage}</div>;
+        }
+    }
 
-  renderAlert() {
-    if (this.props.errorMessage) {
+    render() {
         return (
-            <div className="error">
-                {this.props.errorMessage}
+            <div className="Login">
+                <h2>Login</h2>
+                <Form
+                    username
+                    password
+                    button="Login"
+                    onSubmit={this.handleOnSubmit}
+                    onChange={this.handleOnChange}
+                />
+                {this.renderAlert()}
+                <div className="login-as-counsellor">
+                    <p>
+                        Are you a counsellor? Login{" "}
+                        <Link to="/signincounsellor">here</Link> as a
+                        counsellor.
+                    </p>
+                </div>
             </div>
         );
     }
-  }
-
-  render() {
-    return (
-      <div className="Login">
-        <h2>Login</h2>
-        <Form
-          username
-          password
-          button="Login"
-          onSubmit={this.handleOnSubmit}
-          onChange={this.handleOnChange}
-        />
-        {this.renderAlert()}
-        <div className="login-as-counsellor">
-          <p>
-            Are you a counsellor? Login <Link to="/signincounsellor">here</Link> as a counsellor.
-           </p>
-        </div>
-      </div>
-    );
-  }
 }
 
 Login.propTypes = {
-  addUser: PropTypes.func,
-  signinUser: PropTypes.func,
-  history: PropTypes.object,
-  errorMessage: PropTypes.string,
-  removeError: PropTypes.func
+    addUser: PropTypes.func,
+    signinUser: PropTypes.func,
+    history: PropTypes.object,
+    errorMessage: PropTypes.string,
+    removeError: PropTypes.func
 };
 
 function mapStateToProps(state) {
     return {
-      errorMessage: state.auth.status.error
+        errorMessage: state.auth.status.error
     };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    signinUser: authActions.signinUser,
-    addUser: userActions.addUser,
-    removeError: userActions.removeError
-  }, dispatch);
+    return bindActionCreators(
+        {
+            signinUser: authActions.signinUser,
+            addUser: userActions.addUser,
+            removeError: userActions.removeError
+        },
+        dispatch
+    );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
