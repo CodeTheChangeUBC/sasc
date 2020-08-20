@@ -64,7 +64,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-react-display-name": "2.0.0",
     "babel-preset-react-hmre": "1.1.1",
-    "bcrypt": "^3.0.0",
+    "bcrypt": "^5.0.0",
     "chai": "^4.1.1",
     "chai-http": "^4.3.0",
     "cheerio": "^0.20.0",
